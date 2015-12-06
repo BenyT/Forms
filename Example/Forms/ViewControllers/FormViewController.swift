@@ -84,6 +84,11 @@ final class FormViewController: UIViewController {
                     }
                 }
                 
+                //hide input if it is not enabled
+                viewModel.enabledObservable.observe {
+                    textInputView.hidden = !$0
+                }
+                
                 formStackView.insertArrangedSubview(textInputView, atIndex: 0)
                 return
             }

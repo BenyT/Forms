@@ -43,17 +43,12 @@ public extension FormInputValidatable {
     /// Updates errorText specified by the first failed validation rule
     func validate(updateErrorText updateErrorText: Bool) -> Bool {
         
-        defer {
-            valid = errorText == nil
-        }
-        
         //validate each rule
         let validationFailure = self.validationRules.filter {
             
             //assuming no validation rule will ever allow a nil value
             guard let value = self.inputValueToValidate else {
-                valid = false
-                return false
+                return true
             }
             
             return !$0.validate(inputValue: value)

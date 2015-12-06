@@ -19,7 +19,7 @@ public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
     // Init
     //
     // - Parameter value: T
-    public init(options: [T], value: T, caption: String = "") {
+    public init(options: [T], value: T?, caption: String = "") {
         self.options = options
         super.init(value: value, caption: caption)
     }

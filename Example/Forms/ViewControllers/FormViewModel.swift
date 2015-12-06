@@ -43,7 +43,6 @@ final class FormViewModel {
             }
         ]
         
-        
         return vm
     }()
     
@@ -53,6 +52,7 @@ final class FormViewModel {
         vm.returnKeyType = .Next
         vm.nextInputsViewModel = self.dateSelectInputViewModel
         vm.autocorrectionType = .No
+        vm.enabled = false
         
         vm.validationRules = [
             FormInputValidationRule(failureText: "Must match password value") { inputValue -> Bool in
@@ -88,12 +88,12 @@ final class FormViewModel {
     
     lazy var stateSelectInputViewModel: FormSelectInputViewModel<String> = { [unowned self] in
         
-        let vm = FormSelectInputViewModel(options: ["test1", "test2", "test3"], value: "test1")
+        let vm = FormSelectInputViewModel(options: ["test1", "test2", "test3"], value: nil)
         vm.placeholder = "* state"
         vm.pickerPlaceholder = "-- Please select a state -- "
         
         vm.validationRules = [
-            FormInputValidationRule(failureText: "Please picker a data") { inputValue -> Bool in
+            FormInputValidationRule(failureText: "Please picker a date") { inputValue -> Bool in
                 return inputValue != nil
             }
         ]
@@ -137,6 +137,7 @@ final class FormViewModel {
     init() {
         
         self.passwordInputViewModel.validObservable.observe {
+            print("valid: \($0)")
             self.confirmPasswordInputViewModel.enabled = $0
         }        
     }

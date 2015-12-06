@@ -92,6 +92,8 @@ final class FormBaseTextInputView<T>: UIView {
         viewModel.secureTextEntryObservable.observe { self.textField.secureTextEntry = $0 }
         viewModel.keyboardTypeObservable.observe { self.textField.keyboardType = $0 }
         viewModel.autocorrectionTypeObservable.observe { self.textField.autocorrectionType = $0 }
-        viewModel.enabledObservable.observe { self.textField.enabled = $0 }
+        viewModel.enabledObservable.observe {
+            self.textField.enabled = $0
+        }
     }
 }

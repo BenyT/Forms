@@ -109,7 +109,7 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
             return
         }
                 
-        viewModel.valueObservable.observe { self.checkBoxButton.selected = $0 }
+        viewModel.valueObservable.observe { self.checkBoxButton.selected = $0 ?? false }
         viewModel.captionObservable.observe { self.captionLabel.text = $0 }
         viewModel.errorTextObservable.observe { self.errorLabel.text = $0 }
     }

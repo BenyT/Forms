@@ -54,7 +54,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //textfield text
-    public var valueObservable: Observable<T>
+    public var valueObservable: Observable<T?>
     
     public var value: T? {
         didSet {
@@ -63,7 +63,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
             if let value = value {
                 valueObservable.next(value)
                 
-                valid = validate()
+                valid = validateUsingDisplayValidationErrorsOnValueChangeValue()
                 
                 if let displayValueMap = displayValueMap {
                     displayValue = displayValueMap(value)
@@ -187,20 +187,35 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
-    public var validationRules = [FormInputValidationRule<T>]()
+    public var validationRules = [FormInputValidationRule<T>]() {
+        didSet {
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue()) {
+                self.validate(updateErrorText: self.displayValidationErrorsOnValueChange)
+            }
+            
+        }
+    }
     
     public var inputValueToValidate: T? { return self.value }
     
-    public var displayValidationErrorsOnValueChange: Bool = false
+    public var displayValidationErrorsOnValueChange: Bool = false {
+        didSet {
+            if displayValidationErrorsOnValueChange == true {
+                validateUsingDisplayValidationErrorsOnValueChangeValue()
+            }
+        }
+    }
     
     //MARK: - Init
     
     // Init
     //
     // - Parameter value: T
-    public init(value: T, caption: String = "") {
+    public init(value: T?, caption: String = "") {
+        
         self.value = value
-        valueObservable = Observable<T>(value)
+        valueObservable = Observable<T?>(value)
         self.displayValue = self.value as? String ?? ""
         self.caption = caption
         captionObservable.next(caption)
@@ -209,6 +224,10 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     //MARK: - Validation
     
     public func validate() -> Bool {
+        return validate(updateErrorText: true)
+    }
+    
+    public func validateUsingDisplayValidationErrorsOnValueChangeValue() -> Bool {
         return validate(updateErrorText: displayValidationErrorsOnValueChange)
     }
 }
