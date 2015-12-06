@@ -84,7 +84,9 @@ final class FormBaseTextInputView<T>: UIView {
     
     func bindViewModel(viewModel: FormInputViewModel<T>) {
         
-        viewModel.displayValueObservable.observe { self.textField.text = $0 }
+        viewModel.displayValueObservable.observe {
+            self.textField.text = $0
+        }
         viewModel.placeholderObservable.observe { self.textField.attributedPlaceholder = $0 }
         viewModel.captionObservable.observe { self.captionLabel.text = $0 }
         viewModel.errorTextObservable.observe { self.errorLabel.text = $0 }
@@ -92,8 +94,6 @@ final class FormBaseTextInputView<T>: UIView {
         viewModel.secureTextEntryObservable.observe { self.textField.secureTextEntry = $0 }
         viewModel.keyboardTypeObservable.observe { self.textField.keyboardType = $0 }
         viewModel.autocorrectionTypeObservable.observe { self.textField.autocorrectionType = $0 }
-        viewModel.enabledObservable.observe {
-            self.textField.enabled = $0
-        }
+        viewModel.enabledObservable.observe { self.textField.enabled = $0 }
     }
 }

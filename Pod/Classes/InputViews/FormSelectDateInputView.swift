@@ -116,6 +116,12 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
                 self.becomeFirstResponder()
             }
         }
+        
+        viewModel.valueObservable.observe {
+            if let value = $0 {
+                self.datePicker.date = value
+            }
+        }
     }
     
     override public func becomeFirstResponder() -> Bool {

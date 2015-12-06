@@ -91,7 +91,14 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //map value to displya view
-    public var displayValueMap: ((T) -> String)?
+    public var displayValueMap: ((T) -> String)? {
+        didSet {
+            
+            //set value to map display to value through value didSet observer
+            let value = self.value
+            self.value = value
+        }
+    }
     
     //caption label text
     public var captionObservable = {
@@ -213,10 +220,11 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     //
     // - Parameter value: T
     public init(value: T?, caption: String = "") {
-        
+    
         self.value = value
         valueObservable = Observable<T?>(value)
-        self.displayValue = self.value as? String ?? ""
+        displayValue = self.value as? String ?? ""
+        displayValueObservable.next(displayValue)
         self.caption = caption
         captionObservable.next(caption)
     }

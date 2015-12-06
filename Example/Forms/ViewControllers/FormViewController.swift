@@ -84,6 +84,7 @@ final class FormViewController: UIViewController {
                     }
                 }
                 
+                //TODO: constraint conflict when setting hidden
                 //hide input if it is not enabled
                 viewModel.enabledObservable.observe {
                     textInputView.hidden = !$0

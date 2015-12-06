@@ -73,7 +73,7 @@ final class FormViewModel {
 
     lazy var dateSelectInputViewModel: FormInputViewModel<NSDate> = { [unowned self] in
         
-        let vm = FormInputViewModel(value: NSDate())
+        let vm = FormInputViewModel<NSDate>(value: nil)
         vm.placeholder = "birthday"
         vm.caption = "Used to ... sed ut perspiciatis unde omnis iste"
         
@@ -137,7 +137,6 @@ final class FormViewModel {
     init() {
         
         self.passwordInputViewModel.validObservable.observe {
-            print("valid: \($0)")
             self.confirmPasswordInputViewModel.enabled = $0
         }        
     }
