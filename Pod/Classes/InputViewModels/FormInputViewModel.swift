@@ -49,6 +49,15 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
             //only update observable if value is not nil
             if let value = value {
                 valueObservable.next(value)
+                
+                if let displayValueMap = displayValueMap {
+                    displayValue = displayValueMap(value)
+                } else {
+                    displayValue = value as? String ?? "ERROR"
+                }
+                
+            } else {
+                displayValue = ""
             }
         }
     }
@@ -65,6 +74,8 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
             }
         }
     }
+    
+    public var displayValueMap: ((T) -> String)?
     
     //caption label text
     public var captionObservable = {
@@ -105,6 +116,8 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
             }
         }
     }
+    
+    //MARK: - State For Keyboard (No inputView)
     
     //secure input
     public lazy var secureTextEntryObservable = {

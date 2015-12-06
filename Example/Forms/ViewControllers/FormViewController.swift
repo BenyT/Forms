@@ -49,18 +49,36 @@ class FormViewController: UIViewController {
         //prepend all in viewModel input arranged subviews to existing arranged subviews
         viewModel.inputs.reverse().forEach {
             
+            //select input
+            if let viewModel = $0 as? FormSelectInputViewModel<String> {
+                let selectInputView = FormSelectInputView(withViewModel: viewModel)
+                selectInputView.themeView()
+                formStackView.insertArrangedSubview(selectInputView, atIndex: 0)
+                return
+            }
+            
             //text inputs
             if let viewModel = $0 as? FormInputViewModel<String> {
                 let textInputView = FormTextInputView(withViewModel: viewModel)
                 textInputView.themeView()
                 formStackView.insertArrangedSubview(textInputView, atIndex: 0)
+                return
             }
             
+            //select data inputs
+            if let viewModel = $0 as? FormInputViewModel<NSDate> {
+                let selectDateInputView = FormSelectDateInputView(withViewModel: viewModel)
+                selectDateInputView.themeView()
+                formStackView.insertArrangedSubview(selectDateInputView, atIndex: 0)
+                return
+            }
+
             //checkbox inputs
             if let viewModel = $0 as? FormInputViewModel<Bool> {
                 let textInputView = FormCheckboxInputView(withViewModel: viewModel)
                 textInputView.themeView()
                 formStackView.insertArrangedSubview(textInputView, atIndex: 0)
+                return
             }
         }
     }

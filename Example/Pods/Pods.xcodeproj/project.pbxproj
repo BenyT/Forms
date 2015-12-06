@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		02F89C9B1C141C540036797B /* FormBaseTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89C991C141BDB0036797B /* FormBaseTextInputView.swift */; };
+		02F89C9F1C14208D0036797B /* FormSelectInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89C9C1C1420850036797B /* FormSelectInputView.swift */; };
+		02F89CA21C142ABA0036797B /* FormSelectInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89CA01C142AB60036797B /* FormSelectInputViewModel.swift */; };
 		02FFDB1805CDB610EC4941E357267BCC /* FormTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6207F0BF99C4339BA129C329332D2AFA /* FormTextInputView.swift */; };
 		07D072E2DEE09B91754976490740E692 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376DD8704E4393C84013470CB6327122 /* NSObject+Bond.swift */; };
 		07E9EDED556FFBD6D39729A09E44B6BD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AEBB46327FF807518D9E658A267D0C /* Foundation.framework */; };
@@ -66,7 +68,6 @@
 		C80561B11D8D882D4509326F6EB27705 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = E712D661CE412F6A88BAB1DF703145A1 /* UIView+Bond.swift */; };
 		CF0413DAD70E0E026D823FD77DA11998 /* FormInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CBDAE55642AF14957E6FDB1FE23B13 /* FormInputViewModel.swift */; };
 		D23FF3B745356DB701D8962C552DAB09 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F6993B6C365F015B6A175976989D6B /* UITextView+Bond.swift */; };
-		E99EEEA2BC5B39EBD95B0A3D298CAE27 /* FormDateInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0512EC372876A9A20E2BE971D9CF088D /* FormDateInputViewModel.swift */; };
 		F0B92B1B144221E8F09F224C7E865D80 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC80ADB73864C45D5A7B41F25684119D /* Observable.swift */; };
 		F1315E3B51FFE22E0924BD347EE393BD /* UIControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CA82981526331F1F0B1277FC0F2414 /* UIControl+Bond.swift */; };
 		FA4161D2631EF85804BD0FDEF99CD64C /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF51530D584BE28AF770E5B1AB43D66C /* UIButton+Bond.swift */; };
@@ -113,8 +114,9 @@
 
 /* Begin PBXFileReference section */
 		02F89C991C141BDB0036797B /* FormBaseTextInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormBaseTextInputView.swift; sourceTree = "<group>"; };
+		02F89C9C1C1420850036797B /* FormSelectInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSelectInputView.swift; sourceTree = "<group>"; };
+		02F89CA01C142AB60036797B /* FormSelectInputViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSelectInputViewModel.swift; sourceTree = "<group>"; };
 		0338ECCD76C0E96CD1012C255EFE1747 /* DisposableType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DisposableType.swift; path = Bond/Core/DisposableType.swift; sourceTree = "<group>"; };
-		0512EC372876A9A20E2BE971D9CF088D /* FormDateInputViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FormDateInputViewModel.swift; sourceTree = "<group>"; };
 		0EE40BD4AA1EB8EAFDD16F36C3F2FCF4 /* UIBarItem+Bond.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIBarItem+Bond.swift"; path = "Bond/Extensions/iOS/UIBarItem+Bond.swift"; sourceTree = "<group>"; };
 		178AA715FDCF33E07101FC075907413D /* Pods_Forms_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Forms_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		189BA7A7F9D821772BC4DB51970A13C5 /* UIProgressView+Bond.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIProgressView+Bond.swift"; path = "Bond/Extensions/iOS/UIProgressView+Bond.swift"; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 			children = (
 				19FC3DE74FDA85A1F13D726B5F5E5165 /* FormCheckboxInputView.swift */,
 				26A63B181F5FC955BB2A9329A5B79CC0 /* FormSelectDateInputView.swift */,
+				02F89C9C1C1420850036797B /* FormSelectInputView.swift */,
 				6207F0BF99C4339BA129C329332D2AFA /* FormTextInputView.swift */,
 				02F89C991C141BDB0036797B /* FormBaseTextInputView.swift */,
 			);
@@ -438,8 +441,8 @@
 		CEDD9034C4ADAC8C811E403A8EE0AE0F /* InputViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				0512EC372876A9A20E2BE971D9CF088D /* FormDateInputViewModel.swift */,
 				44CBDAE55642AF14957E6FDB1FE23B13 /* FormInputViewModel.swift */,
+				02F89CA01C142AB60036797B /* FormSelectInputViewModel.swift */,
 			);
 			path = InputViewModels;
 			sourceTree = "<group>";
@@ -691,14 +694,15 @@
 			files = (
 				08192A9422F1C17451145531DA946666 /* Form+Validation.swift in Sources */,
 				933325A38C27E89C24D4E17C53C5FDAC /* FormCheckboxInputView.swift in Sources */,
-				E99EEEA2BC5B39EBD95B0A3D298CAE27 /* FormDateInputViewModel.swift in Sources */,
 				C0D32E30DCB92CA74186156A35363DC7 /* FormInputValidation.swift in Sources */,
+				02F89CA21C142ABA0036797B /* FormSelectInputViewModel.swift in Sources */,
 				CF0413DAD70E0E026D823FD77DA11998 /* FormInputViewModel.swift in Sources */,
 				59E501BD2086CB5227B42AE80886442A /* Forms-dummy.m in Sources */,
 				42B526FCF4122F61BDA233E4D3023CA4 /* FormSelectDateInputView.swift in Sources */,
 				02F89C9B1C141C540036797B /* FormBaseTextInputView.swift in Sources */,
 				02FFDB1805CDB610EC4941E357267BCC /* FormTextInputView.swift in Sources */,
 				1D24C4B841DA189C2521AFA2FEE2E1FE /* UIView+AutoLayout.swift in Sources */,
+				02F89C9F1C14208D0036797B /* FormSelectInputView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

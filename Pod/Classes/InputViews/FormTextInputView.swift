@@ -38,8 +38,8 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
     
     //MARK: - FormBaseTextInputView
     
-    private lazy var formBaseTextInputView: FormBaseTextInputView = { [unowned self] in
-        let ui = FormBaseTextInputView()
+    private lazy var formBaseTextInputView: FormBaseTextInputView<String> = { [unowned self] in
+        let ui = FormBaseTextInputView<String>()
         self.addSubview(ui)
         return ui
     }()
@@ -100,6 +100,12 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         }
         
         formBaseTextInputView.bindViewModel(viewModel)
+        
+        viewModel.isFirstResponderObservable.observe {
+            if ($0 == true) {
+                self.becomeFirstResponder()
+            }
+        }
     }
     
     override public func becomeFirstResponder() -> Bool {
@@ -130,7 +136,6 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
     
     public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         viewModel?.value = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
-        textField.text = viewModel?.value
         return false
     }
     

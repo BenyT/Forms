@@ -1,22 +1,18 @@
 //
-//  FormSelectDateInputView.swift
+//  FormSelectInputView.swift
+//  Pods
 //
-//  Created by mrandall on 11/30/15.
-//  Copyright © 2015 mrandall. All rights reserved.
+//  Created by mrandall on 12/5/15.
+//
 //
 
 import UIKit
 
-private enum InputSelector: Selector {
-    case DatePickerValueChanged = "datePickerValueChanged:"
-}
+public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
-@IBDesignable
-public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
-    
     //MARK: - FormInputViewModelView
     
-    public var viewModel: FormInputViewModel<NSDate>? {
+    public var viewModel: FormInputViewModel<T>? {
         didSet {
             bindViewModel()
         }
@@ -24,9 +20,9 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
     
     //MARK: - FormBaseTextInputView
     
-    private lazy var formBaseTextInputView: FormBaseTextInputView<NSDate> = { [unowned self] in
-        let ui = FormBaseTextInputView<NSDate>()
-        ui.textField.inputView = self.datePicker
+    private lazy var formBaseTextInputView: FormBaseTextInputView<T> = { [unowned self] in
+        let ui = FormBaseTextInputView<T>()
+        ui.textField.inputView = self.pickerView
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui
@@ -47,24 +43,25 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
     //manually added layout constraints
     private var layoutConstraints = [NSLayoutConstraint]()
     
-    lazy public var datePicker: UIDatePicker = { [weak self] in
-        let picker = UIDatePicker()
-        picker.addTarget(self, action: InputSelector.DatePickerValueChanged.rawValue, forControlEvents: .ValueChanged)
-        picker.maximumDate = NSDate()
-        picker.datePickerMode = .Date
+    //MARK: - Subviews
+    
+    lazy public var pickerView: UIPickerView = { [weak self] in
+        let picker = UIPickerView()
+        picker.delegate = self
+        picker.dataSource = self
         return picker
-    }()
+        }()
     
     //MARK: - Init
-
-    convenience public init(withViewModel viewModel: FormInputViewModel<NSDate>) {
-        self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+    
+    public init(withViewModel viewModel: FormSelectInputViewModel<T>) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         self.viewModel = viewModel
         commonInit()
+        bindViewModel()
     }
     
     public func commonInit() {
-        
     }
     
     //MARK: - Layout
@@ -87,7 +84,6 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
     
     //MARK: - FormInputViewModelView
     
-    //bind to viewModel
     public func bindViewModel() {
         
         guard let viewModel = self.viewModel else {
@@ -114,11 +110,42 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
         return true
     }
     
-    //MARK: - Actions
+    //MARK: - UIPickerViewDataSource
+        
+    public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
     
-    public func datePickerValueChanged(sender: AnyObject?) {
-        viewModel?.value = datePicker.date
-        textField.text = viewModel?.displayValue
+    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        guard let viewModel = viewModel as? FormSelectInputViewModel else {
+            return 0
+        }
+        
+        return viewModel.options.count
+    }
+    
+    //MARK: - UIPickerViewDelegate
+    
+    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        guard let viewModel = viewModel as? FormSelectInputViewModel else {
+            return ""
+        }
+        
+        if let map = viewModel.displayValueMap {
+            return map(viewModel.options[row])
+        } else {
+            return viewModel.options[row] as? String ?? ""
+        }
+    }
+
+    public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        guard let viewModel = viewModel as? FormSelectInputViewModel else {
+            return
+        }
+        
+        viewModel.value = viewModel.options[row]
     }
 }
-

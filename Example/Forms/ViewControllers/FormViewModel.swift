@@ -42,10 +42,44 @@ class FormViewModel {
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
         let vm = FormInputViewModel(value: false, caption: "terms copy")
         vm.validationRules = [
-            FormInputValidationRule(failureText: "Must agree to terms") { inputValue -> Bool in
+            FormInputValidationRule(failureText: "Please agree to terms") { inputValue -> Bool in
                 return inputValue == true
             }
         ]
+        return vm
+    }()
+
+    lazy var dateFormatter: NSDateFormatter = {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MMM dd, yyyy"
+        return formatter
+    }()
+
+    lazy var dateSelectInputViewModel: FormInputViewModel<NSDate> = { [unowned self] in
+        
+        let vm = FormInputViewModel(value: NSDate(), caption: "pick a date")
+        vm.validationRules = [
+            FormInputValidationRule(failureText: "Please picker a data") { inputValue -> Bool in
+                return inputValue != nil
+            }
+        ]
+        vm.displayValueMap = { (value: NSDate) -> String in
+            self.dateFormatter.stringFromDate(value)
+        }
+        return vm
+    }()
+    
+    lazy var selectInputViewModel: FormSelectInputViewModel<String> = { [unowned self] in
+        
+        let vm = FormSelectInputViewModel(options: ["test1", "test2", "test3"], value: "test1", caption: "pick a thing")
+        vm.validationRules = [
+            FormInputValidationRule(failureText: "Please picker a data") { inputValue -> Bool in
+                return inputValue != nil
+            }
+        ]
+        vm.displayValueMap = { (value: String) -> String in
+            return "\(value) is an option"
+        }
         return vm
     }()
 
@@ -55,7 +89,9 @@ class FormViewModel {
         return [
             self.userNameInputViewModel,
             self.passwordInputViewModel,
-            self.termsCheckboxInputViewModel
+            self.termsCheckboxInputViewModel,
+            self.dateSelectInputViewModel,
+            self.selectInputViewModel
         ]
     }()
     
@@ -76,11 +112,21 @@ class FormViewModel {
         
         let invalidInputs = inputs.filter {
             
+            //select input
+            if let viewModel = $0 as? FormSelectInputViewModel<String> {
+                return viewModel.validate()
+            }
+            
             //text inputs
             if let viewModel = $0 as? FormInputViewModel<String> {
                 return viewModel.validate()
             }
             
+            //select date inputs
+            if let viewModel = $0 as? FormInputViewModel<NSDate> {
+                return viewModel.validate()
+            }
+  
             //checkbox inputs
             if let viewModel = $0 as? FormInputViewModel<Bool> {
                 return viewModel.validate()

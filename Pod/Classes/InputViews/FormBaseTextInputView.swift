@@ -9,7 +9,7 @@
 import UIKit
 
 //Base UIView for any FormInputs which require a basic textfield, capture label, error label heirarchy
-final class FormBaseTextInputView: UIView {
+final class FormBaseTextInputView<T>: UIView {
     
     lazy var textField: UITextField = { [unowned self] in
         let textField = UITextField()
@@ -33,6 +33,12 @@ final class FormBaseTextInputView: UIView {
     
     //manually added layout constraints
     private var layoutConstraints = [NSLayoutConstraint]()
+    
+    //MARK: - Init
+    
+    init() {
+        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+    }
     
     //MARK: - Layout
     
@@ -60,8 +66,9 @@ final class FormBaseTextInputView: UIView {
             ])
     }
     
-    func bindViewModel(viewModel: FormInputViewModel<String>) {
+    func bindViewModel(viewModel: FormInputViewModel<T>) {
         
+        viewModel.displayValueObservable.observe { self.textField.text = $0 }
         viewModel.placeholderObservable.observe { self.textField.attributedPlaceholder = $0 }
         viewModel.captionObservable.observe { self.captionLabel.text = $0 }
         viewModel.errorTextObservable.observe { self.errorLabel.text = $0 }
@@ -69,11 +76,5 @@ final class FormBaseTextInputView: UIView {
         viewModel.secureTextEntryObservable.observe { self.textField.secureTextEntry = $0 }
         viewModel.keyboardTypeObservable.observe { self.textField.keyboardType = $0 }
         viewModel.autocorrectionTypeObservable.observe { self.textField.autocorrectionType = $0 }
-        
-        viewModel.isFirstResponderObservable.observe {
-            if ($0 == true) {
-                self.becomeFirstResponder()
-            }
-        }
     }
 }
