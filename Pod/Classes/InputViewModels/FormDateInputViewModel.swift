@@ -9,7 +9,7 @@ import Foundation
 
 public class FormDateInputViewModel: FormInputViewModel<NSDate> {
     
-    static var dateFormatter: NSDateFormatter = {
+    lazy var dateFormatter: NSDateFormatter = {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "MMM dd, yyyy"
         return formatter
@@ -17,8 +17,11 @@ public class FormDateInputViewModel: FormInputViewModel<NSDate> {
     
     override public var value: NSDate? {
         didSet {
-            if let value = self.value {
-                displayValue = FormDateInputViewModel.dateFormatter.stringFromDate(value)
+            super.value = value
+            if let value = value {
+                displayValue = dateFormatter.stringFromDate(value)
+            } else {
+                displayValue = ""
             }
         }
     }

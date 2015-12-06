@@ -11,16 +11,32 @@ import Forms
 
 extension FormTextInputView {
     
-    override public func themeView() {
+    func themeView() {
         
-        textField.layer.borderColor = UIColor.grayColor().CGColor
+        textField.layer.borderColor = UIColor.lightGrayColor().CGColor
         textField.layer.borderWidth = 1.0
-        
-        //left padding
+        textField.layer.cornerRadius = 5.0
         textField.leftView = UIView(frame: CGRectMake(0, 0, 10.0, frame.size.height))
         textField.leftViewMode = .Always
-        
-        //clear button
         textField.clearButtonMode = .WhileEditing
+        
+        errorLabel.textColor = UIColor.redColor()
+        
+        captionLabel.textColor = UIColor.grayColor()
     }
 }
+
+extension FormCheckboxInputView {
+    
+    func themeView() {
+        
+        checkBoxButton.setImage(UIImage(named: "control_checkbox_checked"), forState: .Selected)
+        checkBoxButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        checkBoxButton.layer.borderWidth = 1.0
+        
+        errorLabel.textColor = UIColor.redColor()
+        
+        captionLabel.textColor = UIColor.grayColor()
+    }
+}
+

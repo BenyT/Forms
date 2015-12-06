@@ -12,9 +12,9 @@ private enum InputSelector: Selector {
 }
 
 @IBDesignable
-public class FormCheckboxInputView: UIView, FormInputView {
+public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelView {
 
-    //MARK: - ViewModel
+    //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<Bool>? {
         didSet {
@@ -31,9 +31,20 @@ public class FormCheckboxInputView: UIView, FormInputView {
         return checkBoxButton
     }()
     
-    //next input in form
-    @IBOutlet public var nextInput: FormInputView?
+    lazy public var captionLabel: UILabel = { [unowned self] in
+        let captionLabel = UILabel()
+        captionLabel.lineBreakMode = .ByWordWrapping
+        self.addSubview(captionLabel)
+        return captionLabel
+    }()
     
+    lazy public var errorLabel: UILabel = { [unowned self] in
+        let errorLabel = UILabel()
+        errorLabel.lineBreakMode = .ByWordWrapping
+        self.addSubview(errorLabel)
+        return errorLabel
+    }()
+
     //manually added layout constraints
     private var layoutConstraints = [NSLayoutConstraint]()
     
@@ -62,7 +73,6 @@ public class FormCheckboxInputView: UIView, FormInputView {
     }
     
     func commonInit() {
-        themeView()
     }
     
     //MARK: - Layout
@@ -75,40 +85,43 @@ public class FormCheckboxInputView: UIView, FormInputView {
         
         //layout subviews
         layoutConstraints = self.createConstraints(visualFormatting: [
-            "H:|-(0)-[checkBoxButton]-(0)-|",
-            "V:|-(0)-[checkBoxButton]-(0)-|",
+            "H:|-(0)-[checkBoxButton(>=0@250)]-(10)-[captionLabel(>=0@750)]-(0)-|",
+            "H:|-(0)-[errorLabel]-(0)-|",
+            "V:|-(0)-[checkBoxButton]-(>=0)-[errorLabel]-(0)-|",
+            "V:|-(0)-[captionLabel]-(>=0)-[errorLabel]-(0)-|",
             ],
             views: [
                 "checkBoxButton": checkBoxButton,
+                "captionLabel": captionLabel,
+                "errorLabel": errorLabel,
             ])
+        
+        checkBoxButton.widthAnchor.constraintEqualToAnchor(checkBoxButton.heightAnchor, multiplier: 1.0).active = true
+        captionLabel.heightAnchor.constraintEqualToAnchor(checkBoxButton.heightAnchor, multiplier: 1.0).active = true
     }
     
-    //MARK: - Bind ViewModel
+    //MARK: - FormInputViewModelView
     
     //bind to viewModel
-    func bindViewModel() {
-        checkBoxButton.selected = viewModel?.value ?? false
-    }
-
-    //MARK: - Theme
-    
-    //theme view and subviews
-    public func themeView() {
-        backgroundColor = UIColor.clearColor()
+    public func bindViewModel() {
+        
+        guard let viewModel = self.viewModel else {
+            return
+        }
+                
+        viewModel.valueObservable.observe { self.checkBoxButton.selected = $0 }
+        viewModel.captionObservable.observe { self.captionLabel.text = $0 }
+        viewModel.errorTextObservable.observe { self.errorLabel.text = $0 }
     }
     
     //MARK: - Actions
     
     func checkBoxButtonWastTapped(sender: AnyObject) {
         
-        guard
-            let viewModel = self.viewModel,
-            let value = viewModel.value
-        else {
+        guard let viewModel = self.viewModel else {
             return
         }
         
-        viewModel.value = !value
-        checkBoxButton.selected = !value
+        viewModel.value = !viewModel.value!
     }
 }

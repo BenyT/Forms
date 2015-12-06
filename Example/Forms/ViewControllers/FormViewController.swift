@@ -11,9 +11,13 @@ import Forms
 
 class FormViewController: UIViewController {
 
+    //MARK: - ViewModel
+    
     lazy var viewModel: FormViewModel = {
         return FormViewModel()
     }()
+    
+    //MARK: - Subviews
     
     @IBOutlet private weak var formStackView: UIStackView! {
         didSet {

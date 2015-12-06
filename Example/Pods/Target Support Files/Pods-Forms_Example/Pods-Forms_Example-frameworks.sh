@@ -84,8 +84,10 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-Forms_Example/Bond.framework"
   install_framework "Pods-Forms_Example/Forms.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-Forms_Example/Bond.framework"
   install_framework "Pods-Forms_Example/Forms.framework"
 fi

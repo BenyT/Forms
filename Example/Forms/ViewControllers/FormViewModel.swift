@@ -11,24 +11,45 @@ import Forms
 
 class FormViewModel {
     
-    lazy var userNameInputViewModel: FormInputViewModel<String> = {
-        let vm = FormInputViewModel(value: "", caption: "email or something")
+    lazy var userNameInputViewModel: FormInputViewModel<String> = { [unowned self] in
+        let vm = FormInputViewModel(value: "", caption: "Username or email")
+        vm.validationRules = [
+            FormInputValidationRule(failureText: "Must be at least 8 characters long.") { inputValue -> Bool in
+                return inputValue.characters.count > 7
+            }
+        ]
         vm.placeholder = "userName"
+        vm.nextInputsViewModel = self.passwordInputViewModel
+        vm.returnKeyType = .Next
+        vm.autocorrectionType = .No
         return vm
     }()
     
     lazy var passwordInputViewModel: FormInputViewModel<String> = {
         let vm = FormInputViewModel(value: "", caption: "")
+        vm.validationRules = [
+            FormInputValidationRule(failureText: "Must be at least 8 characters long.") { inputValue -> Bool in
+                return inputValue.characters.count > 7
+            }
+        ]
         vm.placeholder = "password"
+        vm.returnKeyType = .Next
+        vm.secureTextEntry = true
+        vm.autocorrectionType = .No
         return vm
     }()
     
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
         let vm = FormInputViewModel(value: false, caption: "terms copy")
+        vm.validationRules = [
+            FormInputValidationRule(failureText: "Must agree to terms") { inputValue -> Bool in
+                return inputValue == true
+            }
+        ]
         return vm
     }()
 
-    //NOTE: using AnyObject until swift supports covariance for generics
+    //NOTE: using AnyObject until Swift supports covariance for generics
     //Will need to cast to all necessary specialized FormInputViewModel types
     lazy var inputs: [AnyObject] = { [unowned self] in
         return [
@@ -55,17 +76,19 @@ class FormViewModel {
         
         let invalidInputs = inputs.filter {
             
+            //text inputs
             if let viewModel = $0 as? FormInputViewModel<String> {
                 return viewModel.validate()
             }
             
+            //checkbox inputs
             if let viewModel = $0 as? FormInputViewModel<Bool> {
                 return viewModel.validate()
             }
             
             return true
-            
         }
+        
         return invalidInputs.count == 0
     }
 }

@@ -5,81 +5,172 @@
 //  Copyright © 2015 mrandall. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import Bond
 
-public enum FormInputViewModelProperty: String {
-    case Value
-    case ReturnKeyType
-    case Placeholder
-    case Caption
-    case DisplayValue
-}
-
-public protocol FormInputViewModelDelegate: class {
+public protocol FormInputViewModelProtocol {
     
-    // ViewModel property was updated
-    //
-    // - Parameter viewModel: FormInputViewModel
-    // - Parameter propertyNameUpdated: String name of instance property
-    // - Parameter newValue: value of property
-    func viewModel<T: Any>(viewModel: FormInputViewModel<T>, propertyNameUpdated: String, newValue: Any)
+    var nextInputsViewModel: FormInputViewModelProtocol? { get set }
+    
+    var isFirstResponder: Bool { get set }
 }
 
 //Base class for FormInputViewModel
-public class FormInputViewModel<T>: FormInputValidatable {
+public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidatable {
     
-    //delegate
-    public weak var delegate: FormInputViewModelDelegate?
+    //MARK: - FormInputViewModelProtocol
+    
+    public var nextInputsViewModel: FormInputViewModelProtocol? {
+        didSet {
+            if nextInputsViewModel != nil {
+                returnKeyType = .Next
+            }
+        }
+    }
+    
+    public var isFirstResponderObservable =  Observable<Bool>(false)
+    
+    public var isFirstResponder = false {
+        didSet {
+            if isFirstResponder != oldValue {
+                isFirstResponderObservable.next(isFirstResponder)
+            }
+        }
+    }
+    
+    //MARK: - State
     
     //textfield text
+    public var valueObservable: Observable<T>
+    
     public var value: T? {
         didSet {
-            delegateUpdateForKey(FormInputViewModelProperty.Value.rawValue, value: value)
+            
+            //only update observable if value is not nil
+            if let value = value {
+                valueObservable.next(value)
+            }
         }
     }
     
     //textfield text
+    public lazy var displayValueObservable = {
+        return Observable<String>("")
+    }()
+    
     public var displayValue: String = "" {
         didSet {
-            delegateUpdateForKey(FormInputViewModelProperty.DisplayValue.rawValue, value: displayValue)
+            if displayValue != oldValue {
+                displayValueObservable.next(displayValue)
+            }
         }
     }
     
     //caption label text
+    public var captionObservable = {
+        return Observable<String>("")
+    }()
+
     public var caption: String = "" {
         didSet {
-            delegateUpdateForKey(FormInputViewModelProperty.Caption.rawValue, value: caption)
+            if caption != oldValue {
+                captionObservable.next(caption)
+            }
         }
     }
     
     //textfield placeholder
+    public lazy var placeholderObservable = {
+        return Observable<NSAttributedString>(NSAttributedString(string: ""))
+    }()
+    
     public var placeholder: String = "" {
         didSet {
-            delegateUpdateForKey(FormInputViewModelProperty.Placeholder.rawValue, value: placeholder)
+            if placeholder != oldValue {
+                placeholderObservable.next(NSAttributedString(string: placeholder))
+            }
         }
     }
     
     //textfield return key
-    public var returnKeyType: UIReturnKeyType  = .Default {
+    public lazy var returnKeyTypeObservable = {
+       return Observable<UIReturnKeyType>(.Default )
+    }()
+    
+    public var returnKeyType: UIReturnKeyType = .Default {
         didSet {
-            delegateUpdateForKey(FormInputViewModelProperty.ReturnKeyType.rawValue, value: returnKeyType)
+            if returnKeyType != oldValue {
+                returnKeyTypeObservable.next(returnKeyType)
+
+            }
+        }
+    }
+    
+    //secure input
+    public lazy var secureTextEntryObservable = {
+        return Observable<Bool>(false)
+    }()
+    
+    public var secureTextEntry: Bool = false {
+        didSet {
+            if secureTextEntry != oldValue {
+                secureTextEntryObservable.next(secureTextEntry)
+                
+            }
+        }
+    }
+    
+    //keyboardType
+    public lazy var keyboardTypeObservable = {
+        return Observable<UIKeyboardType>(.Default)
+    }()
+    
+    public var keyboardType: UIKeyboardType = .Default {
+        didSet {
+            if keyboardType != oldValue {
+                keyboardTypeObservable.next(keyboardType)
+            }
+        }
+    }
+    
+    //autocorrectionType
+    public lazy var autocorrectionTypeObservable = {
+        return Observable<UITextAutocorrectionType>(.Default)
+    }()
+    
+    public var autocorrectionType: UITextAutocorrectionType = .Default {
+        didSet {
+            if autocorrectionType != oldValue {
+                autocorrectionTypeObservable.next(autocorrectionType)
+            }
         }
     }
     
     //MARK: - FormInputValidatable
     
     //whether input is valid
+    public lazy var validObservable = {
+        return Observable<Bool>(false)
+    }()
+    
     public var valid = false {
         didSet {
-            delegateUpdateForKey(FormInputValidatableProperty.Valid.rawValue, value: valid)
+            if valid != oldValue {
+                validObservable.next(valid)
+            }
         }
     }
     
     //error text if not value
+    public lazy var errorTextObservable = {
+        return Observable<String>("")
+    }()
+    
     public var errorText: String? {
         didSet {
-            delegateUpdateForKey(FormInputValidatableProperty.ErrorText.rawValue, value: errorText)
+            if errorText != oldValue {
+                errorTextObservable.next(errorText ?? "")
+            }
         }
     }
     
@@ -94,16 +185,9 @@ public class FormInputViewModel<T>: FormInputValidatable {
     // - Parameter value: T
     public init(value: T, caption: String = "") {
         self.value = value
+        valueObservable = Observable<T>(value)
         self.displayValue = self.value as? String ?? ""
-    }
-
-    //MARK: - Delegation
-    
-    // Call delegate update method if delegate is not nil
-    //
-    // - Parameter key: String
-    // - Paramater value: Any
-    public func delegateUpdateForKey(key: String, value: Any) {
-        delegate?.viewModel(self, propertyNameUpdated: key, newValue: value)
+        self.caption = caption
+        captionObservable.next(caption)
     }
 }

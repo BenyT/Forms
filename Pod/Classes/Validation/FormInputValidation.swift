@@ -47,9 +47,6 @@ public extension FormInputValidatable {
             valid = errorText == nil
         }
         
-        //clear error
-        self.errorText = nil
-        
         //validate each rule
         let validationFailure = self.validationRules.filter {
             
@@ -65,6 +62,9 @@ public extension FormInputValidatable {
             self.errorText = validationFailure!.errorText
             return false
         }
+        
+        //clear error
+        self.errorText = nil
         
         return true
     }

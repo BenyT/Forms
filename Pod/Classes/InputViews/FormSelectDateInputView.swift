@@ -12,13 +12,38 @@ private enum InputSelector: Selector {
 }
 
 @IBDesignable
-public class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
+public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
+    
+    //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<NSDate>? {
         didSet {
             bindViewModel()
         }
     }
+    
+    //MARK: - FormBaseTextInputView
+    
+    private lazy var formBaseTextInputView: FormBaseTextInputView = { [unowned self] in
+        let ui = FormBaseTextInputView()
+        self.addSubview(ui)
+        return ui
+    }()
+    
+    public var textField: UITextField {
+        return formBaseTextInputView.textField
+    }
+    
+    public var captionLabel: UILabel {
+        return formBaseTextInputView.captionLabel
+    }
+    
+    public var errorLabel: UILabel {
+        return formBaseTextInputView.errorLabel
+    }
+    
+    //manually added layout constraints
+    private var layoutConstraints = [NSLayoutConstraint]()
     
     lazy public var datePicker: UIDatePicker = { [weak self] in
         let picker = UIDatePicker()
@@ -28,19 +53,29 @@ public class FormSelectDateInputView: FormBaseTextInputView, FormInputView, Form
         return picker
     }()
     
-    //next input in form
-    @IBOutlet public var nextInput: FormInputView? {
-        didSet {
-            textField.returnKeyType = .Next
-        }
-    }
-    
     //MARK: - Init
 
-    override public func commonInit() {
-        super.commonInit()
+    public func commonInit() {
         textField.delegate = self
         textField.inputView = datePicker
+    }
+    
+    //MARK: - Layout
+    
+    override public func updateConstraints() {
+        super.updateConstraints()
+        
+        //remove constaints added manaully
+        layoutConstraints.forEach { $0.active = false }
+        
+        //layout subviews
+        layoutConstraints = createConstraints(visualFormatting: [
+            "H:|-(0)-[ui]-(0)-|",
+            "V:|-(0)-[ui]-(0)-|",
+            ],
+            views: [
+                "ui": formBaseTextInputView,
+            ])
     }
     
     //MARK: - FormInputViewModelView
@@ -52,11 +87,11 @@ public class FormSelectDateInputView: FormBaseTextInputView, FormInputView, Form
             return
         }
         
-        textField.placeholder = viewModel.placeholder
-        //textField.text = viewModel.value
-        textField.returnKeyType = viewModel.returnKeyType
-        captionLabel.text = viewModel.caption
-        errorLabel.text = viewModel.errorText ?? ""
+        //viewModel.textObservable.observe { self.textField.text = $0 }
+        viewModel.placeholderObservable.observe { self.textField.attributedPlaceholder = $0 }
+        viewModel.captionObservable.observe { self.captionLabel.text = $0 }
+        viewModel.errorTextObservable.observe { self.errorLabel.text = $0 }
+        viewModel.returnKeyTypeObservable.observe { self.textField.returnKeyType = $0 }
     }
     
     override public func becomeFirstResponder() -> Bool {
@@ -67,7 +102,7 @@ public class FormSelectDateInputView: FormBaseTextInputView, FormInputView, Form
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {
         viewModel?.value = nil
-        viewModel?.displayValue = ""
+        //viewModel?.displayValue = ""
         return true
     }
     
