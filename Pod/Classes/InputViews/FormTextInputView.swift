@@ -7,12 +7,12 @@
 
 import UIKit
 
-enum FormInputViewNotification: String {
+public enum FormInputViewNotification: String {
     case GoButtonTapped
 }
 
 @objc
-protocol FormInputView: class {
+public protocol FormInputView: class {
     
     var nextInput: FormInputView? { get set }
     
@@ -21,7 +21,7 @@ protocol FormInputView: class {
     func themeView()
 }
 
-protocol FormInputViewModelView: class {
+public protocol FormInputViewModelView: class {
     
     typealias DataType
     
@@ -31,22 +31,22 @@ protocol FormInputViewModelView: class {
 }
 
 //Base UIView for any FormInputs which require a basic textfield, capture label, error label heirarchy
-class FormBaseTextInputView: UIView {
+public class FormBaseTextInputView: UIView {
     
-    lazy var textField: UITextField = { [unowned self] in
+    lazy public var textField: UITextField = { [unowned self] in
         let textField = UITextField()
         self.addSubview(textField)
         return textField
     }()
     
-    lazy var captionLabel: UILabel = { [unowned self] in
+    lazy public var captionLabel: UILabel = { [unowned self] in
         let captionLabel = UILabel()
         captionLabel.lineBreakMode = .ByWordWrapping
         self.addSubview(captionLabel)
         return captionLabel
     }()
     
-    lazy var errorLabel: UILabel = { [unowned self] in
+    lazy public var errorLabel: UILabel = { [unowned self] in
         let errorLabel = UILabel()
         errorLabel.lineBreakMode = .ByWordWrapping
         self.addSubview(errorLabel)
@@ -63,23 +63,23 @@ class FormBaseTextInputView: UIView {
         commonInit()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
     
-    override func prepareForInterfaceBuilder() {
+    override public func prepareForInterfaceBuilder() {
         commonInit()
         updateConstraints()
     }
     
-    func commonInit() {
+    public func commonInit() {
         themeView()
     }
     
     //MARK: - Layout
     
-    override func updateConstraints() {
+    override public func updateConstraints() {
         super.updateConstraints()
         
         //remove constaints added manaully
@@ -106,7 +106,7 @@ class FormBaseTextInputView: UIView {
     //MARK: - Theme
     
     //theme view and subviews
-    func themeView() {
+    public func themeView() {
         backgroundColor = UIColor.clearColor()
         captionLabel.font = UIFont.systemFontOfSize(11.0)
         captionLabel.textColor = UIColor.lightGrayColor()
@@ -116,16 +116,16 @@ class FormBaseTextInputView: UIView {
 }
 
 @IBDesignable
-class FormTextInputView: FormBaseTextInputView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
+public class FormTextInputView: FormBaseTextInputView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
     
-    var viewModel: FormInputViewModel<String>? {
+    public var viewModel: FormInputViewModel<String>? {
         didSet {
             bindViewModel()
         }
     }
     
     //next input in form
-    @IBOutlet var nextInput: FormInputView? {
+    @IBOutlet public var nextInput: FormInputView? {
         didSet {
             viewModel?.returnKeyType = .Next
             textField.returnKeyType = .Next
@@ -134,13 +134,13 @@ class FormTextInputView: FormBaseTextInputView, FormInputView, FormInputViewMode
 
     //MARK: - Init
     
-    convenience init(withViewModel viewModel: FormInputViewModel<String>) {
+    convenience public init(withViewModel viewModel: FormInputViewModel<String>) {
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         self.viewModel = viewModel
         commonInit()
     }
 
-    override func commonInit() {
+    override public func commonInit() {
         super.commonInit()
         bindViewModel()
         textField.delegate = self
@@ -149,7 +149,7 @@ class FormTextInputView: FormBaseTextInputView, FormInputView, FormInputViewMode
     //MARK: - FormInputViewModelView
     
     //bind to viewModel
-    func bindViewModel() {
+    public func bindViewModel() {
         
         guard let viewModel = self.viewModel else {
             return
@@ -162,18 +162,18 @@ class FormTextInputView: FormBaseTextInputView, FormInputView, FormInputViewMode
         errorLabel.text = viewModel.errorText ?? ""
     }
     
-    override func becomeFirstResponder() -> Bool {
+    override public func becomeFirstResponder() -> Bool {
         return self.textField.becomeFirstResponder()
     }
 
     //MARK: - UITextFieldDelegate
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    public func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         bindViewModel()
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         if let nextInput = self.nextInput {
             nextInput.becomeFirstResponder()
@@ -188,13 +188,13 @@ class FormTextInputView: FormBaseTextInputView, FormInputView, FormInputViewMode
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         viewModel?.value = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         textField.text = viewModel?.value
         return false
     }
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    public func textFieldShouldClear(textField: UITextField) -> Bool {
         viewModel?.value = ""
         return true
     }

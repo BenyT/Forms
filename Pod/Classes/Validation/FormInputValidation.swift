@@ -9,12 +9,12 @@ import Foundation
 
 //MARK: - FormInputValidatable
 
-enum FormInputValidatableProperty: String {
+public enum FormInputValidatableProperty: String {
     case Valid
     case ErrorText
 }
 
-protocol FormInputValidatable: class {
+public protocol FormInputValidatable: class {
     
     typealias InputDataType
     
@@ -36,7 +36,7 @@ protocol FormInputValidatable: class {
     func validate() -> Bool
 }
 
-extension FormInputValidatable {
+public extension FormInputValidatable {
     
     //MARK: InputValidation
     
@@ -72,18 +72,18 @@ extension FormInputValidatable {
 
 //MARK: - FormInputValidationRule
 
-class FormInputValidationRule<T> {
+public class FormInputValidationRule<T> {
     
-    var errorText: String
+    public var errorText: String
     
-    var validationClosure: ((T) -> Bool)
+    public var validationClosure: ((T) -> Bool)
     
-    init(failureText: String, validation: ((T) -> Bool)) {
+    public init(failureText: String, validation: ((T) -> Bool)) {
         self.errorText = failureText
         self.validationClosure = validation
     }
     
-    func validate(inputValue inputValue: T) -> Bool {
+    public func validate(inputValue inputValue: T) -> Bool {
         return validationClosure(inputValue)
     }
 }

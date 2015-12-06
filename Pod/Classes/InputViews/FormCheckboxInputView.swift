@@ -12,11 +12,11 @@ private enum InputSelector: Selector {
 }
 
 @IBDesignable
-class FormCheckboxInputView: UIView, FormInputView {
+public class FormCheckboxInputView: UIView, FormInputView {
 
     //MARK: - ViewModel
     
-    var viewModel: FormInputViewModel<Bool>? {
+    public var viewModel: FormInputViewModel<Bool>? {
         didSet {
             bindViewModel()
         }
@@ -24,7 +24,7 @@ class FormCheckboxInputView: UIView, FormInputView {
     
     //MARK: - Subviews
     
-    lazy var checkBoxButton: UIButton = { [unowned self] in
+    lazy public var checkBoxButton: UIButton = { [unowned self] in
         let checkBoxButton = UIButton()
         checkBoxButton.addTarget(self, action: InputSelector.CheckBoxButtonWastTapped.rawValue, forControlEvents: .TouchUpInside)
         self.addSubview(checkBoxButton)
@@ -32,31 +32,31 @@ class FormCheckboxInputView: UIView, FormInputView {
     }()
     
     //next input in form
-    @IBOutlet var nextInput: FormInputView?
+    @IBOutlet public var nextInput: FormInputView?
     
     //manually added layout constraints
     private var layoutConstraints = [NSLayoutConstraint]()
     
     //MARK: - Init
     
-    convenience init(withViewModel viewModel: FormInputViewModel<Bool>) {
+    convenience public init(withViewModel viewModel: FormInputViewModel<Bool>) {
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         self.viewModel = viewModel
         commonInit()
         bindViewModel()
     }
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
     
-    override func prepareForInterfaceBuilder() {
+    override public func prepareForInterfaceBuilder() {
         commonInit()
         updateConstraints()
     }
@@ -67,7 +67,7 @@ class FormCheckboxInputView: UIView, FormInputView {
     
     //MARK: - Layout
     
-    override func updateConstraints() {
+    override public func updateConstraints() {
         super.updateConstraints()
         
         //remove constaints added manaully
@@ -93,7 +93,7 @@ class FormCheckboxInputView: UIView, FormInputView {
     //MARK: - Theme
     
     //theme view and subviews
-    func themeView() {
+    public func themeView() {
         backgroundColor = UIColor.clearColor()
     }
     

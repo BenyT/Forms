@@ -1,0 +1,64 @@
+//
+//  FormViewController.swift
+//  Forms
+//
+//  Created by mrandall on 12/05/2015.
+//  Copyright (c) 2015 mrandall. All rights reserved.
+//
+
+import UIKit
+import Forms
+
+class FormViewController: UIViewController {
+
+    lazy var viewModel: FormViewModel = {
+        return FormViewModel()
+    }()
+    
+    @IBOutlet private weak var formStackView: UIStackView! {
+        didSet {
+            formStackView.layoutMargins = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
+            formStackView.layoutMarginsRelativeArrangement = true
+            formStackView.spacing = 20.0
+        }
+    }
+    
+    //MARK: - ViewController Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateFromViewModel()
+    }
+    
+    //MARK: - Actions
+    
+    @IBAction private func submitButtonTapped(sender: AnyObject?) {
+        viewModel.submitForm()
+    }
+    
+    //MARK: - Update View
+    
+    private func updateFromViewModel() {
+        
+        //create and append a FormInputView for each FormInputViewModelProtocol
+        //reverse to insert at zero to -
+        //prepend all in viewModel input arranged subviews to existing arranged subviews
+        viewModel.inputs.reverse().forEach {
+            
+            //text inputs
+            if let viewModel = $0 as? FormInputViewModel<String> {
+                let textInputView = FormTextInputView(withViewModel: viewModel)
+                textInputView.themeView()
+                formStackView.insertArrangedSubview(textInputView, atIndex: 0)
+            }
+            
+            //checkbox inputs
+            if let viewModel = $0 as? FormInputViewModel<Bool> {
+                let textInputView = FormCheckboxInputView(withViewModel: viewModel)
+                textInputView.themeView()
+                formStackView.insertArrangedSubview(textInputView, atIndex: 0)
+            }
+        }
+    }
+}
+

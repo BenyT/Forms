@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FormDateInputViewModel: FormInputViewModel<NSDate> {
+public class FormDateInputViewModel: FormInputViewModel<NSDate> {
     
     static var dateFormatter: NSDateFormatter = {
         let formatter = NSDateFormatter()
@@ -15,7 +15,7 @@ class FormDateInputViewModel: FormInputViewModel<NSDate> {
         return formatter
     }()
     
-    override var value: NSDate? {
+    override public var value: NSDate? {
         didSet {
             if let value = self.value {
                 displayValue = FormDateInputViewModel.dateFormatter.stringFromDate(value)
@@ -28,7 +28,7 @@ class FormDateInputViewModel: FormInputViewModel<NSDate> {
     // Init
     //
     // - Parameter value: NSDate
-    override init(value: NSDate, caption: String = "") {
+    override public init(value: NSDate, caption: String = "") {
         super.init(value: value, caption: caption)
     }
 }

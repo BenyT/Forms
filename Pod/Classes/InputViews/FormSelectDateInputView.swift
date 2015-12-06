@@ -11,17 +11,16 @@ private enum InputSelector: Selector {
     case DatePickerValueChanged = "datePickerValueChanged:"
 }
 
-
 @IBDesignable
-class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
+public class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
     
-    var viewModel: FormInputViewModel<NSDate>? {
+    public var viewModel: FormInputViewModel<NSDate>? {
         didSet {
             bindViewModel()
         }
     }
     
-    lazy var datePicker: UIDatePicker = { [weak self] in
+    lazy public var datePicker: UIDatePicker = { [weak self] in
         let picker = UIDatePicker()
         picker.addTarget(self, action: InputSelector.DatePickerValueChanged.rawValue, forControlEvents: .ValueChanged)
         picker.maximumDate = NSDate()
@@ -30,7 +29,7 @@ class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputVi
     }()
     
     //next input in form
-    @IBOutlet var nextInput: FormInputView? {
+    @IBOutlet public var nextInput: FormInputView? {
         didSet {
             textField.returnKeyType = .Next
         }
@@ -38,7 +37,7 @@ class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputVi
     
     //MARK: - Init
 
-    override func commonInit() {
+    override public func commonInit() {
         super.commonInit()
         textField.delegate = self
         textField.inputView = datePicker
@@ -47,7 +46,7 @@ class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputVi
     //MARK: - FormInputViewModelView
     
     //bind to viewModel
-    func bindViewModel() {
+    public func bindViewModel() {
         
         guard let viewModel = self.viewModel else {
             return
@@ -60,13 +59,13 @@ class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputVi
         errorLabel.text = viewModel.errorText ?? ""
     }
     
-    override func becomeFirstResponder() -> Bool {
+    override public func becomeFirstResponder() -> Bool {
         return self.textField.becomeFirstResponder()
     }
     
     //MARK: - UITextFieldDelegate
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    public func textFieldShouldClear(textField: UITextField) -> Bool {
         viewModel?.value = nil
         viewModel?.displayValue = ""
         return true
@@ -74,7 +73,7 @@ class FormSelectDateInputView: FormBaseTextInputView, FormInputView, FormInputVi
     
     //MARK: - Actions
     
-    func datePickerValueChanged(sender: AnyObject?) {
+    public func datePickerValueChanged(sender: AnyObject?) {
         viewModel?.value = datePicker.date
         textField.text = viewModel?.displayValue
     }
