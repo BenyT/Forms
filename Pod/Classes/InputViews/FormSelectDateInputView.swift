@@ -63,8 +63,23 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
         commonInit()
     }
     
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    override public func prepareForInterfaceBuilder() {
+        commonInit()
+        updateConstraints()
+    }
+    
     public func commonInit() {
-        
+        bindViewModel()
     }
     
     //MARK: - Layout
@@ -108,6 +123,14 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
     }
     
     //MARK: - UITextFieldDelegate
+    
+    public func textFieldDidBeginEditing(textField: UITextField) {
+        viewModel?.isFirstResponder = true
+    }
+    
+    public func textFieldDidEndEditing(textField: UITextField) {
+        viewModel?.isFirstResponder = false
+    }
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {
         viewModel?.value = nil

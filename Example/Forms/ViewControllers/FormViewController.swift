@@ -9,7 +9,7 @@
 import UIKit
 import Forms
 
-class FormViewController: UIViewController {
+final class FormViewController: UIViewController {
 
     //MARK: - ViewModel
     
@@ -31,28 +31,41 @@ class FormViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateFromViewModel()
+        
+        //create form
+        createFormFromViewModel()
     }
     
     //MARK: - Actions
     
     @IBAction private func submitButtonTapped(sender: AnyObject?) {
+        view.endEditing(true)
         viewModel.submitForm()
     }
     
     //MARK: - Update View
     
-    private func updateFromViewModel() {
+    //Create form inputs as arranged subviews of formStackView
+    private func createFormFromViewModel() {
         
         //create and append a FormInputView for each FormInputViewModelProtocol
-        //reverse to insert at zero to -
+        //reverse to insert at zero index -
         //prepend all in viewModel input arranged subviews to existing arranged subviews
         viewModel.inputs.reverse().forEach {
             
             //select input
             if let viewModel = $0 as? FormSelectInputViewModel<String> {
                 let selectInputView = FormSelectInputView(withViewModel: viewModel)
-                selectInputView.themeView()
+                
+                viewModel.isFirstResponderObservable.observe {
+                    
+                    if $0 == true {
+                        selectInputView.themeViewFocused()
+                    } else {
+                        selectInputView.themeView()
+                    }
+                }
+                
                 formStackView.insertArrangedSubview(selectInputView, atIndex: 0)
                 return
             }
@@ -61,6 +74,16 @@ class FormViewController: UIViewController {
             if let viewModel = $0 as? FormInputViewModel<String> {
                 let textInputView = FormTextInputView(withViewModel: viewModel)
                 textInputView.themeView()
+                
+                viewModel.isFirstResponderObservable.observe {
+                    
+                    if $0 == true {
+                        textInputView.themeViewFocused()
+                    } else {
+                        textInputView.themeView()
+                    }
+                }
+                
                 formStackView.insertArrangedSubview(textInputView, atIndex: 0)
                 return
             }
@@ -68,16 +91,25 @@ class FormViewController: UIViewController {
             //select data inputs
             if let viewModel = $0 as? FormInputViewModel<NSDate> {
                 let selectDateInputView = FormSelectDateInputView(withViewModel: viewModel)
-                selectDateInputView.themeView()
+                
+                viewModel.isFirstResponderObservable.observe {
+                    
+                    if $0 == true {
+                        selectDateInputView.themeViewFocused()
+                    } else {
+                        selectDateInputView.themeView()
+                    }
+                }
+                
                 formStackView.insertArrangedSubview(selectDateInputView, atIndex: 0)
                 return
             }
 
             //checkbox inputs
             if let viewModel = $0 as? FormInputViewModel<Bool> {
-                let textInputView = FormCheckboxInputView(withViewModel: viewModel)
-                textInputView.themeView()
-                formStackView.insertArrangedSubview(textInputView, atIndex: 0)
+                let checkboxInputView = FormCheckboxInputView(withViewModel: viewModel)
+                checkboxInputView.themeView()
+                formStackView.insertArrangedSubview(checkboxInputView, atIndex: 0)
                 return
             }
         }

@@ -12,6 +12,8 @@ public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
 
     public var options: [T]
     
+    public var pickerPlaceholder: String?
+    
     //MARK: - Init
     
     // Init

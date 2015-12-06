@@ -8,6 +8,21 @@
 
 import UIKit
 
+
+public protocol FormInputView: class {
+    
+    func becomeFirstResponder() -> Bool
+}
+
+public protocol FormInputViewModelView: class {
+    
+    typealias DataType
+    
+    var viewModel: FormInputViewModel<DataType>? { get }
+    
+    func bindViewModel()
+}
+
 //Base UIView for any FormInputs which require a basic textfield, capture label, error label heirarchy
 final class FormBaseTextInputView<T>: UIView {
     
@@ -19,6 +34,7 @@ final class FormBaseTextInputView<T>: UIView {
     
     lazy var captionLabel: UILabel = { [unowned self] in
         let captionLabel = UILabel()
+        captionLabel.numberOfLines = 0
         captionLabel.lineBreakMode = .ByWordWrapping
         self.addSubview(captionLabel)
         return captionLabel
@@ -76,5 +92,6 @@ final class FormBaseTextInputView<T>: UIView {
         viewModel.secureTextEntryObservable.observe { self.textField.secureTextEntry = $0 }
         viewModel.keyboardTypeObservable.observe { self.textField.keyboardType = $0 }
         viewModel.autocorrectionTypeObservable.observe { self.textField.autocorrectionType = $0 }
+        viewModel.enabledObservable.observe { self.textField.enabled = $0 }
     }
 }

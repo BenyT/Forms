@@ -20,6 +20,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     
     //MARK: - FormInputViewModelProtocol
     
+    //next input in form
     public var nextInputsViewModel: FormInputViewModelProtocol? {
         didSet {
             if nextInputsViewModel != nil {
@@ -28,6 +29,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
+    //is viewModels view first responder
     public var isFirstResponderObservable =  Observable<Bool>(false)
     
     public var isFirstResponder = false {
@@ -40,6 +42,17 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     
     //MARK: - State
     
+    //is viewModel view enabled
+    public var enabledObservable = Observable<Bool>(true)
+    
+    public var enabled: Bool = true {
+        didSet {
+            if enabled != oldValue {
+                enabledObservable.next(enabled)
+            }
+        }
+    }
+    
     //textfield text
     public var valueObservable: Observable<T>
     
@@ -49,6 +62,8 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
             //only update observable if value is not nil
             if let value = value {
                 valueObservable.next(value)
+                
+                valid = validate()
                 
                 if let displayValueMap = displayValueMap {
                     displayValue = displayValueMap(value)
@@ -75,6 +90,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
+    //map value to displya view
     public var displayValueMap: ((T) -> String)?
     
     //caption label text
@@ -91,9 +107,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //textfield placeholder
-    public lazy var placeholderObservable = {
-        return Observable<NSAttributedString>(NSAttributedString(string: ""))
-    }()
+    public var placeholderObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
     
     public var placeholder: String = "" {
         didSet {
@@ -104,15 +118,12 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //textfield return key
-    public lazy var returnKeyTypeObservable = {
-       return Observable<UIReturnKeyType>(.Default )
-    }()
+    public var returnKeyTypeObservable = Observable<UIReturnKeyType>(.Default )
     
     public var returnKeyType: UIReturnKeyType = .Default {
         didSet {
             if returnKeyType != oldValue {
                 returnKeyTypeObservable.next(returnKeyType)
-
             }
         }
     }
@@ -120,23 +131,18 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     //MARK: - State For Keyboard (No inputView)
     
     //secure input
-    public lazy var secureTextEntryObservable = {
-        return Observable<Bool>(false)
-    }()
+    public var secureTextEntryObservable = Observable<Bool>(false)
     
     public var secureTextEntry: Bool = false {
         didSet {
             if secureTextEntry != oldValue {
                 secureTextEntryObservable.next(secureTextEntry)
-                
             }
         }
     }
     
     //keyboardType
-    public lazy var keyboardTypeObservable = {
-        return Observable<UIKeyboardType>(.Default)
-    }()
+    public var keyboardTypeObservable = Observable<UIKeyboardType>(.Default)
     
     public var keyboardType: UIKeyboardType = .Default {
         didSet {
@@ -147,9 +153,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //autocorrectionType
-    public lazy var autocorrectionTypeObservable = {
-        return Observable<UITextAutocorrectionType>(.Default)
-    }()
+    public var autocorrectionTypeObservable = Observable<UITextAutocorrectionType>(.Default)
     
     public var autocorrectionType: UITextAutocorrectionType = .Default {
         didSet {
@@ -162,9 +166,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     //MARK: - FormInputValidatable
     
     //whether input is valid
-    public lazy var validObservable = {
-        return Observable<Bool>(false)
-    }()
+    public var validObservable = Observable<Bool>(false)
     
     public var valid = false {
         didSet {
@@ -175,9 +177,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //error text if not value
-    public lazy var errorTextObservable = {
-        return Observable<String>("")
-    }()
+    public var errorTextObservable = Observable<String>("")
     
     public var errorText: String? {
         didSet {
@@ -191,6 +191,8 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     
     public var inputValueToValidate: T? { return self.value }
     
+    public var displayValidationErrorsOnValueChange: Bool = false
+    
     //MARK: - Init
     
     // Init
@@ -202,5 +204,11 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         self.displayValue = self.value as? String ?? ""
         self.caption = caption
         captionObservable.next(caption)
+    }
+    
+    //MARK: - Validation
+    
+    public func validate() -> Bool {
+        return validate(updateErrorText: displayValidationErrorsOnValueChange)
     }
 }

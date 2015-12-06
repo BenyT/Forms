@@ -54,7 +54,6 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         self.viewModel = viewModel
         commonInit()
-        bindViewModel()
     }
     
     override public init(frame: CGRect) {
@@ -73,6 +72,7 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
     }
     
     func commonInit() {
+        bindViewModel()
     }
     
     //MARK: - Layout

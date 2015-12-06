@@ -33,7 +33,7 @@ public protocol FormInputValidatable: class {
     /// Validate input
     ///
     /// - Return: Bool whether any validationRules failed
-    func validate() -> Bool
+    func validate(updateErrorText updateErrorText: Bool) -> Bool
 }
 
 public extension FormInputValidatable {
@@ -41,7 +41,7 @@ public extension FormInputValidatable {
     //MARK: InputValidation
     
     /// Updates errorText specified by the first failed validation rule
-    func validate() -> Bool {
+    func validate(updateErrorText updateErrorText: Bool) -> Bool {
         
         defer {
             valid = errorText == nil
@@ -52,6 +52,7 @@ public extension FormInputValidatable {
             
             //assuming no validation rule will ever allow a nil value
             guard let value = self.inputValueToValidate else {
+                valid = false
                 return false
             }
             
@@ -59,13 +60,21 @@ public extension FormInputValidatable {
         }.first
         
         guard case .None = validationFailure else {
-            self.errorText = validationFailure!.errorText
+            
+            if updateErrorText == true {
+                self.errorText = validationFailure!.errorText
+            }
+            
+            valid = false
             return false
         }
         
         //clear error
-        self.errorText = nil
+        if updateErrorText == true {
+            self.errorText = nil
+        }
         
+        valid = true
         return true
     }
 }

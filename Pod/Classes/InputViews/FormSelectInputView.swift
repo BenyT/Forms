@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     //MARK: - FormInputViewModelView
@@ -58,10 +59,25 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         self.viewModel = viewModel
         commonInit()
-        bindViewModel()
+    }
+    
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    override public func prepareForInterfaceBuilder() {
+        commonInit()
+        updateConstraints()
     }
     
     public func commonInit() {
+        bindViewModel()
     }
     
     //MARK: - Layout
@@ -81,6 +97,7 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
                 "ui": formBaseTextInputView,
             ])
     }
+    
     
     //MARK: - FormInputViewModelView
     
@@ -105,6 +122,14 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
     
     //MARK: - UITextFieldDelegate
     
+    public func textFieldDidBeginEditing(textField: UITextField) {
+        viewModel?.isFirstResponder = true
+    }
+    
+    public func textFieldDidEndEditing(textField: UITextField) {
+        viewModel?.isFirstResponder = false
+    }
+    
     public func textFieldShouldClear(textField: UITextField) -> Bool {
         viewModel?.value = nil
         return true
@@ -122,7 +147,9 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
             return 0
         }
         
-        return viewModel.options.count
+        let placeholderOffset = (viewModel.pickerPlaceholder != nil) ? 1 : 0
+        
+        return viewModel.options.count + placeholderOffset
     }
     
     //MARK: - UIPickerViewDelegate
@@ -133,10 +160,16 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
             return ""
         }
         
+        if row == 0 && viewModel.pickerPlaceholder != nil {
+            return viewModel.pickerPlaceholder
+        }
+        
+        let placeholderOffset = (viewModel.pickerPlaceholder != nil) ? 1 : 0
+        
         if let map = viewModel.displayValueMap {
-            return map(viewModel.options[row])
+            return map(viewModel.options[row - placeholderOffset])
         } else {
-            return viewModel.options[row] as? String ?? ""
+            return viewModel.options[row - placeholderOffset] as? String ?? ""
         }
     }
 
@@ -146,6 +179,13 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
             return
         }
         
-        viewModel.value = viewModel.options[row]
+        if row == 0 && viewModel.pickerPlaceholder != nil {
+            viewModel.value = nil
+            return
+        }
+        
+        let placeholderOffset = (viewModel.pickerPlaceholder != nil) ? 1 : 0
+
+        viewModel.value = viewModel.options[row - placeholderOffset]
     }
 }

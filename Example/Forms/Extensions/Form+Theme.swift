@@ -24,6 +24,10 @@ extension FormTextInputView {
         
         captionLabel.textColor = UIColor.grayColor()
     }
+    
+    func themeViewFocused() {
+        textField.layer.borderColor = UIColor.blueColor().CGColor
+    }
 }
 
 extension FormSelectDateInputView {
@@ -40,6 +44,10 @@ extension FormSelectDateInputView {
         errorLabel.textColor = UIColor.redColor()
         
         captionLabel.textColor = UIColor.grayColor()
+    }
+    
+    func themeViewFocused() {
+        textField.layer.borderColor = UIColor.blueColor().CGColor
     }
 }
 
@@ -59,6 +67,9 @@ extension FormSelectInputView {
         captionLabel.textColor = UIColor.grayColor()
     }
     
+    func themeViewFocused() {
+        textField.layer.borderColor = UIColor.blueColor().CGColor
+    }
 }
 
 extension FormCheckboxInputView {

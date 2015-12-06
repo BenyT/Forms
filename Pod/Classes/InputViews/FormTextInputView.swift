@@ -7,24 +7,6 @@
 
 import UIKit
 
-public enum FormInputViewNotification: String {
-    case GoButtonTapped
-}
-
-public protocol FormInputView: class {
-    
-    func becomeFirstResponder() -> Bool
-}
-
-public protocol FormInputViewModelView: class {
-    
-    typealias DataType
-    
-    var viewModel: FormInputViewModel<DataType>? { get }
-    
-    func bindViewModel()
-}
-
 @IBDesignable
 public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
     
@@ -40,6 +22,7 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
     
     private lazy var formBaseTextInputView: FormBaseTextInputView<String> = { [unowned self] in
         let ui = FormBaseTextInputView<String>()
+        ui.textField.delegate = self
         self.addSubview(ui)
         return ui
     }()
@@ -66,10 +49,24 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         self.viewModel = viewModel
         commonInit()
     }
+    
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    override public func prepareForInterfaceBuilder() {
+        commonInit()
+        updateConstraints()
+    }
 
     public func commonInit() {
         bindViewModel()
-        textField.delegate = self
     }
     
     //MARK: - Layout
@@ -114,6 +111,14 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
 
     //MARK: - UITextFieldDelegate
     
+    public func textFieldDidBeginEditing(textField: UITextField) {
+        viewModel?.isFirstResponder = true
+    }
+    
+    public func textFieldDidEndEditing(textField: UITextField) {
+        viewModel?.isFirstResponder = false
+    }
+    
     public func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         return true
     }
@@ -123,14 +128,8 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         if var nextInput = self.viewModel?.nextInputsViewModel {
             viewModel?.isFirstResponder = false
             nextInput.isFirstResponder = true
-        } else {
-            textField.resignFirstResponder()
         }
-        
-        if textField.returnKeyType == .Go {
-            NSNotificationCenter.defaultCenter().postNotificationName(FormInputViewNotification.GoButtonTapped.rawValue, object: self)
-        }
-        
+
         return true
     }
     
