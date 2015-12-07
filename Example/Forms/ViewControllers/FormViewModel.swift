@@ -47,7 +47,7 @@ final class FormViewModel {
     }()
     
     lazy var confirmPasswordInputViewModel: FormInputViewModel<String> = { [unowned self] in
-        let vm = FormInputViewModel(value: "", caption: "")
+        let vm = FormInputViewModel(value: "")
         vm.placeholder = "* confirm password"
         vm.returnKeyType = .Next
         vm.nextInputsViewModel = self.dateSelectInputViewModel
@@ -107,7 +107,7 @@ final class FormViewModel {
     
     
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
-        let vm = FormInputViewModel(value: false, caption: "terms copy")
+        let vm = FormInputViewModel(value: false)
         
         vm.validationRules = [
             FormInputValidationRule(failureText: "Please agree to terms") { inputValue -> Bool in

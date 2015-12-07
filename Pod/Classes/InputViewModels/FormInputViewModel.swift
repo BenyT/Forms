@@ -43,6 +43,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     //MARK: - State
     
     //is viewModel view enabled
+    //view is responsible for determining what this means
     public var enabledObservable = Observable<Bool>(true)
     
     public var enabled: Bool = true {
@@ -78,9 +79,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //textfield text
-    public lazy var displayValueObservable = {
-        return Observable<String>("")
-    }()
+    public var displayValueObservable = Observable<String>("")
     
     public var displayValue: String = "" {
         didSet {
@@ -101,14 +100,12 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //caption label text
-    public var captionObservable = {
-        return Observable<String>("")
-    }()
+    public var captionObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
 
     public var caption: String = "" {
         didSet {
             if caption != oldValue {
-                captionObservable.next(caption)
+                captionObservable.next(NSAttributedString(string: caption))
             }
         }
     }
@@ -173,9 +170,9 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     //MARK: - FormInputValidatable
     
     //whether input is valid
-    public var validObservable = Observable<Bool>(false)
+    public var validObservable = Observable<Bool>(true)
     
-    public var valid = false {
+    public var valid = true {
         didSet {
             if valid != oldValue {
                 validObservable.next(valid)
@@ -184,12 +181,12 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //error text if not value
-    public var errorTextObservable = Observable<String>("")
+    public var errorTextObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
     
     public var errorText: String? {
         didSet {
             if errorText != oldValue {
-                errorTextObservable.next(errorText ?? "")
+                errorTextObservable.next(NSAttributedString(string: errorText ?? ""))
             }
         }
     }
@@ -219,14 +216,13 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     // Init
     //
     // - Parameter value: T
-    public init(value: T?, caption: String = "") {
+    public init(value: T?) {
     
         self.value = value
         valueObservable = Observable<T?>(value)
+        
         displayValue = self.value as? String ?? ""
         displayValueObservable.next(displayValue)
-        self.caption = caption
-        captionObservable.next(caption)
     }
     
     //MARK: - Validation
