@@ -77,7 +77,7 @@ final class FormViewModel {
         vm.placeholder = "birthday"
         vm.caption = "Used to ... sed ut perspiciatis unde omnis iste"
         
-        vm.displayValueMap = { (value: NSDate) -> String in
+        vm.displayValueMap = { value -> String in
             self.dateFormatter.stringFromDate(value)
         }
         
@@ -98,7 +98,7 @@ final class FormViewModel {
             }
         ]
         
-        vm.displayValueMap = { (value: String) -> String in
+        vm.displayValueMap = { value -> String in
             return "\(value) is an option"
         }
         
@@ -187,8 +187,6 @@ final class FormViewModel {
     //MARK: - API Integration
     
     private func submitFormRequest() {
-        
-        
-        
+    
     }
 }

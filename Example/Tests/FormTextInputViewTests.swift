@@ -26,7 +26,7 @@ class FormTextInputViewTests: XCTestCase {
         super.tearDown()
     }
     
-    func test_value() {
+    func test_displayValue() {
         
         let vm = viewModel
         

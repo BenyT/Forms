@@ -53,7 +53,7 @@ class FormInputViewModelTests: XCTestCase {
     
     func test_displayValue() {
         let vm = FormInputViewModel(value: "value")
-        XCTAssertEqual(vm.displayValue, "value", "displayValue derivated from value if string")
+        XCTAssertEqual(vm.displayValue, "value", "displayValue derived from value if string")
     }
     
     func test_validation() {

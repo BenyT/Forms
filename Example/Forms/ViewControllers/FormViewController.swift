@@ -33,7 +33,7 @@ final class FormViewController: UIViewController {
         super.viewDidLoad()
         
         //create form
-        //createFormFromViewModel()
+        createFormFromViewModel()
     }
     
     //MARK: - Actions
