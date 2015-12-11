@@ -10,6 +10,7 @@ import Bond
 
 public protocol FormInputViewModelProtocol {
     
+    //TODO: revisite with more time. Approach fells unbalanced
     //focused if set to true didSet observable (via focusedObservable) will attempt to make self.textfield the firstResponder
     //setting to false does not make the self.textfield attempt to resign first responder. Call resignFirstResponder directly on view
     var focused: Bool { get set }

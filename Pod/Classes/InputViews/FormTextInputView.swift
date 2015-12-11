@@ -93,6 +93,10 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         return formBaseTextInputView.textField.resignFirstResponder()
     }
     
+    override public func isFirstResponder() -> Bool {
+        return formBaseTextInputView.textField.isFirstResponder()
+    }
+    
     //MARK: - FormInputViewModelView
     
     //bind to viewModel

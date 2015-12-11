@@ -116,6 +116,10 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
         return formBaseTextInputView.textField.resignFirstResponder()
     }
     
+    override public func isFirstResponder() -> Bool {
+        return formBaseTextInputView.textField.isFirstResponder()
+    }
+    
     //MARK: - UITextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {

@@ -124,6 +124,10 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
         return formBaseTextInputView.textField.resignFirstResponder()
     }
     
+    override public func isFirstResponder() -> Bool {
+        return formBaseTextInputView.textField.isFirstResponder()
+    }
+    
     //MARK: - UITextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {
