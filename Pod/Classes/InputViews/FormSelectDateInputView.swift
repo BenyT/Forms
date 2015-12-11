@@ -116,6 +116,24 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
                 self.datePicker.date = value
             }
         }
+        
+        viewModel.focusedObservable.observe {
+            if ($0 == true) {
+                self.becomeFirstResponder()
+            } else {
+                self.resignFirstResponder()
+            }
+        }
+    }
+    
+    //MARK: - UIResponder
+    
+    override public func resignFirstResponder() -> Bool {
+        return textField.resignFirstResponder()
+    }
+    
+    override public func becomeFirstResponder() -> Bool {
+        return textField.becomeFirstResponder()
     }
     
     //MARK: - UITextFieldDelegate

@@ -93,14 +93,5 @@ final class FormBaseTextInputView<T>: UIView {
         viewModel.keyboardTypeObservable.observe { self.textField.keyboardType = $0 }
         viewModel.autocorrectionTypeObservable.observe { self.textField.autocorrectionType = $0 }
         viewModel.enabledObservable.observe { self.textField.enabled = $0 }
-        
-        viewModel.focusedObservable.observe {
-            if ($0 == true) {
-                print(self.textField.canBecomeFirstResponder())
-                self.textField.becomeFirstResponder()
-            } else {
-                self.textField.resignFirstResponder()
-            }
-        }
     }
 }
