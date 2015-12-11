@@ -83,9 +83,11 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         //remove constaints added manaully
         layoutConstraints.forEach { $0.active = false }
         
+        //TODO: update to use UIStackView to allow more control over subview layouts
+        
         //layout subviews
         layoutConstraints = self.createConstraints(visualFormatting: [
-            "H:|-(0)-[checkBoxButton(>=0@250)]-(10)-[captionLabel(>=0@750)]-(0)-|",
+            "H:|-(0)-[checkBoxButton(>=0@250)]-(0)-[captionLabel(>=0@750)]-(0)-|",
             "H:|-(0)-[errorLabel]-(0)-|",
             "V:|-(0)-[checkBoxButton]-(>=0)-[errorLabel]-(0)-|",
             "V:|-(0)-[captionLabel]-(>=0)-[errorLabel]-(0)-|",
