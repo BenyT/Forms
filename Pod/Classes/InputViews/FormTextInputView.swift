@@ -97,26 +97,16 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         }
         
         formBaseTextInputView.bindViewModel(viewModel)
-        
-        viewModel.isFirstResponderObservable.observe {
-            if ($0 == true) {
-                self.becomeFirstResponder()
-            }
-        }
-    }
-    
-    override public func becomeFirstResponder() -> Bool {
-        return self.textField.becomeFirstResponder()
     }
 
     //MARK: - UITextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {
-        viewModel?.isFirstResponder = true
+        viewModel?.focused = true
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
-        viewModel?.isFirstResponder = false
+        viewModel?.focused = false
     }
     
     public func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
@@ -126,8 +116,8 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         if var nextInput = self.viewModel?.nextInputsViewModel {
-            viewModel?.isFirstResponder = false
-            nextInput.isFirstResponder = true
+            viewModel?.focused = false
+            nextInput.focused = true
         }
 
         return true

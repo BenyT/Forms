@@ -57,7 +57,7 @@ final class FormViewController: UIViewController {
             if let viewModel = $0 as? FormSelectInputViewModel<String> {
                 let selectInputView = FormSelectInputView(withViewModel: viewModel)
                 
-                viewModel.isFirstResponderObservable.observe {
+                viewModel.focusedObservable.observe {
                     
                     if $0 == true {
                         selectInputView.themeViewFocused()
@@ -75,7 +75,7 @@ final class FormViewController: UIViewController {
                 let textInputView = FormTextInputView(withViewModel: viewModel)
                 textInputView.themeView()
                 
-                viewModel.isFirstResponderObservable.observe {
+                viewModel.focusedObservable.observe {
                     
                     if $0 == true {
                         textInputView.themeViewFocused()
@@ -98,7 +98,7 @@ final class FormViewController: UIViewController {
             if let viewModel = $0 as? FormInputViewModel<NSDate> {
                 let selectDateInputView = FormSelectDateInputView(withViewModel: viewModel)
                 
-                viewModel.isFirstResponderObservable.observe {
+                viewModel.focusedObservable.observe {
                     
                     if $0 == true {
                         selectDateInputView.themeViewFocused()

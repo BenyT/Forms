@@ -51,7 +51,7 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
         picker.delegate = self
         picker.dataSource = self
         return picker
-        }()
+    }()
     
     //MARK: - Init
     
@@ -108,26 +108,16 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
         }
         
         formBaseTextInputView.bindViewModel(viewModel)
-        
-        viewModel.isFirstResponderObservable.observe {
-            if ($0 == true) {
-                self.becomeFirstResponder()
-            }
-        }
     }
-    
-    override public func becomeFirstResponder() -> Bool {
-        return self.textField.becomeFirstResponder()
-    }
-    
+
     //MARK: - UITextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {
-        viewModel?.isFirstResponder = true
+        viewModel?.focused = true
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
-        viewModel?.isFirstResponder = false
+        viewModel?.focused = false
     }
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {

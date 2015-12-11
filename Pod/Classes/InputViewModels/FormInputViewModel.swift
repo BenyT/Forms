@@ -10,9 +10,9 @@ import Bond
 
 public protocol FormInputViewModelProtocol {
     
-    var nextInputsViewModel: FormInputViewModelProtocol? { get set }
+    var focused: Bool { get set }
     
-    var isFirstResponder: Bool { get set }
+    var nextInputsViewModel: FormInputViewModelProtocol? { get set }
 }
 
 //Base class for FormInputViewModel
@@ -30,12 +30,14 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     }
     
     //is viewModels view first responder
-    public var isFirstResponderObservable =  Observable<Bool>(false)
+    public var focusedObservable =  Observable<Bool>(false)
     
-    public var isFirstResponder = false {
+    //focused if set to true didSet observable (via focusedObservable) will make textfield the firstResponder
+    //focused if set to false didSet observable (via focusedObservable) will make textfield resign firstResponder
+    public var focused = false {
         didSet {
-            if isFirstResponder != oldValue {
-                isFirstResponderObservable.next(isFirstResponder)
+            if focused != oldValue {
+                focusedObservable.next(focused)
             }
         }
     }

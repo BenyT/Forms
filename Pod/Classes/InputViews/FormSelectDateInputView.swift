@@ -111,12 +111,6 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
         
         formBaseTextInputView.bindViewModel(viewModel)
         
-        viewModel.isFirstResponderObservable.observe {
-            if ($0 == true) {
-                self.becomeFirstResponder()
-            }
-        }
-        
         viewModel.valueObservable.observe {
             if let value = $0 {
                 self.datePicker.date = value
@@ -124,18 +118,14 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
         }
     }
     
-    override public func becomeFirstResponder() -> Bool {
-        return self.textField.becomeFirstResponder()
-    }
-    
     //MARK: - UITextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {
-        viewModel?.isFirstResponder = true
+        viewModel?.focused = true
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
-        viewModel?.isFirstResponder = false
+        viewModel?.focused = false
     }
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {
