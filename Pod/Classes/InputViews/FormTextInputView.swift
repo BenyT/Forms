@@ -87,6 +87,12 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
             ])
     }
     
+    //MARK: - UIResponder
+    
+    override public func resignFirstResponder() -> Bool {
+        return formBaseTextInputView.textField.resignFirstResponder()
+    }
+    
     //MARK: - FormInputViewModelView
     
     //bind to viewModel
@@ -97,24 +103,6 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         }
         
         formBaseTextInputView.bindViewModel(viewModel)
-    
-        viewModel.focusedObservable.observe {
-            if ($0 == true) {
-                self.becomeFirstResponder()
-            } else {
-                self.resignFirstResponder()
-            }
-        }
-    }
-    
-    //MARK: - UIResponder
-    
-    override public func resignFirstResponder() -> Bool {
-        return textField.resignFirstResponder()
-    }
-    
-    override public func becomeFirstResponder() -> Bool {
-        return textField.becomeFirstResponder()
     }
 
     //MARK: - UITextFieldDelegate
@@ -133,7 +121,7 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        if var nextInput = self.viewModel?.nextInputsViewModel {
+        if var nextInput = viewModel?.nextInputsViewModel {
             viewModel?.focused = false
             nextInput.focused = true
         }

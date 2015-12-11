@@ -10,8 +10,12 @@ import Bond
 
 public protocol FormInputViewModelProtocol {
     
+    //focused if set to true didSet observable (via focusedObservable) will attempt to make self.textfield the firstResponder
+    //setting to false does not make the self.textfield attempt to resign first responder. Call resignFirstResponder directly on view
     var focused: Bool { get set }
     
+    //attempts to make the view backed by this FormInputViewModelProtocol the firstResponder when the return key is tapped
+    //does not affect the value of the returnKey; must be set to next manually
     var nextInputsViewModel: FormInputViewModelProtocol? { get set }
 }
 
@@ -32,8 +36,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
     //is viewModels view first responder
     public var focusedObservable =  Observable<Bool>(false)
     
-    //focused if set to true didSet observable (via focusedObservable) will make textfield the firstResponder
-    //focused if set to false didSet observable (via focusedObservable) will make textfield resign firstResponder
     public var focused = false {
         didSet {
             if focused != oldValue {
