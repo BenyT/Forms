@@ -8,6 +8,11 @@
 
 import UIKit
 
+public enum InputSubviews {
+    case TextField
+    case CaptionLabel
+    case ErrorLabel
+}
 
 public protocol FormInputView: class {
     
@@ -23,12 +28,41 @@ public protocol FormInputViewModelView: class {
     func bindViewModel()
 }
 
+public protocol FormBaseTextInputViewLayout {
+    
+    var inputLayoutAxis: UILayoutConstraintAxis { get set }
+    
+    var subviewSpacing: Double { get set }
+    
+    var subviewOrder:[InputSubviews] { get set }
+}
+
 //Base UIView for any FormInputs which require a basic textfield, capture label, error label heirarchy
-final class FormBaseTextInputView<T>: UIView {
+final class FormBaseTextInputView<T>: UIView, FormBaseTextInputViewLayout {
+    
+    override class func requiresConstraintBasedLayout() -> Bool {
+        return true
+    }
+    
+    //MARK: - FormBaseTextInputViewLayout
+    
+    var inputLayoutAxis = UILayoutConstraintAxis.Vertical
+    var subviewSpacing = 0.0
+    var subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
+    
+    //MARK: - Subviews
+    
+    lazy var stackView: UIStackView = { [unowned self] in
+        let stackView = UIStackView()
+        stackView.axis = self.inputLayoutAxis
+        stackView.spacing = CGFloat(self.subviewSpacing)
+        stackView.distribution = .EqualSpacing
+        self.addSubview(stackView)
+        return stackView
+    }()
     
     lazy var textField: UITextField = { [unowned self] in
         let textField = UITextField()
-        self.addSubview(textField)
         return textField
     }()
     
@@ -36,19 +70,14 @@ final class FormBaseTextInputView<T>: UIView {
         let captionLabel = UILabel()
         captionLabel.numberOfLines = 0
         captionLabel.lineBreakMode = .ByWordWrapping
-        self.addSubview(captionLabel)
         return captionLabel
     }()
     
     lazy  var errorLabel: UILabel = { [unowned self] in
         let errorLabel = UILabel()
         errorLabel.lineBreakMode = .ByWordWrapping
-        self.addSubview(errorLabel)
         return errorLabel
     }()
-    
-    //manually added layout constraints
-    private var layoutConstraints = [NSLayoutConstraint]()
     
     //MARK: - Init
     
@@ -60,26 +89,63 @@ final class FormBaseTextInputView<T>: UIView {
     
     override func updateConstraints() {
         super.updateConstraints()
+        addSubviewConstraints()
+        addSubviews()
+    }
+    
+    override func intrinsicContentSize() -> CGSize {
+        return stackView.intrinsicContentSize()
+    }
+    
+    //MARK: - Add Subviews
+    
+    private var didAddSubviewConstriants = false
+    
+    private func addSubviewConstraints() {
         
-        //remove constaints added manaully
-        layoutConstraints.forEach { $0.active = false }
+        guard didAddSubviewConstriants == false else {
+            return
+        }
         
-        //vertical margins
-        let captionLabelTop = 0.0
-        let errorLabelTop = 0.0
+        didAddSubviewConstriants = true
         
         //layout subviews
-        layoutConstraints = createConstraints(visualFormatting: [
-            "H:|-(0)-[textfield]-(0)-|",
-            "H:|-(0)-[captionLabel]-(0)-|",
-            "H:|-(0)-[errorLabel]-(0)-|",
-            "V:|-(0)-[textfield(>=30)]-(\(errorLabelTop))-[errorLabel(>=0)]-(\(captionLabelTop))-[captionLabel(>=0)]-(0)-|"
+        createConstraints(visualFormatting: [
+            "H:|-(0)-[stackView]-(0)-|",
+            "V:|-(0)-[stackView]-(0)-|",
             ],
             views: [
-                "textfield": textField,
-                "captionLabel": captionLabel,
-                "errorLabel": errorLabel,
+                "stackView": stackView,
             ])
+        
+        invalidateIntrinsicContentSize()
+    }
+    
+    private var didAddSubviews = false
+    
+    private func addSubviews() {
+        
+        guard didAddSubviews == false else {
+            return
+        }
+        
+        didAddSubviews = true
+        
+        self.subviewOrder.forEach {
+            
+            switch $0 {
+            case .TextField:
+                self.stackView.addArrangedSubview(self.textField)
+            case .ErrorLabel:
+                self.stackView.addArrangedSubview(self.errorLabel)
+            case .CaptionLabel:
+                self.stackView.addArrangedSubview(self.captionLabel)
+            }
+        }
+
+        self.invalidateIntrinsicContentSize()
+
+        invalidateIntrinsicContentSize()
     }
     
     func bindViewModel(viewModel: FormInputViewModel<T>) {
@@ -98,9 +164,6 @@ final class FormBaseTextInputView<T>: UIView {
             if ($0 == true) {
                 self.textField.becomeFirstResponder()
             }
-//            else {
-//                self.textField.resignFirstResponder()
-//            }
         }
     }
 }

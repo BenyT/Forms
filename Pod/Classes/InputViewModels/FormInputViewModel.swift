@@ -20,6 +20,24 @@ public protocol FormInputViewModelProtocol {
     var nextInputsViewModel: FormInputViewModelProtocol? { get set }
 }
 
+public struct TextInputViewLayout: FormBaseTextInputViewLayout {
+    
+    public var inputLayoutAxis = UILayoutConstraintAxis.Vertical
+    
+    public var subviewSpacing = 0.0
+    
+    public var subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
+    
+    init() { }
+}
+
+public let inputLayoutAxis = UILayoutConstraintAxis.Vertical
+
+public let subviewSpacing = 5.0
+
+public let subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
+
+
 //Base class for FormInputViewModel
 public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidatable {
     
@@ -216,18 +234,23 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
+    
+    private let textInputViewLayout: TextInputViewLayout
+    
     //MARK: - Init
     
     // Init
     //
     // - Parameter value: T
-    public init(value: T?) {
+    public init(value: T?, textInputViewLayout: TextInputViewLayout = TextInputViewLayout()) {
     
         self.value = value
         valueObservable = Observable<T?>(value)
         
         displayValue = self.value as? String ?? ""
         displayValueObservable.next(displayValue)
+        
+        self.textInputViewLayout = textInputViewLayout
     }
     
     //MARK: - Validation

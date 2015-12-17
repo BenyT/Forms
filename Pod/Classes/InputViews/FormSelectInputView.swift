@@ -11,6 +11,10 @@ import UIKit
 @IBDesignable
 public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
+    override class public func requiresConstraintBasedLayout() -> Bool {
+        return true
+    }
+    
     //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<T>? {
@@ -19,11 +23,17 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
         }
     }
     
-    //MARK: - FormBaseTextInputView
+    //MARK: - FormBaseTextInputViewLayout
+    
+    private let textInputViewLayout: TextInputViewLayout = TextInputViewLayout()
+    
+    //MARK: - Subviews
     
     private lazy var formBaseTextInputView: FormBaseTextInputView<T> = { [unowned self] in
         let ui = FormBaseTextInputView<T>()
-        ui.textField.inputView = self.pickerView
+        ui.inputLayoutAxis = self.textInputViewLayout.inputLayoutAxis
+        ui.subviewSpacing = self.textInputViewLayout.subviewSpacing
+        ui.subviewOrder = self.textInputViewLayout.subviewOrder
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui
@@ -73,7 +83,7 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
     
     override public func prepareForInterfaceBuilder() {
         commonInit()
-        updateConstraints()
+        addSubviewConstraints()
     }
     
     public func commonInit() {
@@ -83,21 +93,37 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
     //MARK: - Layout
     
     override public func updateConstraints() {
+        addSubviewConstraints()
         super.updateConstraints()
+    }
+    
+    override public func intrinsicContentSize() -> CGSize {
+        return formBaseTextInputView.intrinsicContentSize()
+    }
+    
+    //MARK: - Add Subviews
+    
+    private var didAddSubviewConstriants = false
+    
+    private func addSubviewConstraints() {
         
-        //remove constaints added manaully
-        layoutConstraints.forEach { $0.active = false }
+        guard didAddSubviewConstriants == false else {
+            return
+        }
+        
+        didAddSubviewConstriants = true
         
         //layout subviews
-        layoutConstraints = createConstraints(visualFormatting: [
+        createConstraints(visualFormatting: [
             "H:|-(0)-[ui]-(0)-|",
             "V:|-(0)-[ui]-(0)-|",
             ],
             views: [
                 "ui": formBaseTextInputView,
             ])
+        
+        invalidateIntrinsicContentSize()
     }
-    
     
     //MARK: - FormInputViewModelView
     

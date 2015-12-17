@@ -114,7 +114,7 @@ final class FormViewController: UIViewController {
             //checkbox inputs
             if let viewModel = $0 as? FormInputViewModel<Bool> {
                 let checkboxInputView = FormCheckboxInputView(withViewModel: viewModel)
-                checkboxInputView.themeView()
+                //checkboxInputView.themeView()
                 formStackView.insertArrangedSubview(checkboxInputView, atIndex: 0)
                 return
             }

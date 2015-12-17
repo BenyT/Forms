@@ -14,6 +14,10 @@ private enum InputSelector: Selector {
 @IBDesignable
 public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelView {
 
+    override public class func requiresConstraintBasedLayout() -> Bool {
+        return true
+    }
+    
     //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<Bool>? {
@@ -22,32 +26,55 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         }
     }
     
+    //MARK: - Layout Configuration
+    
+    public var inputSpacing = 0.1
+    
+    //MARK: - FormBaseTextInputView
+    
+    lazy var stackView: UIStackView = { [unowned self] in
+        let stackView = UIStackView()
+        stackView.axis = .Vertical
+        stackView.spacing = CGFloat(self.inputSpacing)
+        stackView.distribution = .EqualSpacing
+        self.addSubview(stackView)
+        return stackView
+    }()
+    
+    lazy var checkBoxCaptionStackView: UIStackView = { [unowned self] in
+        let stackView = UIStackView()
+        stackView.axis = .Horizontal
+        stackView.spacing = CGFloat(self.inputSpacing)
+        stackView.distribution = .Fill
+        return stackView
+    }()
+
     //MARK: - Subviews
     
     lazy public var checkBoxButton: UIButton = { [unowned self] in
         let checkBoxButton = UIButton()
         checkBoxButton.addTarget(self, action: InputSelector.CheckBoxButtonWastTapped.rawValue, forControlEvents: .TouchUpInside)
-        self.addSubview(checkBoxButton)
+        
+        checkBoxButton.backgroundColor = UIColor.redColor()
+        
         return checkBoxButton
     }()
     
     lazy public var captionLabel: UILabel = { [unowned self] in
         let captionLabel = UILabel()
         captionLabel.lineBreakMode = .ByWordWrapping
-        self.addSubview(captionLabel)
+        
+        captionLabel.backgroundColor = UIColor.greenColor()
+        
         return captionLabel
     }()
     
     lazy public var errorLabel: UILabel = { [unowned self] in
         let errorLabel = UILabel()
         errorLabel.lineBreakMode = .ByWordWrapping
-        self.addSubview(errorLabel)
         return errorLabel
     }()
 
-    //manually added layout constraints
-    private var layoutConstraints = [NSLayoutConstraint]()
-    
     //MARK: - Init
     
     convenience public init(withViewModel viewModel: FormInputViewModel<Bool>) {
@@ -68,7 +95,8 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
     
     override public func prepareForInterfaceBuilder() {
         commonInit()
-        updateConstraints()
+        addSubviewConstraints()
+        addSubviews()
     }
     
     func commonInit() {
@@ -78,28 +106,58 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
     //MARK: - Layout
     
     override public func updateConstraints() {
+        addSubviewConstraints()
+        addSubviews()
         super.updateConstraints()
+    }
+    
+    override public func intrinsicContentSize() -> CGSize {
+        return stackView.intrinsicContentSize()
+    }
+    
+    //MARK: - Add Subviews
+    
+    private var didAddSubviewConstriants = false
+    
+    private func addSubviewConstraints() {
         
-        //remove constaints added manaully
-        layoutConstraints.forEach { $0.active = false }
+        guard didAddSubviewConstriants == false else {
+            return
+        }
         
-        //TODO: update to use UIStackView to allow more control over subview layouts
+        didAddSubviewConstriants = true
         
         //layout subviews
-        layoutConstraints = self.createConstraints(visualFormatting: [
-            "H:|-(0)-[checkBoxButton(>=0@250)]-(0)-[captionLabel(>=0@750)]-(0)-|",
-            "H:|-(0)-[errorLabel]-(0)-|",
-            "V:|-(0)-[checkBoxButton]-(>=0)-[errorLabel]-(0)-|",
-            "V:|-(0)-[captionLabel]-(>=0)-[errorLabel]-(0)-|",
+        createConstraints(visualFormatting: [
+            "H:|-(0)-[stackView]-(0)-|",
+            "V:|-(0)-[stackView]-(0)-|",
             ],
             views: [
-                "checkBoxButton": checkBoxButton,
-                "captionLabel": captionLabel,
-                "errorLabel": errorLabel,
+                "stackView": stackView,
             ])
         
         checkBoxButton.widthAnchor.constraintEqualToAnchor(checkBoxButton.heightAnchor, multiplier: 1.0).active = true
-        captionLabel.heightAnchor.constraintEqualToAnchor(checkBoxButton.heightAnchor, multiplier: 1.0).active = true
+        
+        invalidateIntrinsicContentSize()
+    }
+    
+    private var didAddSubviews = false
+    
+    private func addSubviews() {
+        
+        guard didAddSubviews == false else {
+            return
+        }
+        
+        didAddSubviews = true
+        
+        checkBoxCaptionStackView.addArrangedSubview(self.checkBoxButton)
+        checkBoxCaptionStackView.addArrangedSubview(self.captionLabel)
+        
+        stackView.addArrangedSubview(checkBoxCaptionStackView)
+        stackView.addArrangedSubview(errorLabel)
+        
+        invalidateIntrinsicContentSize()
     }
     
     //MARK: - FormInputViewModelView

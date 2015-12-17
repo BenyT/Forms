@@ -16,6 +16,7 @@ final class FormViewModel {
     lazy var userNameInputViewModel: FormInputViewModel<String> = { [unowned self] in
         let vm = FormInputViewModel(value: "")
         vm.placeholder = "* user name"
+        vm.caption = "Something about your users and how username and how it will be used."
         vm.nextInputsViewModel = self.passwordInputViewModel
         vm.returnKeyType = .Next
         vm.autocorrectionType = .No
@@ -108,6 +109,7 @@ final class FormViewModel {
     
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
         let vm = FormInputViewModel(value: false)
+        vm.caption = "Some text"
         
         vm.validationRules = [
             FormInputValidationRule(failureText: "Please agree to terms") { inputValue -> Bool in
