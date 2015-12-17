@@ -26,17 +26,20 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
         }
     }
     
-    //MARK: - FormBaseTextInputViewLayout
+    //MARK: - Layout Configuration
     
-    private let textInputViewLayout: TextInputViewLayout = TextInputViewLayout()
+    public var inputViewLayout: InputViewLayout = InputViewLayout() {
+        didSet {
+            formBaseTextInputView.inputViewLayout = inputViewLayout
+        }
+    }
+
     
     //MARK: - Subviews
     
     private lazy var formBaseTextInputView: FormBaseTextInputView<NSDate> = { [unowned self] in
         let ui = FormBaseTextInputView<NSDate>()
-        ui.inputLayoutAxis = self.textInputViewLayout.inputLayoutAxis
-        ui.subviewSpacing = self.textInputViewLayout.subviewSpacing
-        ui.subviewOrder = self.textInputViewLayout.subviewOrder
+        ui.subviewOrder = self.inputViewLayout.subviewOrder
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui

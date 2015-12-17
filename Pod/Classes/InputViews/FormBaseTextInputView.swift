@@ -28,7 +28,7 @@ public protocol FormInputViewModelView: class {
     func bindViewModel()
 }
 
-public protocol FormBaseTextInputViewLayout {
+protocol FormBaseTextInputViewLayout {
     
     var inputLayoutAxis: UILayoutConstraintAxis { get set }
     
@@ -38,24 +38,33 @@ public protocol FormBaseTextInputViewLayout {
 }
 
 //Base UIView for any FormInputs which require a basic textfield, capture label, error label heirarchy
-final class FormBaseTextInputView<T>: UIView, FormBaseTextInputViewLayout {
+final class FormBaseTextInputView<T>: UIView {
     
     override class func requiresConstraintBasedLayout() -> Bool {
         return true
     }
     
-    //MARK: - FormBaseTextInputViewLayout
+    //MARK: - Layout Configuration
     
-    var inputLayoutAxis = UILayoutConstraintAxis.Vertical
-    var subviewSpacing = 0.0
+    //TODO support settings this directly
+    var inputViewLayout: InputViewLayout = InputViewLayout() {
+        didSet {
+            subviewOrder = inputViewLayout.subviewOrder
+            stackView.spacing = CGFloat(inputViewLayout.subviewSpacing)
+            stackView.axis = inputViewLayout.inputLayoutAxis
+        }
+    }
+    
+    //TODO: review access of these
+    
     var subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
     
     //MARK: - Subviews
     
     lazy var stackView: UIStackView = { [unowned self] in
         let stackView = UIStackView()
-        stackView.axis = self.inputLayoutAxis
-        stackView.spacing = CGFloat(self.subviewSpacing)
+        stackView.axis = .Vertical
+        stackView.spacing = 2.0
         stackView.distribution = .EqualSpacing
         self.addSubview(stackView)
         return stackView
@@ -164,6 +173,22 @@ final class FormBaseTextInputView<T>: UIView, FormBaseTextInputViewLayout {
             if ($0 == true) {
                 self.textField.becomeFirstResponder()
             }
+        }
+        
+        viewModel.inputViewLayoutObservable.observeNew {
+            self.inputViewLayout = $0
+            
+            //teardown and reflow entire layour
+            
+            //TODO: diff order
+            
+            self.didAddSubviews = false
+
+            while let arrangedSubView = self.stackView.arrangedSubviews.last {
+                arrangedSubView.removeFromSuperview()
+            }
+            
+            self.addSubviews()
         }
     }
 }

@@ -22,17 +22,18 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         }
     }
     
-    //MARK: - FormBaseTextInputViewLayout
+    //MARK: - Layout Configuration
     
-    private let textInputViewLayout: TextInputViewLayout = TextInputViewLayout()
+    public var inputViewLayout: InputViewLayout = InputViewLayout() {
+        didSet {
+            formBaseTextInputView.inputViewLayout = inputViewLayout
+        }
+    }
     
     //MARK: - Subviews
     
     private lazy var formBaseTextInputView: FormBaseTextInputView<String> = { [unowned self] in
         let ui = FormBaseTextInputView<String>()
-        ui.inputLayoutAxis = self.textInputViewLayout.inputLayoutAxis
-        ui.subviewSpacing = self.textInputViewLayout.subviewSpacing
-        ui.subviewOrder = self.textInputViewLayout.subviewOrder
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui
@@ -58,6 +59,7 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
     convenience public init(withViewModel viewModel: FormInputViewModel<String>) {
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         self.viewModel = viewModel
+        self.formBaseTextInputView.inputViewLayout = viewModel.inputViewLayout
         commonInit()
     }
     
@@ -133,7 +135,7 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         guard let viewModel = self.viewModel else {
             return
         }
-        
+
         formBaseTextInputView.bindViewModel(viewModel)
     }
 

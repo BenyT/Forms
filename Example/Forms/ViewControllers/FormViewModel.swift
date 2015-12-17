@@ -110,6 +110,7 @@ final class FormViewModel {
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
         let vm = FormInputViewModel(value: false)
         vm.caption = "Some text"
+        vm.inputViewLayout.subviewSpacing = 10
         
         vm.validationRules = [
             FormInputValidationRule(failureText: "Please agree to terms") { inputValue -> Bool in

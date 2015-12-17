@@ -23,17 +23,20 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
         }
     }
     
-    //MARK: - FormBaseTextInputViewLayout
-    
-    private let textInputViewLayout: TextInputViewLayout = TextInputViewLayout()
+    //MARK: - Layout Configuration
+        
+    public var inputViewLayout: InputViewLayout = InputViewLayout() {
+        didSet {
+            formBaseTextInputView.inputViewLayout = inputViewLayout
+        }
+    }
+
     
     //MARK: - Subviews
     
     private lazy var formBaseTextInputView: FormBaseTextInputView<T> = { [unowned self] in
         let ui = FormBaseTextInputView<T>()
-        ui.inputLayoutAxis = self.textInputViewLayout.inputLayoutAxis
-        ui.subviewSpacing = self.textInputViewLayout.subviewSpacing
-        ui.subviewOrder = self.textInputViewLayout.subviewOrder
+        ui.subviewOrder = self.inputViewLayout.subviewOrder
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui

@@ -54,18 +54,12 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
     lazy public var checkBoxButton: UIButton = { [unowned self] in
         let checkBoxButton = UIButton()
         checkBoxButton.addTarget(self, action: InputSelector.CheckBoxButtonWastTapped.rawValue, forControlEvents: .TouchUpInside)
-        
-        checkBoxButton.backgroundColor = UIColor.redColor()
-        
         return checkBoxButton
     }()
     
     lazy public var captionLabel: UILabel = { [unowned self] in
         let captionLabel = UILabel()
         captionLabel.lineBreakMode = .ByWordWrapping
-        
-        captionLabel.backgroundColor = UIColor.greenColor()
-        
         return captionLabel
     }()
     
@@ -172,6 +166,11 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         viewModel.valueObservable.observe { self.checkBoxButton.selected = $0 ?? false }
         viewModel.captionObservable.observe { self.captionLabel.attributedText = $0 }
         viewModel.errorTextObservable.observe { self.errorLabel.attributedText = $0 }
+        viewModel.inputViewLayoutObservable.observe {
+            
+            self.stackView.spacing = CGFloat($0.subviewSpacing)
+            self.checkBoxCaptionStackView.spacing = CGFloat($0.subviewSpacing)
+        }
     }
     
     //MARK: - Actions

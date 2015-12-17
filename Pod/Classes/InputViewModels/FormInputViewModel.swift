@@ -20,7 +20,7 @@ public protocol FormInputViewModelProtocol {
     var nextInputsViewModel: FormInputViewModelProtocol? { get set }
 }
 
-public struct TextInputViewLayout: FormBaseTextInputViewLayout {
+public class InputViewLayout: FormBaseTextInputViewLayout {
     
     public var inputLayoutAxis = UILayoutConstraintAxis.Vertical
     
@@ -30,13 +30,13 @@ public struct TextInputViewLayout: FormBaseTextInputViewLayout {
     
     init() { }
 }
-
-public let inputLayoutAxis = UILayoutConstraintAxis.Vertical
-
-public let subviewSpacing = 5.0
-
-public let subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
-
+//
+//public let inputLayoutAxis = UILayoutConstraintAxis.Vertical
+//
+//public let subviewSpacing = 5.0
+//
+//public let subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
+//
 
 //Base class for FormInputViewModel
 public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidatable {
@@ -220,7 +220,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
             dispatch_after(delayTime, dispatch_get_main_queue()) {
                 self.validate(updateErrorText: self.displayValidationErrorsOnValueChange)
             }
-            
         }
     }
     
@@ -234,15 +233,15 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
-    
-    private let textInputViewLayout: TextInputViewLayout
+    public var inputViewLayoutObservable = Observable<InputViewLayout>(InputViewLayout())
+    public var inputViewLayout: InputViewLayout
     
     //MARK: - Init
     
     // Init
     //
     // - Parameter value: T
-    public init(value: T?, textInputViewLayout: TextInputViewLayout = TextInputViewLayout()) {
+    public init(value: T?, inputViewLayout: InputViewLayout = InputViewLayout()) {
     
         self.value = value
         valueObservable = Observable<T?>(value)
@@ -250,7 +249,8 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         displayValue = self.value as? String ?? ""
         displayValueObservable.next(displayValue)
         
-        self.textInputViewLayout = textInputViewLayout
+        self.inputViewLayout = inputViewLayout
+        inputViewLayoutObservable = Observable(self.inputViewLayout)
     }
     
     //MARK: - Validation
