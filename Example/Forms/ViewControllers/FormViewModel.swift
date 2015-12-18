@@ -107,7 +107,6 @@ final class FormViewModel {
         return vm
     }()
     
-    
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
         let vm = FormInputViewModel(value: false)
         vm.caption = "Some text"

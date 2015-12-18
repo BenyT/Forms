@@ -30,13 +30,6 @@ public class InputViewLayout: FormBaseTextInputViewLayout {
     
     init() { }
 }
-//
-//public let inputLayoutAxis = UILayoutConstraintAxis.Vertical
-//
-//public let subviewSpacing = 5.0
-//
-//public let subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
-//
 
 //Base class for FormInputViewModel
 public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidatable {
@@ -133,6 +126,14 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
+    public var captionAttributedText: NSAttributedString? {
+        didSet {
+            if captionAttributedText?.string != caption {
+                captionObservable.next(captionAttributedText!)
+            }
+        }
+    }
+    
     //textfield placeholder
     public var placeholderObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
     
@@ -140,6 +141,14 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         didSet {
             if placeholder != oldValue {
                 placeholderObservable.next(NSAttributedString(string: placeholder))
+            }
+        }
+    }
+    
+    public var placeholderAttributedText: NSAttributedString? {
+        didSet {
+            if placeholderAttributedText?.string != placeholder {
+                placeholderObservable.next(placeholderAttributedText!)
             }
         }
     }
@@ -233,6 +242,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
+    //layout of input
     public var inputViewLayoutObservable = Observable<InputViewLayout>(InputViewLayout())
     public var inputViewLayout: InputViewLayout
     
