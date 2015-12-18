@@ -11,7 +11,7 @@ private enum InputSelector: Selector {
     case DatePickerValueChanged = "datePickerValueChanged:"
 }
 
-@IBDesignable
+//@IBDesignable
 public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
     
     override class public func requiresConstraintBasedLayout() -> Bool {

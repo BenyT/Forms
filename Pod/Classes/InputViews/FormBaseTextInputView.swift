@@ -46,7 +46,7 @@ final class FormBaseTextInputView<T>: UIView {
     
     //MARK: - Layout Configuration
     
-    //TODO support settings this directly
+    //TODO support settings this directly properly
     var inputViewLayout: InputViewLayout = InputViewLayout() {
         didSet {
             subviewOrder = inputViewLayout.subviewOrder

@@ -7,7 +7,7 @@
 
 import UIKit
 
-@IBDesignable
+//@IBDesignable
 public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
     
     override class public func requiresConstraintBasedLayout() -> Bool {

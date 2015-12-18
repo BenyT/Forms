@@ -11,7 +11,7 @@ private enum InputSelector: Selector {
     case CheckBoxButtonWastTapped = "checkBoxButtonWastTapped:"
 }
 
-@IBDesignable
+//@IBDesignable
 public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelView {
     
     override public class func requiresConstraintBasedLayout() -> Bool {
