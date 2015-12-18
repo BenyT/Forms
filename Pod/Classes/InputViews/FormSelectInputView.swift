@@ -37,6 +37,7 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
     private lazy var formBaseTextInputView: FormBaseTextInputView<T> = { [unowned self] in
         let ui = FormBaseTextInputView<T>()
         ui.subviewOrder = self.inputViewLayout.subviewOrder
+        ui.textField.inputView = self.pickerView
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui

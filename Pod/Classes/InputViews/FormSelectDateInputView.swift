@@ -40,6 +40,7 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
     private lazy var formBaseTextInputView: FormBaseTextInputView<NSDate> = { [unowned self] in
         let ui = FormBaseTextInputView<NSDate>()
         ui.subviewOrder = self.inputViewLayout.subviewOrder
+        ui.textField.inputView = self.datePicker
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui
