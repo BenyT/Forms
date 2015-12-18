@@ -65,7 +65,7 @@ final class FormBaseTextInputView<T>: UIView {
         let stackView = UIStackView()
         stackView.axis = .Vertical
         stackView.spacing = 2.0
-        stackView.distribution = .EqualSpacing
+        stackView.distribution = .Fill
         self.addSubview(stackView)
         return stackView
     }()
@@ -127,6 +127,11 @@ final class FormBaseTextInputView<T>: UIView {
                 "stackView": stackView,
             ])
         
+        //give the textfield height priority when a view height is defined
+        let constaint = textField.heightAnchor.constraintGreaterThanOrEqualToConstant(0)
+        constaint.priority = 999
+        constaint.active = true
+        
         invalidateIntrinsicContentSize()
     }
     
@@ -151,8 +156,6 @@ final class FormBaseTextInputView<T>: UIView {
                 self.stackView.addArrangedSubview(self.captionLabel)
             }
         }
-
-        self.invalidateIntrinsicContentSize()
 
         invalidateIntrinsicContentSize()
     }
