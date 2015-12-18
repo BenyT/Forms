@@ -13,7 +13,7 @@ private enum InputSelector: Selector {
 
 @IBDesignable
 public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelView {
-
+    
     override public class func requiresConstraintBasedLayout() -> Bool {
         return true
     }
@@ -36,10 +36,10 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         let stackView = UIStackView()
         stackView.axis = .Vertical
         stackView.spacing = CGFloat(self.inputSpacing)
-        stackView.distribution = .EqualSpacing
+        stackView.distribution = .Fill
         self.addSubview(stackView)
         return stackView
-    }()
+        }()
     
     lazy var checkBoxCaptionStackView: UIStackView = { [unowned self] in
         let stackView = UIStackView()
@@ -47,28 +47,28 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         stackView.spacing = CGFloat(self.inputSpacing)
         stackView.distribution = .Fill
         return stackView
-    }()
-
+        }()
+    
     //MARK: - Subviews
     
     lazy public var checkBoxButton: UIButton = { [unowned self] in
         let checkBoxButton = UIButton()
         checkBoxButton.addTarget(self, action: InputSelector.CheckBoxButtonWastTapped.rawValue, forControlEvents: .TouchUpInside)
         return checkBoxButton
-    }()
+        }()
     
     lazy public var captionLabel: UILabel = { [unowned self] in
         let captionLabel = UILabel()
         captionLabel.lineBreakMode = .ByWordWrapping
         return captionLabel
-    }()
+        }()
     
     lazy public var errorLabel: UILabel = { [unowned self] in
         let errorLabel = UILabel()
         errorLabel.lineBreakMode = .ByWordWrapping
         return errorLabel
-    }()
-
+        }()
+    
     //MARK: - Init
     
     convenience public init(withViewModel viewModel: FormInputViewModel<Bool>) {
@@ -133,6 +133,7 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         checkBoxButton.widthAnchor.constraintEqualToAnchor(checkBoxButton.heightAnchor, multiplier: 1.0).active = true
         
         invalidateIntrinsicContentSize()
+        
     }
     
     private var didAddSubviews = false
@@ -162,12 +163,16 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         guard let viewModel = self.viewModel else {
             return
         }
-                
+        
         viewModel.valueObservable.observe { self.checkBoxButton.selected = $0 ?? false }
         viewModel.captionObservable.observe { self.captionLabel.attributedText = $0 }
-        viewModel.errorTextObservable.observe { self.errorLabel.attributedText = $0 }
+        
+        viewModel.errorTextObservable.observe {
+            self.errorLabel.hidden = $0.string.isEmpty
+            self.errorLabel.attributedText = $0
+        }
+        
         viewModel.inputViewLayoutObservable.observe {
-            
             self.stackView.spacing = CGFloat($0.subviewSpacing)
             self.checkBoxCaptionStackView.spacing = CGFloat($0.subviewSpacing)
         }

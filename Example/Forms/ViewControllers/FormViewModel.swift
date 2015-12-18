@@ -20,6 +20,7 @@ final class FormViewModel {
         vm.nextInputsViewModel = self.passwordInputViewModel
         vm.returnKeyType = .Next
         vm.autocorrectionType = .No
+        vm.inputViewLayout.subviewSpacing = 10
         
         vm.validationRules = [
             FormInputValidationRule(failureText: "Must be at least 8 characters long.") { inputValue -> Bool in

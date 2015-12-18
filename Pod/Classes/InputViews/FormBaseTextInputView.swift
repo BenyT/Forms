@@ -162,7 +162,12 @@ final class FormBaseTextInputView<T>: UIView {
         viewModel.displayValueObservable.observe { self.textField.text = $0 }
         viewModel.placeholderObservable.observe { self.textField.attributedPlaceholder = $0 }
         viewModel.captionObservable.observe { self.captionLabel.attributedText = $0 }
-        viewModel.errorTextObservable.observe { self.errorLabel.attributedText = $0 }
+        
+        viewModel.errorTextObservable.observe {
+            self.errorLabel.hidden = $0.string.isEmpty
+            self.errorLabel.attributedText = $0
+        }
+        
         viewModel.returnKeyTypeObservable.observe { self.textField.returnKeyType = $0 }
         viewModel.secureTextEntryObservable.observe { self.textField.secureTextEntry = $0 }
         viewModel.keyboardTypeObservable.observe { self.textField.keyboardType = $0 }
