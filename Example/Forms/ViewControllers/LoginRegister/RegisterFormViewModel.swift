@@ -9,18 +9,17 @@
 import Foundation
 import Forms
 
-final class FormViewModel {
+final class RegistrationFormViewModel: FormViewModel {
     
     //MARK: - Input View Models - Username and password
     
     lazy var userNameInputViewModel: FormInputViewModel<String> = { [unowned self] in
         let vm = FormInputViewModel(value: "")
         vm.placeholder = "* user name"
-        vm.caption = "Something about your users and how username and how it will be used."
+        vm.caption = "Users will identify one another by username"
         vm.nextInputsViewModel = self.passwordInputViewModel
         vm.returnKeyType = .Next
         vm.autocorrectionType = .No
-        vm.inputViewLayout.subviewSpacing = 10
         
         vm.validationRules = [
             FormInputValidationRule(failureText: "Must be at least 8 characters long.") { inputValue -> Bool in
@@ -77,7 +76,7 @@ final class FormViewModel {
         
         let vm = FormInputViewModel<NSDate>(value: nil)
         vm.placeholder = "birthday"
-        vm.caption = "Used to ... sed ut perspiciatis unde omnis iste"
+        vm.caption = "Why we ask: Receive special promotions on your birthday"
         
         vm.displayValueMap = { value -> String in
             self.dateFormatter.stringFromDate(value)
@@ -90,12 +89,12 @@ final class FormViewModel {
     
     lazy var stateSelectInputViewModel: FormSelectInputViewModel<String> = { [unowned self] in
         
-        let vm = FormSelectInputViewModel(options: ["test1", "test2", "test3"], value: nil)
+        let vm = FormSelectInputViewModel(options: ["Alabama", "Minnesota", "Washington"], value: nil)
         vm.placeholder = "* state"
         vm.pickerPlaceholder = "-- Please select a state -- "
         
         vm.validationRules = [
-            FormInputValidationRule(failureText: "Please picker a date") { inputValue -> Bool in
+            FormInputValidationRule(failureText: "Please pick a state") { inputValue -> Bool in
                 return inputValue != nil
             }
         ]
@@ -109,7 +108,7 @@ final class FormViewModel {
     
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
         let vm = FormInputViewModel(value: false)
-        vm.caption = "Some text"
+        vm.caption = "I agree to your terms"
         vm.inputViewLayout.subviewSpacing = 10
         
         vm.validationRules = [
@@ -121,9 +120,8 @@ final class FormViewModel {
         return vm
     }()
 
-    //Order of form inputs
-    //NOTE: using AnyObject type until Swift supports covariance for generics
-    //Will need to cast to all necessary specialized FormInputViewModel types
+    //MARK: - FormViewModel
+    
     lazy var inputs: [AnyObject] = { [unowned self] in
         return [
             self.userNameInputViewModel,
@@ -138,12 +136,19 @@ final class FormViewModel {
     //MARK: - Init
     
     init() {
+        bindFormInputs()
+    }
+    
+    //MARK: - Bind ViewModels
+    
+    private func bindFormInputs() {
         
         self.passwordInputViewModel.validObservable.observe {
             self.confirmPasswordInputViewModel.enabled = $0
-        }        
+            self.passwordInputViewModel.nextInputsViewModel = $0 ? self.confirmPasswordInputViewModel : self.dateSelectInputViewModel
+        }
     }
-    
+
     //MARK: - View Actions Handlers
     
     func submitForm() {
@@ -155,41 +160,9 @@ final class FormViewModel {
         submitFormRequest()
     }
     
-    //MARK: - Validation
-    
-    private func validate() -> Bool {
-        
-        let invalidInputs = inputs.filter {
-            
-            //select input
-            if let viewModel = $0 as? FormSelectInputViewModel<String> {
-                return viewModel.validate()
-            }
-            
-            //text inputs
-            if let viewModel = $0 as? FormInputViewModel<String> {
-                return viewModel.validate()
-            }
-            
-            //select date inputs
-            if let viewModel = $0 as? FormInputViewModel<NSDate> {
-                return viewModel.validate()
-            }
-  
-            //checkbox inputs
-            if let viewModel = $0 as? FormInputViewModel<Bool> {
-                return viewModel.validate()
-            }
-            
-            return true
-        }
-        
-        return invalidInputs.count == 0
-    }
-    
     //MARK: - API Integration
     
     private func submitFormRequest() {
-    
+        //APPLICATION SPECIFIC
     }
 }

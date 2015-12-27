@@ -7,13 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		024347751C30649900B45571 /* RegisterFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024347721C30649900B45571 /* RegisterFormViewModel.swift */; };
+		024347761C30649900B45571 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024347731C30649900B45571 /* RegisterViewController.swift */; };
+		024347781C3064A800B45571 /* FormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024347771C3064A800B45571 /* FormViewModel.swift */; };
+		0243477A1C3064B600B45571 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024347791C3064B600B45571 /* FormViewController.swift */; };
 		02745F5C1C160B2E00436E11 /* FormInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02745F5B1C160B2E00436E11 /* FormInputViewModelTests.swift */; };
 		02745F5E1C1618B000436E11 /* FormSelectInputViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02745F5D1C1618B000436E11 /* FormSelectInputViewTests.swift */; };
 		02745F601C161B2C00436E11 /* FormSelectDateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02745F5F1C161B2C00436E11 /* FormSelectDateViewTests.swift */; };
 		02745F621C161D5900436E11 /* FormCheckboxInputViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02745F611C161D5900436E11 /* FormCheckboxInputViewTests.swift */; };
-		0275AF581C138E26002F07D6 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0275AF561C138E26002F07D6 /* FormViewController.swift */; };
-		0275AF591C138E26002F07D6 /* FormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0275AF571C138E26002F07D6 /* FormViewModel.swift */; };
 		0275AF5B1C138E3A002F07D6 /* Form+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0275AF5A1C138E3A002F07D6 /* Form+Theme.swift */; };
+		02C2CA581C306DB1002770FD /* UIViewController+Scrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2CA571C306DB1002770FD /* UIViewController+Scrolling.swift */; };
+		02C2CA5B1C306DEE002770FD /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2CA591C306DEE002770FD /* UIView+AutoLayout.swift */; };
+		02C2CA5C1C306DEE002770FD /* UIViewController+KeyboardFrameChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2CA5A1C306DEE002770FD /* UIViewController+KeyboardFrameChange.swift */; };
+		02C2CA5E1C307523002770FD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2CA5D1C307523002770FD /* LoginViewController.swift */; };
+		02C2CA601C307533002770FD /* LoginFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2CA5F1C307533002770FD /* LoginFormViewModel.swift */; };
 		02F89CA81C14EBDA0036797B /* FormTextInputViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89CA71C14EBDA0036797B /* FormTextInputViewTests.swift */; };
 		341C17884B67886D3F9ACD2E /* Pods_Forms_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015AEC4F504547E2AE7FFCDD /* Pods_Forms_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -36,13 +43,20 @@
 
 /* Begin PBXFileReference section */
 		015AEC4F504547E2AE7FFCDD /* Pods_Forms_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Forms_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		024347721C30649900B45571 /* RegisterFormViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterFormViewModel.swift; sourceTree = "<group>"; };
+		024347731C30649900B45571 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		024347771C3064A800B45571 /* FormViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormViewModel.swift; sourceTree = "<group>"; };
+		024347791C3064B600B45571 /* FormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
 		02745F5B1C160B2E00436E11 /* FormInputViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormInputViewModelTests.swift; sourceTree = "<group>"; };
 		02745F5D1C1618B000436E11 /* FormSelectInputViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSelectInputViewTests.swift; sourceTree = "<group>"; };
 		02745F5F1C161B2C00436E11 /* FormSelectDateViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSelectDateViewTests.swift; sourceTree = "<group>"; };
 		02745F611C161D5900436E11 /* FormCheckboxInputViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormCheckboxInputViewTests.swift; sourceTree = "<group>"; };
-		0275AF561C138E26002F07D6 /* FormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
-		0275AF571C138E26002F07D6 /* FormViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormViewModel.swift; sourceTree = "<group>"; };
 		0275AF5A1C138E3A002F07D6 /* Form+Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Form+Theme.swift"; sourceTree = "<group>"; };
+		02C2CA571C306DB1002770FD /* UIViewController+Scrolling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Scrolling.swift"; path = "../../../../../Sites/PlaygroundProject/PlaygroundProject/Extensions/UIViewController+Scrolling.swift"; sourceTree = "<group>"; };
+		02C2CA591C306DEE002770FD /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+AutoLayout.swift"; path = "../../../../../Sites/PlaygroundProject/PlaygroundProject/Extensions/UIView+AutoLayout.swift"; sourceTree = "<group>"; };
+		02C2CA5A1C306DEE002770FD /* UIViewController+KeyboardFrameChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+KeyboardFrameChange.swift"; path = "../../../../../Sites/PlaygroundProject/PlaygroundProject/Extensions/UIViewController+KeyboardFrameChange.swift"; sourceTree = "<group>"; };
+		02C2CA5D1C307523002770FD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		02C2CA5F1C307533002770FD /* LoginFormViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFormViewModel.swift; sourceTree = "<group>"; };
 		02F89CA71C14EBDA0036797B /* FormTextInputViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormTextInputViewTests.swift; sourceTree = "<group>"; };
 		33196DA8687C547EF19142DF /* Pods-Forms_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Forms_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Forms_Example/Pods-Forms_Example.release.xcconfig"; sourceTree = "<group>"; };
 		349EB7587DC75A593E305958 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -83,9 +97,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		024347711C30649900B45571 /* LoginRegister */ = {
+			isa = PBXGroup;
+			children = (
+				024347721C30649900B45571 /* RegisterFormViewModel.swift */,
+				024347731C30649900B45571 /* RegisterViewController.swift */,
+				02C2CA5D1C307523002770FD /* LoginViewController.swift */,
+				02C2CA5F1C307533002770FD /* LoginFormViewModel.swift */,
+			);
+			path = LoginRegister;
+			sourceTree = "<group>";
+		};
+		024347741C30649900B45571 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				024347771C3064A800B45571 /* FormViewModel.swift */,
+				024347791C3064B600B45571 /* FormViewController.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
 		0275AF541C138E26002F07D6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				02C2CA591C306DEE002770FD /* UIView+AutoLayout.swift */,
+				02C2CA5A1C306DEE002770FD /* UIViewController+KeyboardFrameChange.swift */,
+				02C2CA571C306DB1002770FD /* UIViewController+Scrolling.swift */,
 				0275AF5A1C138E3A002F07D6 /* Form+Theme.swift */,
 			);
 			path = Extensions;
@@ -94,8 +131,8 @@
 		0275AF551C138E26002F07D6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				0275AF561C138E26002F07D6 /* FormViewController.swift */,
-				0275AF571C138E26002F07D6 /* FormViewModel.swift */,
+				024347711C30649900B45571 /* LoginRegister */,
+				024347741C30649900B45571 /* General */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -404,10 +441,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0275AF591C138E26002F07D6 /* FormViewModel.swift in Sources */,
+				02C2CA601C307533002770FD /* LoginFormViewModel.swift in Sources */,
+				024347781C3064A800B45571 /* FormViewModel.swift in Sources */,
 				0275AF5B1C138E3A002F07D6 /* Form+Theme.swift in Sources */,
-				0275AF581C138E26002F07D6 /* FormViewController.swift in Sources */,
+				0243477A1C3064B600B45571 /* FormViewController.swift in Sources */,
+				024347761C30649900B45571 /* RegisterViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				02C2CA5B1C306DEE002770FD /* UIView+AutoLayout.swift in Sources */,
+				02C2CA581C306DB1002770FD /* UIViewController+Scrolling.swift in Sources */,
+				024347751C30649900B45571 /* RegisterFormViewModel.swift in Sources */,
+				02C2CA5E1C307523002770FD /* LoginViewController.swift in Sources */,
+				02C2CA5C1C306DEE002770FD /* UIViewController+KeyboardFrameChange.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

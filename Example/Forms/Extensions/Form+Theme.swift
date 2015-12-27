@@ -9,20 +9,37 @@
 import UIKit
 import Forms
 
+extension UITextField {
+    
+    func themeForFormInput() {
+        layer.borderColor = UIColor.lightGrayColor().CGColor
+        layer.borderWidth = 1.0
+        layer.cornerRadius = 5.0
+        leftView = UIView(frame: CGRectMake(0, 0, 10.0, frame.size.height))
+        leftViewMode = .Always
+        heightAnchor.constraintEqualToConstant(44.0).active = true
+        clearButtonMode = .WhileEditing
+    }
+}
+
+extension UILabel {
+    
+    func themeForFormInputError() {
+        textColor = UIColor.redColor()
+        font = UIFont.boldSystemFontOfSize(font.pointSize)
+    }
+    
+    func themeForFormInputCaption() {
+        textColor = UIColor.grayColor()
+    }
+}
+
 extension FormTextInputView {
     
     func themeView() {
-        
-        textField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        textField.layer.borderWidth = 1.0
-        textField.layer.cornerRadius = 5.0
-        textField.leftView = UIView(frame: CGRectMake(0, 0, 10.0, frame.size.height))
-        textField.leftViewMode = .Always
-        textField.clearButtonMode = .WhileEditing
-        
-        errorLabel.textColor = UIColor.redColor()
-        
-        captionLabel.textColor = UIColor.grayColor()
+        textField.themeForFormInput()
+        errorLabel.themeForFormInputError()
+        captionLabel.themeForFormInputCaption()
     }
     
     func themeViewFocused() {
@@ -33,17 +50,9 @@ extension FormTextInputView {
 extension FormSelectDateInputView {
     
     func themeView() {
-        
-        textField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        textField.layer.borderWidth = 1.0
-        textField.layer.cornerRadius = 5.0
-        textField.leftView = UIView(frame: CGRectMake(0, 0, 10.0, frame.size.height))
-        textField.leftViewMode = .Always
-        textField.clearButtonMode = .WhileEditing
-        
-        errorLabel.textColor = UIColor.redColor()
-        
-        captionLabel.textColor = UIColor.grayColor()
+        textField.themeForFormInput()
+        errorLabel.themeForFormInputError()
+        captionLabel.themeForFormInputCaption()
     }
     
     func themeViewFocused() {
@@ -54,17 +63,9 @@ extension FormSelectDateInputView {
 extension FormSelectInputView {
     
     func themeView() {
-        
-        textField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        textField.layer.borderWidth = 1.0
-        textField.layer.cornerRadius = 5.0
-        textField.leftView = UIView(frame: CGRectMake(0, 0, 10.0, frame.size.height))
-        textField.leftViewMode = .Always
-        textField.clearButtonMode = .WhileEditing
-        
-        errorLabel.textColor = UIColor.redColor()
-        
-        captionLabel.textColor = UIColor.grayColor()
+        textField.themeForFormInput()
+        errorLabel.themeForFormInputError()
+        captionLabel.themeForFormInputCaption()
     }
     
     func themeViewFocused() {
@@ -75,14 +76,12 @@ extension FormSelectInputView {
 extension FormCheckboxInputView {
     
     func themeView() {
-        
         checkBoxButton.setImage(UIImage(named: "control_checkbox_checked"), forState: .Selected)
         checkBoxButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         checkBoxButton.layer.borderWidth = 1.0
-        
-        errorLabel.textColor = UIColor.redColor()
-        
-        captionLabel.textColor = UIColor.grayColor()
+        checkBoxButton.heightAnchor.constraintEqualToConstant(44.0).active = true
+        errorLabel.themeForFormInputError()
+        captionLabel.themeForFormInputCaption()
     }
 }
 

@@ -2,58 +2,46 @@
 //  FormViewController.swift
 //  Forms
 //
-//  Created by mrandall on 12/05/2015.
-//  Copyright (c) 2015 mrandall. All rights reserved.
+//  Created by mrandall on 12/27/15.
+//  Copyright © 2015 CocoaPods. All rights reserved.
 //
 
 import UIKit
 import Forms
 
-final class FormViewController: UIViewController {
+protocol FormViewController {
+    
+    //FormViewModel for VC
+    var formViewModel: FormViewModel { get }
+    
+    //Stackview form input views are to be arrangedsubviews of
+    var inputStackView: UIStackView! { get }
+    
+    //Create form input views in VC view heirachy
+    //Calls addFormInputSubview unless implimented
+    func createFormInputs()
+    
+    // Creates from form inputviews
+    func addFormInputSubview(forInputViewModels inputViewModels: [AnyObject], inStackView formStackView: UIStackView)
+}
 
-    //MARK: - ViewModel
+extension FormViewController where Self: UIViewController {
     
-    lazy var viewModel: FormViewModel = {
-        return FormViewModel()
-    }()
+    //MARK: - Create FormInputViews from FormInputViewModels
     
-    //MARK: - Subviews
-    
-    @IBOutlet private weak var formStackView: UIStackView! {
-        didSet {
-            formStackView.layoutMargins = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
-            formStackView.layoutMarginsRelativeArrangement = true
-            formStackView.spacing = 20.0
-        }
+    func createFormInputs() {
+        addFormInputSubview(forInputViewModels: formViewModel.inputs, inStackView: inputStackView)
     }
-    
-    //MARK: - ViewController Lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        //create form
-        createFormFromViewModel()
-    }
-    
-    //MARK: - Actions
-    
-    @IBAction private func submitButtonTapped(sender: AnyObject?) {
-        view.endEditing(true)
-        viewModel.submitForm()
-    }
-    
-    //MARK: - Update View
     
     //Create form inputs as arranged subviews of formStackView
-    private func createFormFromViewModel() {
+    func addFormInputSubview(forInputViewModels inputViewModels: [AnyObject], inStackView formStackView: UIStackView) {
         
         //create and append a FormInputView for each FormInputViewModelProtocol
         //reverse to insert at zero index -
         //prepend all in viewModel input arranged subviews to existing arranged subviews
-        viewModel.inputs.reverse().forEach {
+        inputViewModels.reverse().forEach {
             
-            //select input
+            //select input with text
             if let viewModel = $0 as? FormSelectInputViewModel<String> {
                 let selectInputView = FormSelectInputView(withViewModel: viewModel)
                 
@@ -108,7 +96,7 @@ final class FormViewController: UIViewController {
                 formStackView.insertArrangedSubview(selectDateInputView, atIndex: 0)
                 return
             }
-
+            
             //checkbox inputs
             if let viewModel = $0 as? FormInputViewModel<Bool> {
                 let checkboxInputView = FormCheckboxInputView(withViewModel: viewModel)
@@ -119,4 +107,3 @@ final class FormViewController: UIViewController {
         }
     }
 }
-

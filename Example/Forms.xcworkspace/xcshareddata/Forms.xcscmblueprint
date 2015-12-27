@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DA9A442B32C9C065060CFBE76158BAED05D902A2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DA9A442B32C9C065060CFBE76158BAED05D902A2" : 0,
+    "1633BA09B288534B27DDA091FA7EE67307EC0152" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "382D4AA6-0519-4A94-BCC3-D8D8DBC809B6",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DA9A442B32C9C065060CFBE76158BAED05D902A2" : "Forms\/",
+    "1633BA09B288534B27DDA091FA7EE67307EC0152" : "..\/Sites\/PlaygroundProject"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Forms",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Example\/Forms.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mark-randall\/PlaygroundProject.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1633BA09B288534B27DDA091FA7EE67307EC0152"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mark-randall\/Forms.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DA9A442B32C9C065060CFBE76158BAED05D902A2"
+    }
+  ]
+}
