@@ -13,7 +13,7 @@
 		02FFDB1805CDB610EC4941E357267BCC /* FormTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6207F0BF99C4339BA129C329332D2AFA /* FormTextInputView.swift */; };
 		07D072E2DEE09B91754976490740E692 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376DD8704E4393C84013470CB6327122 /* NSObject+Bond.swift */; };
 		07E9EDED556FFBD6D39729A09E44B6BD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AEBB46327FF807518D9E658A267D0C /* Foundation.framework */; };
-		08192A9422F1C17451145531DA946666 /* Form+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB8E2399526711DF1FDB762957C4E1F /* Form+Validation.swift */; };
+		08192A9422F1C17451145531DA946666 /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB8E2399526711DF1FDB762957C4E1F /* String+Validation.swift */; };
 		1AF125B28A61839240FB20DFCC487A77 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AEBB46327FF807518D9E658A267D0C /* Foundation.framework */; };
 		1C2DFBFAFCB0951A64A678FA2AD48F58 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97EA3730D67AA4B68EBE502CD72AD0D /* BindableType.swift */; };
 		1D24C4B841DA189C2521AFA2FEE2E1FE /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443B6FAB89F42F31722E326441EB3EFA /* UIView+AutoLayout.swift */; };
@@ -193,7 +193,7 @@
 		E712D661CE412F6A88BAB1DF703145A1 /* UIView+Bond.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+Bond.swift"; path = "Bond/Extensions/iOS/UIView+Bond.swift"; sourceTree = "<group>"; };
 		E97804E7C78F5FAD06B1C00783C6FED6 /* Pods-Forms_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Forms_Example.modulemap"; sourceTree = "<group>"; };
 		EB4C689E8A84949CC4B59907BA6B224E /* NSIndexSet+Bond.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSIndexSet+Bond.swift"; path = "Bond/Extensions/Shared/NSIndexSet+Bond.swift"; sourceTree = "<group>"; };
-		EEB8E2399526711DF1FDB762957C4E1F /* Form+Validation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Form+Validation.swift"; sourceTree = "<group>"; };
+		EEB8E2399526711DF1FDB762957C4E1F /* String+Validation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "String+Validation.swift"; sourceTree = "<group>"; };
 		F19A6FDA672541FDF1943A14BA683837 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4F670B238129D25709757C127A6DABE /* OptionalType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OptionalType.swift; path = Bond/Core/OptionalType.swift; sourceTree = "<group>"; };
 		F77F70107586FB797F81AB1B9F7D641B /* NSNotificationCenter+Bond.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSNotificationCenter+Bond.swift"; path = "Bond/Extensions/Shared/NSNotificationCenter+Bond.swift"; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 		C408FFA7E5B321EFDC84FB53F84CEEBC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				EEB8E2399526711DF1FDB762957C4E1F /* Form+Validation.swift */,
+				EEB8E2399526711DF1FDB762957C4E1F /* String+Validation.swift */,
 				443B6FAB89F42F31722E326441EB3EFA /* UIView+AutoLayout.swift */,
 			);
 			path = Extensions;
@@ -692,7 +692,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08192A9422F1C17451145531DA946666 /* Form+Validation.swift in Sources */,
+				08192A9422F1C17451145531DA946666 /* String+Validation.swift in Sources */,
 				933325A38C27E89C24D4E17C53C5FDAC /* FormCheckboxInputView.swift in Sources */,
 				C0D32E30DCB92CA74186156A35363DC7 /* FormInputValidation.swift in Sources */,
 				02F89CA21C142ABA0036797B /* FormSelectInputViewModel.swift in Sources */,

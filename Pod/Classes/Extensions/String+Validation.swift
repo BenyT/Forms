@@ -1,9 +1,9 @@
 //
-//  FormSelectInputViewModel.swift
+//  String+Validation.swift
 //
 //  The MIT License (MIT)
 //
-//  Created by mrandall on 12/06/15.
+//  Created by mrandall on 11/30/15.
 //  Copyright © 2015 mrandall. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,22 +24,21 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
-import UIKit
 
-public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
+import Foundation
 
-    public var options: [T]
+public extension String {
     
-    public var pickerPlaceholder: String?
-    
-    //MARK: - Init
-    
-    // Init
-    //
-    // - Parameter value: T
-    public init(options: [T], value: T?) {
-        self.options = options
-        super.init(value: value)
+    func isEmail() -> Bool {
+        
+        let pattern = "(?:[a-zA-Z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%\\&'*+/=?\\^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+        
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
+            return regex.firstMatchInString(self, options: [], range: NSMakeRange(0, self.characters.count)) != nil
+        } catch {
+            return false
+        }
     }
-    
+
 }
