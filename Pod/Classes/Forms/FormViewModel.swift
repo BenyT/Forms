@@ -6,9 +6,8 @@
 //  Copyright © 2015 CocoaPods. All rights reserved.
 //
 
-import Forms
 
-protocol FormViewModel {
+public protocol FormViewModel {
     
     //Ordered FormInputViewModel objects
     //NOTE: using AnyObject type until Swift supports covariance for generics
@@ -26,15 +25,15 @@ protocol FormViewModel {
     func submitForm()
 }
 
-extension FormViewModel {
+public extension FormViewModel {
     
-    func validate() -> Bool {
+    public func validate() -> Bool {
         
         let invalidInputs = inputs.filter {
             
-            //Requires generic covariance support
+            //Requires generic covariance / dynamic dispatch support
             //Not supported as of Swift 2.1
-            //if let viewModel = $0 as? FormInputValidatable { }
+            //if let viewModel = $0 as? FormInputValidatable { } is not supported
             
             //select input
             if let viewModel = $0 as? FormSelectInputViewModel<String> {

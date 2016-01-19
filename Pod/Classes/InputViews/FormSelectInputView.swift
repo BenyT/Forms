@@ -137,7 +137,7 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
         didAddSubviewConstriants = true
         
         //layout subviews
-        createConstraints(visualFormatting: [
+        UIView.createConstraints(visualFormatting: [
             "H:|-(0)-[ui]-(0)-|",
             "V:|-(0)-[ui]-(0)-|",
             ],

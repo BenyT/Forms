@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Forms
 
 class LoginViewController: UIViewController, FormViewController {
     

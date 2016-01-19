@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import Forms
 
-protocol FormViewController {
+public protocol FormViewController {
     
     //FormViewModel for VC
     var formViewModel: FormViewModel { get }
@@ -22,19 +21,26 @@ protocol FormViewController {
     func createFormInputs()
     
     // Creates from form inputviews
-    func addFormInputSubview(forInputViewModels inputViewModels: [AnyObject], inStackView formStackView: UIStackView)
+    func addFormInputSubviews(
+        forInputViewModels inputViewModels: [AnyObject],
+        inStackView formStackView: UIStackView
+    )
 }
 
-extension FormViewController where Self: UIViewController {
-    
+
+public extension FormViewController where Self: UIViewController {
+
     //MARK: - Create FormInputViews from FormInputViewModels
     
     func createFormInputs() {
-        addFormInputSubview(forInputViewModels: formViewModel.inputs, inStackView: inputStackView)
+        addFormInputSubviews(forInputViewModels: formViewModel.inputs, inStackView: inputStackView)
     }
     
     //Create form inputs as arranged subviews of formStackView
-    func addFormInputSubview(forInputViewModels inputViewModels: [AnyObject], inStackView formStackView: UIStackView) {
+    func addFormInputSubviews(
+        forInputViewModels inputViewModels: [AnyObject],
+        inStackView formStackView: UIStackView
+    ) {
         
         //create and append a FormInputView for each FormInputViewModelProtocol
         //reverse to insert at zero index -
@@ -61,7 +67,6 @@ extension FormViewController where Self: UIViewController {
             //text inputs
             if let viewModel = $0 as? FormInputViewModel<String> {
                 let textInputView = FormTextInputView(withViewModel: viewModel)
-                textInputView.themeView()
                 
                 viewModel.focusedObservable.observe {
                     

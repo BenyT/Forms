@@ -142,7 +142,7 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         didAddSubviewConstriants = true
         
         //layout subviews
-        createConstraints(visualFormatting: [
+        UIView.createConstraints(visualFormatting: [
             "H:|-(0)-[stackView]-(0)-|",
             "V:|-(0)-[stackView]-(0)-|",
             ],
