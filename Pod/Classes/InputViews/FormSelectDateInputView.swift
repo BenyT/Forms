@@ -31,7 +31,7 @@ private enum InputSelector: Selector {
 }
 
 //@IBDesignable
-public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
+public class FormSelectDateInputView: UIView, FormInputView {
     
     override class public func requiresConstraintBasedLayout() -> Bool {
         return true
@@ -151,7 +151,27 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
         invalidateIntrinsicContentSize()
     }
     
-    //MARK: - FormInputViewModelView
+    //MARK: - UIResponder
+    
+    override public func resignFirstResponder() -> Bool {
+        return formBaseTextInputView.textField.resignFirstResponder()
+    }
+    
+    override public func isFirstResponder() -> Bool {
+        return formBaseTextInputView.textField.isFirstResponder()
+    }
+    
+    //MARK: - Actions
+    
+    public func datePickerValueChanged(sender: AnyObject?) {
+        viewModel?.value = datePicker.date
+        textField.text = viewModel?.displayValue
+    }
+}
+
+//MARK: - FormInputViewModelView
+
+extension FormSelectDateInputView: FormInputViewModelView {
     
     //bind to viewModel
     public func bindViewModel() {
@@ -168,18 +188,11 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
             }
         }
     }
-    
-    //MARK: - UIResponder
-    
-    override public func resignFirstResponder() -> Bool {
-        return formBaseTextInputView.textField.resignFirstResponder()
-    }
-    
-    override public func isFirstResponder() -> Bool {
-        return formBaseTextInputView.textField.isFirstResponder()
-    }
-    
-    //MARK: - UITextFieldDelegate
+}
+
+//MARK: - UITextFieldDelegate
+
+extension FormSelectDateInputView: UITextFieldDelegate {
     
     public func textFieldDidBeginEditing(textField: UITextField) {
         viewModel?.focused = true
@@ -192,13 +205,6 @@ public class FormSelectDateInputView: UIView, FormInputView, FormInputViewModelV
     public func textFieldShouldClear(textField: UITextField) -> Bool {
         viewModel?.value = nil
         return true
-    }
-    
-    //MARK: - Actions
-    
-    public func datePickerValueChanged(sender: AnyObject?) {
-        viewModel?.value = datePicker.date
-        textField.text = viewModel?.displayValue
     }
 }
 

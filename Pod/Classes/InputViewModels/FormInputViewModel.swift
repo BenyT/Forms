@@ -52,7 +52,7 @@ final public class InputViewLayout: FormBaseTextInputViewLayout {
 }
 
 //Base class for FormInputViewModel
-public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidatable {
+public class FormInputViewModel<T>: FormInputViewModelProtocol {
     
     //MARK: - FormInputViewModelProtocol
     
@@ -219,7 +219,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         }
     }
     
-    //MARK: - FormInputValidatable
+    //MARK: - FormInputValidatable Variables
     
     //whether input is valid
     public var validObservable = Observable<Bool>(true)
@@ -283,13 +283,16 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol, FormInputValidat
         inputViewLayoutObservable = Observable(self.inputViewLayout)
     }
     
-    //MARK: - Validation
+    public func validateUsingDisplayValidationErrorsOnValueChangeValue() -> Bool {
+        return validate(updateErrorText: displayValidationErrorsOnValueChange)
+    }
+}
+
+//MARK: - FormInputValidatable
+
+extension FormInputViewModel: FormInputValidatable {
     
     public func validate() -> Bool {
         return validate(updateErrorText: true)
-    }
-    
-    public func validateUsingDisplayValidationErrorsOnValueChangeValue() -> Bool {
-        return validate(updateErrorText: displayValidationErrorsOnValueChange)
     }
 }

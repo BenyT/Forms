@@ -32,7 +32,7 @@ private enum InputSelector: Selector {
 }
 
 //@IBDesignable
-public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelView {
+public class FormCheckboxInputView: UIView, FormInputView {
     
     override public class func requiresConstraintBasedLayout() -> Bool {
         return true
@@ -175,7 +175,21 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
         invalidateIntrinsicContentSize()
     }
     
-    //MARK: - FormInputViewModelView
+    //MARK: - Actions
+    
+    func checkBoxButtonWastTapped(sender: AnyObject) {
+        
+        guard let viewModel = self.viewModel else {
+            return
+        }
+        
+        viewModel.value = !viewModel.value!
+    }
+}
+
+//MARK: - FormInputViewModelView
+
+extension FormCheckboxInputView: FormInputViewModelView {
     
     //bind to viewModel
     public func bindViewModel() {
@@ -196,16 +210,5 @@ public class FormCheckboxInputView: UIView, FormInputView, FormInputViewModelVie
             self.stackView.spacing = CGFloat($0.subviewSpacing)
             self.checkBoxCaptionStackView.spacing = CGFloat($0.subviewSpacing)
         }
-    }
-    
-    //MARK: - Actions
-    
-    func checkBoxButtonWastTapped(sender: AnyObject) {
-        
-        guard let viewModel = self.viewModel else {
-            return
-        }
-        
-        viewModel.value = !viewModel.value!
     }
 }

@@ -27,13 +27,13 @@
 import UIKit
 
 //@IBDesignable
-public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate {
+public class FormTextInputView: UIView, FormInputView {
     
     override class public func requiresConstraintBasedLayout() -> Bool {
         return true
     }
     
-    //MARK: - FormInputViewModelView
+    //MARK: - FormInputViewModelView Properties
     
     public var viewModel: FormInputViewModel<String>? {
         didSet {
@@ -145,8 +145,11 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
     override public func isFirstResponder() -> Bool {
         return formBaseTextInputView.textField.isFirstResponder()
     }
-    
-    //MARK: - FormInputViewModelView
+}
+
+//MARK: - FormInputViewModelView
+
+extension FormTextInputView: FormInputViewModelView {
     
     //bind to viewModel
     public func bindViewModel() {
@@ -154,11 +157,14 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
         guard let viewModel = self.viewModel else {
             return
         }
-
+        
         formBaseTextInputView.bindViewModel(viewModel)
     }
+}
 
-    //MARK: - UITextFieldDelegate
+//MARK: - UITextFieldDelegate
+
+extension FormTextInputView: UITextFieldDelegate {
     
     public func textFieldDidBeginEditing(textField: UITextField) {
         viewModel?.focused = true
@@ -178,7 +184,7 @@ public class FormTextInputView: UIView, FormInputView, FormInputViewModelView, U
             viewModel?.focused = false
             nextInput.focused = true
         }
-
+        
         return true
     }
     
