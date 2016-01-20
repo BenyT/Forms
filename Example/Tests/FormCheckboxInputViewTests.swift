@@ -12,7 +12,7 @@ import XCTest
 class FormCheckboxInputViewTests: XCTestCase {
     
     lazy var viewModel: FormInputViewModel<Bool> = {
-        let vm = FormInputViewModel(value: false)
+        let vm = FormInputViewModel(identifier: "test", value: false)
         vm.placeholder = "placeholder"
         vm.caption = "caption"
         return vm
@@ -31,9 +31,9 @@ class FormCheckboxInputViewTests: XCTestCase {
         let vm = viewModel
         
         let view = FormCheckboxInputView(withViewModel: vm)
-        XCTAssertEqual(view.checkBoxButton.selected, false, "checkBoxButton.selected is initially false")
+        XCTAssertEqual(view.button.selected, false, "checkBoxButton.selected is initially false")
         
         vm.value = true
-        XCTAssertEqual(view.checkBoxButton.selected, true, "checkBoxButton.selected was updated")
+        XCTAssertEqual(view.button.selected, true, "checkBoxButton.selected was updated")
     }
 }

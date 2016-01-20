@@ -14,7 +14,8 @@ final class RegistrationFormViewModel: FormViewModel {
     //MARK: - Input View Models - Username and password
     
     lazy var userNameInputViewModel: FormInputViewModel<String> = { [unowned self] in
-        let vm = FormInputViewModel(value: "")
+        
+        let vm = FormInputViewModel(identifier: "username", value: "")
         vm.placeholder = "* user name"
         vm.caption = "Users will identify one another by username"
         vm.nextInputsViewModel = self.passwordInputViewModel
@@ -31,7 +32,8 @@ final class RegistrationFormViewModel: FormViewModel {
     }()
     
     lazy var passwordInputViewModel: FormInputViewModel<String> = {
-        let vm = FormInputViewModel(value: "")
+        
+        let vm = FormInputViewModel(identifier: "password", value: "")
         vm.placeholder = "* password"
         vm.returnKeyType = .Next
         vm.nextInputsViewModel = self.confirmPasswordInputViewModel
@@ -48,7 +50,8 @@ final class RegistrationFormViewModel: FormViewModel {
     }()
     
     lazy var confirmPasswordInputViewModel: FormInputViewModel<String> = { [unowned self] in
-        let vm = FormInputViewModel(value: "")
+        
+        let vm = FormInputViewModel(identifier: "confirmPassword", value: "")
         vm.placeholder = "* confirm password"
         vm.returnKeyType = .Next
         vm.nextInputsViewModel = self.dateSelectInputViewModel
@@ -74,7 +77,7 @@ final class RegistrationFormViewModel: FormViewModel {
 
     lazy var dateSelectInputViewModel: FormInputViewModel<NSDate> = { [unowned self] in
         
-        let vm = FormInputViewModel<NSDate>(value: nil)
+        let vm = FormInputViewModel<NSDate>(identifier: "birthday", value: nil)
         vm.placeholder = "birthday"
         vm.caption = "Why we ask: Receive special promotions on your birthday"
         
@@ -89,7 +92,7 @@ final class RegistrationFormViewModel: FormViewModel {
     
     lazy var stateSelectInputViewModel: FormSelectInputViewModel<String> = { [unowned self] in
         
-        let vm = FormSelectInputViewModel(options: ["Alabama", "Minnesota", "Washington"], value: nil)
+        let vm = FormSelectInputViewModel(identifier: "state", options: ["Alabama", "Minnesota", "Washington"], value: nil)
         vm.placeholder = "* state"
         vm.pickerPlaceholder = "-- Please select a state -- "
         
@@ -107,7 +110,8 @@ final class RegistrationFormViewModel: FormViewModel {
     }()
     
     lazy var termsCheckboxInputViewModel: FormInputViewModel<Bool> = {
-        let vm = FormInputViewModel(value: false)
+        
+        let vm = FormInputViewModel(identifier: "terms", value: false)
         vm.caption = "I agree to your terms"
         vm.inputViewLayout.subviewSpacing = 10
         
@@ -122,7 +126,7 @@ final class RegistrationFormViewModel: FormViewModel {
 
     //MARK: - FormViewModel
     
-    lazy var inputs: [AnyObject] = { [unowned self] in
+    lazy var inputs: [FormInputViewModelProtocol] = { [unowned self] in
         return [
             self.userNameInputViewModel,
             self.passwordInputViewModel,

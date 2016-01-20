@@ -92,8 +92,8 @@
 			children = (
 				024347721C30649900B45571 /* RegisterFormViewModel.swift */,
 				024347731C30649900B45571 /* RegisterViewController.swift */,
-				02C2CA5D1C307523002770FD /* LoginViewController.swift */,
 				02C2CA5F1C307533002770FD /* LoginFormViewModel.swift */,
+				02C2CA5D1C307523002770FD /* LoginViewController.swift */,
 			);
 			path = LoginRegister;
 			sourceTree = "<group>";

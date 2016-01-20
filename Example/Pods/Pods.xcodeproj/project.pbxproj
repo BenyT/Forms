@@ -13,7 +13,6 @@
 		0280A5A71C4ED80E00BC0C01 /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0280A5A61C4ED80E00BC0C01 /* String+Validation.swift */; };
 		0280A5AA1C4ED8BC00BC0C01 /* FormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0280A5A81C4ED8BC00BC0C01 /* FormViewModel.swift */; };
 		0280A5AB1C4ED8BC00BC0C01 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0280A5A91C4ED8BC00BC0C01 /* FormViewController.swift */; };
-		0280A5AE1C4EDCD600BC0C01 /* Form+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0280A5AD1C4EDCD600BC0C01 /* Form+Theme.swift */; };
 		02F89C9B1C141C540036797B /* FormBaseTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89C991C141BDB0036797B /* FormBaseTextInputView.swift */; };
 		02F89C9F1C14208D0036797B /* FormSelectInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89C9C1C1420850036797B /* FormSelectInputView.swift */; };
 		02F89CA21C142ABA0036797B /* FormSelectInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89CA01C142AB60036797B /* FormSelectInputViewModel.swift */; };
@@ -124,8 +123,6 @@
 		0280A5A61C4ED80E00BC0C01 /* String+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Validation.swift"; sourceTree = "<group>"; };
 		0280A5A81C4ED8BC00BC0C01 /* FormViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormViewModel.swift; sourceTree = "<group>"; };
 		0280A5A91C4ED8BC00BC0C01 /* FormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
-		0280A5AD1C4EDCD600BC0C01 /* Form+Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Form+Theme.swift"; sourceTree = "<group>"; };
-		0280A5B01C4EDDAA00BC0C01 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		02F89C991C141BDB0036797B /* FormBaseTextInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormBaseTextInputView.swift; sourceTree = "<group>"; };
 		02F89C9C1C1420850036797B /* FormSelectInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSelectInputView.swift; sourceTree = "<group>"; };
 		02F89CA01C142AB60036797B /* FormSelectInputViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSelectInputViewModel.swift; sourceTree = "<group>"; };
@@ -277,8 +274,6 @@
 		0280A5AC1C4EDCC600BC0C01 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				0280A5B01C4EDDAA00BC0C01 /* Images.xcassets */,
-				0280A5AD1C4EDCD600BC0C01 /* Form+Theme.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -586,6 +581,7 @@
 				B4D5DB801A241E7F230018046C26571E /* Sources */,
 				5B911D83FF5BA87D65CEAA84902E0257 /* Frameworks */,
 				923151F0EA27C62845ED2C238C594503 /* Headers */,
+				0280A5BB1C4F059B00BC0C01 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -664,6 +660,16 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		0280A5BB1C4F059B00BC0C01 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4E31BAFAD520165F2193E8C1BED79D26 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -738,7 +744,6 @@
 				42B526FCF4122F61BDA233E4D3023CA4 /* FormSelectDateInputView.swift in Sources */,
 				02F89C9B1C141C540036797B /* FormBaseTextInputView.swift in Sources */,
 				02FFDB1805CDB610EC4941E357267BCC /* FormTextInputView.swift in Sources */,
-				0280A5AE1C4EDCD600BC0C01 /* Form+Theme.swift in Sources */,
 				0280A5A51C4ED7BA00BC0C01 /* UIViewController+Scrolling.swift in Sources */,
 				02F89C9F1C14208D0036797B /* FormSelectInputView.swift in Sources */,
 			);

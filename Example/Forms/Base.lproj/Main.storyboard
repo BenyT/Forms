@@ -98,7 +98,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="UOj-Ux-uTq"/>
                     <connections>
-                        <outlet property="inputStackView" destination="SWN-Mp-p9R" id="HXN-q5-k6b"/>
+                        <outlet property="inputsStackView" destination="SWN-Mp-p9R" id="SNf-2f-u94"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fZp-md-Z2s" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -168,7 +168,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Sign Up" id="vCs-Xl-tRY"/>
                     <connections>
-                        <outlet property="inputStackView" destination="DN9-de-47Q" id="zTC-na-LKL"/>
+                        <outlet property="inputsStackView" destination="DN9-de-47Q" id="AG6-b5-ZEc"/>
                         <outlet property="scrollContentView" destination="VmN-m5-WCE" id="ef8-cA-qPn"/>
                     </connections>
                 </viewController>

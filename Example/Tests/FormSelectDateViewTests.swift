@@ -12,7 +12,7 @@ import XCTest
 class FormSelectDateViewTests: XCTestCase {
     
     lazy var viewModel: FormInputViewModel<NSDate> = {
-        let vm = FormInputViewModel(value: NSDate(timeIntervalSince1970: 0))
+        let vm = FormInputViewModel(identifier: "test", value: NSDate(timeIntervalSince1970: 0))
         vm.placeholder = "placeholder"
         vm.caption = "caption"
         return vm

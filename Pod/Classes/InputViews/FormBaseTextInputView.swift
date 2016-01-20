@@ -27,24 +27,39 @@
 
 import UIKit
 
-public enum InputSubviews {
-    case TextField
-    case CaptionLabel
-    case ErrorLabel
-}
+//MARK: - Form Input Subviews
 
 public protocol FormInputView: class {
+    
+    var identifier: String { get }
+    
+    //var theme: FormInputViewTheme { get set }
+    
+    var captionLabel: UILabel { get }
+    
+    var errorLabel: UILabel { get }
     
     func becomeFirstResponder() -> Bool
 }
 
-public protocol FormInputViewModelView: class {
-    
-    typealias DataType
-    
-    var viewModel: FormInputViewModel<DataType>? { get }
-    
-    func bindViewModel()
+func ==(lhs: FormInputView, rhs: FormInputView) -> Bool {
+    return lhs == rhs
+}
+
+public protocol KeyboardFormIputView: FormInputView {
+    var textField: UITextField { get }
+}
+
+public protocol ButtonFormIputView: FormInputView {
+    var button: UIButton { get }
+}
+
+//MARK: - Form Input Subview Layout
+
+public enum InputSubviews {
+    case TextField
+    case CaptionLabel
+    case ErrorLabel
 }
 
 protocol FormBaseTextInputViewLayout {
@@ -54,6 +69,17 @@ protocol FormBaseTextInputViewLayout {
     var subviewSpacing: Double { get set }
     
     var subviewOrder:[InputSubviews] { get set }
+}
+
+//MARK: - Form Input With ViewModel
+
+public protocol FormInputViewModelView: class {
+    
+    typealias DataType
+    
+    var viewModel: FormInputViewModel<DataType>? { get }
+    
+    func bindViewModel()
 }
 
 //Base UIView for any FormInputs which require a basic textfield, capture label, error label heirarchy
@@ -207,6 +233,8 @@ final class FormBaseTextInputView<T>: UIView {
         
         self.inputViewLayout = viewModel.inputViewLayout
         
+        //layout
+        
         viewModel.inputViewLayoutObservable.observeNew {
             self.inputViewLayout = $0
             
@@ -222,5 +250,28 @@ final class FormBaseTextInputView<T>: UIView {
             
             self.addSubviews()
         }
+        
+        //theme
+        
+//        viewModel.errorTextObservable.observe {
+//            if $0 == true {
+//                
+//                if viewModel.focused {
+//                    theme.themeViewErrorFocused()
+//                } else {
+//                    theme.themeViewError()
+//                }
+//            }
+//        }
+//        
+//        viewModel.focusedObservable.filter { _ in
+//            viewModel.errorText.value == nil
+//        }.observe {
+//            if $0 == true {
+//                theme.themeViewFocused()
+//            } else {
+//                theme.themeView()
+//            }
+//        }
     }
 }

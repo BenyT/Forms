@@ -15,7 +15,7 @@ final class LoginFormViewModel: FormViewModel {
     //MARK: - Input View Models
     
     lazy var userNameInputViewModel: FormInputViewModel<String> = { [unowned self] in
-        let vm = FormInputViewModel(value: "")
+        let vm = FormInputViewModel(identifier: "username", value: "")
         vm.placeholder = "* user name"
         vm.nextInputsViewModel = self.passwordInputViewModel
         vm.returnKeyType = .Next
@@ -31,7 +31,7 @@ final class LoginFormViewModel: FormViewModel {
     }()
     
     lazy var passwordInputViewModel: FormInputViewModel<String> = {
-        let vm = FormInputViewModel(value: "")
+        let vm = FormInputViewModel(identifier: "password", value: "")
         vm.placeholder = "* password"
         vm.returnKeyType = .Go
         vm.secureTextEntry = true
@@ -48,7 +48,7 @@ final class LoginFormViewModel: FormViewModel {
 
     //MARK: - FormViewModel
     
-    lazy var inputs: [AnyObject] = { [unowned self] in
+    lazy var inputs: [FormInputViewModelProtocol] = { [unowned self] in
         return [
             self.userNameInputViewModel,
             self.passwordInputViewModel

@@ -29,10 +29,10 @@
 public protocol FormViewModel {
     
     //Ordered FormInputViewModel objects
-    //NOTE: using AnyObject type until Swift supports covariance for generics
+    //NOTE: using FormInputViewModelProtocol type until Swift supports covariance for generics
     //Will require casting to all necessary specialized FormInputViewModel types
     //Not supported as of Swift 2.1
-    var inputs: [AnyObject] { get }
+    var inputs: [FormInputViewModelProtocol] { get }
     
     //Validate inputs
     //
@@ -44,8 +44,15 @@ public protocol FormViewModel {
     func submitForm()
 }
 
+func ==(lhs: FormViewModel, rhs: FormViewModel) -> Bool {
+    return lhs == rhs
+}
+
 public extension FormViewModel {
     
+    //TODO: consider inheritance or class to allow validate to be extended
+    
+    // If your form has custom input view models (FormInputViewModel<T>) you will most likely need to override this method
     public func validate() -> Bool {
         
         let invalidInputs = inputs.filter {
@@ -78,5 +85,11 @@ public extension FormViewModel {
         }
         
         return invalidInputs.count == 0
+    }
+    
+    subscript(identifier: String) -> FormInputViewModelProtocol? {
+        return inputs.filter {
+            $0.identifier == identifier
+        }.first
     }
 }

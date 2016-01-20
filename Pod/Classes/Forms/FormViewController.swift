@@ -28,107 +28,45 @@
 
 import UIKit
 
-public protocol FormViewController {
+public protocol FormViewController{
+    
+//    var inputsByIdentifier: [String: FormInputView] { get set }
     
     //FormViewModel for VC
-    var formViewModel: FormViewModel { get }
+    var formViewModel: FormViewModel { get  }
     
-    //Stackview form input views are to be arrangedsubviews of
-    var inputStackView: UIStackView! { get }
-    
-    //Create form input views in VC view heirachy
-    //Calls addFormInputSubview unless implimented
-    func createFormInputs()
-    
-    // Creates from form inputviews
-    func addFormInputSubviews(
-        forInputViewModels inputViewModels: [AnyObject],
-        inStackView formStackView: UIStackView
-    )
+    //Creates view for each viewModel and add to inputsStackView
+    func createForm()
 }
 
+public class FormFactory {
 
-public extension FormViewController where Self: UIViewController {
+    public class func createFormInputView(withInputViewModel inputViewModel: FormInputViewModelProtocol) -> FormInputView? {
 
-    //MARK: - Create FormInputViews from FormInputViewModels
-    
-    func createFormInputs() {
-        addFormInputSubviews(forInputViewModels: formViewModel.inputs, inStackView: inputStackView)
-    }
-    
-    //Create form inputs as arranged subviews of formStackView
-    func addFormInputSubviews(
-        forInputViewModels inputViewModels: [AnyObject],
-        inStackView formStackView: UIStackView
-    ) {
-        
-        //create and append a FormInputView for each FormInputViewModelProtocol
-        //reverse to insert at zero index -
-        //prepend all in viewModel input arranged subviews to existing arranged subviews
-        inputViewModels.reverse().forEach {
-            
-            //select input with text
-            if let viewModel = $0 as? FormSelectInputViewModel<String> {
-                let selectInputView = FormSelectInputView(withViewModel: viewModel)
-                
-                viewModel.focusedObservable.observe {
-                    
-                    if $0 == true {
-                        selectInputView.themeViewFocused()
-                    } else {
-                        selectInputView.themeView()
-                    }
-                }
-                
-                formStackView.insertArrangedSubview(selectInputView, atIndex: 0)
-                return
-            }
-            
-            //text inputs
-            if let viewModel = $0 as? FormInputViewModel<String> {
-                let textInputView = FormTextInputView(withViewModel: viewModel)
-                
-                viewModel.focusedObservable.observe {
-                    
-                    if $0 == true {
-                        textInputView.themeViewFocused()
-                    } else {
-                        textInputView.themeView()
-                    }
-                }
-                
-                viewModel.enabledObservable.observe {
-                    textInputView.hidden = !$0
-                }
-                
-                formStackView.insertArrangedSubview(textInputView, atIndex: 0)
-                return
-            }
-            
-            //select data inputs
-            if let viewModel = $0 as? FormInputViewModel<NSDate> {
-                let selectDateInputView = FormSelectDateInputView(withViewModel: viewModel)
-                
-                viewModel.focusedObservable.observe {
-                    
-                    if $0 == true {
-                        selectDateInputView.themeViewFocused()
-                    } else {
-                        selectDateInputView.themeView()
-                    }
-                }
-                
-                formStackView.insertArrangedSubview(selectDateInputView, atIndex: 0)
-                return
-            }
-            
-            //checkbox inputs
-            if let viewModel = $0 as? FormInputViewModel<Bool> {
-                let checkboxInputView = FormCheckboxInputView(withViewModel: viewModel)
-                checkboxInputView.themeView()
-                formStackView.insertArrangedSubview(checkboxInputView, atIndex: 0)
-                return
-            }
+        //select input with text
+        if let viewModel = inputViewModel as? FormSelectInputViewModel<String> {
+            let selectInputView = FormSelectInputView(withViewModel: viewModel)
+            return selectInputView
         }
+        
+        //text inputs
+        if let viewModel = inputViewModel as? FormInputViewModel<String> {
+            let textInputView = FormTextInputView(withViewModel: viewModel)
+            return textInputView
+        }
+        
+        //data inputs
+        if let viewModel = inputViewModel as? FormInputViewModel<NSDate> {
+            let selectDateInputView = FormSelectDateInputView(withViewModel: viewModel)
+            return selectDateInputView
+        }
+        
+        //checkbox inputs
+        if let viewModel = inputViewModel as? FormInputViewModel<Bool> {
+            let checkboxInputView = FormCheckboxInputView(withViewModel: viewModel)
+            return checkboxInputView
+        }
+     
+        return nil
     }
 }

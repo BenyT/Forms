@@ -28,16 +28,22 @@
 import UIKit
 
 private enum InputSelector: Selector {
-    case CheckBoxButtonWastTapped = "checkBoxButtonWastTapped:"
+    case buttonWastTapped = "buttonWastTapped:"
 }
 
 //@IBDesignable
-public class FormCheckboxInputView: UIView, FormInputView {
+public class FormCheckboxInputView: UIView, ButtonFormIputView {
     
     override public class func requiresConstraintBasedLayout() -> Bool {
         return true
     }
     
+    //MARK: - FormInputView
+    
+    public var identifier: String
+    
+//    public var theme: FormInputViewTheme = DefaultFormInputViewTheme()
+//    
     //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<Bool>? {
@@ -71,10 +77,10 @@ public class FormCheckboxInputView: UIView, FormInputView {
     
     //MARK: - Subviews
     
-    lazy public var checkBoxButton: UIButton = { [unowned self] in
-        let checkBoxButton = UIButton()
-        checkBoxButton.addTarget(self, action: InputSelector.CheckBoxButtonWastTapped.rawValue, forControlEvents: .TouchUpInside)
-        return checkBoxButton
+    lazy public var button: UIButton = { [unowned self] in
+        let button = UIButton()
+        button.addTarget(self, action: InputSelector.buttonWastTapped.rawValue, forControlEvents: .TouchUpInside)
+        return button
         }()
     
     lazy public var captionLabel: UILabel = { [unowned self] in
@@ -91,18 +97,21 @@ public class FormCheckboxInputView: UIView, FormInputView {
     
     //MARK: - Init
     
-    convenience public init(withViewModel viewModel: FormInputViewModel<Bool>) {
+    public convenience init(withViewModel viewModel: FormInputViewModel<Bool>) {
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        identifier = viewModel.identifier
         self.viewModel = viewModel
         commonInit()
     }
     
     override public init(frame: CGRect) {
+        self.identifier = NSUUID().UUIDString
         super.init(frame: frame)
         commonInit()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
+        self.identifier = NSUUID().UUIDString
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -150,7 +159,7 @@ public class FormCheckboxInputView: UIView, FormInputView {
                 "stackView": stackView,
             ])
         
-        checkBoxButton.widthAnchor.constraintEqualToAnchor(checkBoxButton.heightAnchor, multiplier: 1.0).active = true
+        button.widthAnchor.constraintEqualToAnchor(button.heightAnchor, multiplier: 1.0).active = true
         
         invalidateIntrinsicContentSize()
         
@@ -166,7 +175,7 @@ public class FormCheckboxInputView: UIView, FormInputView {
         
         didAddSubviews = true
         
-        checkBoxCaptionStackView.addArrangedSubview(self.checkBoxButton)
+        checkBoxCaptionStackView.addArrangedSubview(self.button)
         checkBoxCaptionStackView.addArrangedSubview(self.captionLabel)
         
         stackView.addArrangedSubview(checkBoxCaptionStackView)
@@ -177,7 +186,7 @@ public class FormCheckboxInputView: UIView, FormInputView {
     
     //MARK: - Actions
     
-    func checkBoxButtonWastTapped(sender: AnyObject) {
+    func buttonWastTapped(sender: AnyObject) {
         
         guard let viewModel = self.viewModel else {
             return
@@ -198,7 +207,7 @@ extension FormCheckboxInputView: FormInputViewModelView {
             return
         }
         
-        viewModel.valueObservable.observe { self.checkBoxButton.selected = $0 ?? false }
+        viewModel.valueObservable.observe { self.button.selected = $0 ?? false }
         viewModel.captionObservable.observe { self.captionLabel.attributedText = $0 }
         
         viewModel.errorTextObservable.observe {
@@ -210,5 +219,15 @@ extension FormCheckboxInputView: FormInputViewModelView {
             self.stackView.spacing = CGFloat($0.subviewSpacing)
             self.checkBoxCaptionStackView.spacing = CGFloat($0.subviewSpacing)
         }
+        
+        //theme
+        
+//        viewModel.errorTextObservable.observe {
+//            if $0 == true {
+//                self.theme.themeViewError()
+//            } else {
+//                self.theme.themeView()
+//            }
+//        }
     }
 }

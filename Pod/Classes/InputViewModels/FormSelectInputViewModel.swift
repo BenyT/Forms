@@ -37,9 +37,9 @@ public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
     // Init
     //
     // - Parameter value: T
-    public init(options: [T], value: T?) {
+    public init(identifier: String, options: [T], value: T?) {
         self.options = options
-        super.init(value: value)
+        super.init(identifier: identifier, value: value)
     }
     
 }

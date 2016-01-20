@@ -30,6 +30,8 @@ import Bond
 
 public protocol FormInputViewModelProtocol {
     
+    var identifier: String { get }
+    
     //TODO: revisite with more time. Approach feels unbalanced
     //focused if set to true didSet observable (via focusedObservable) will attempt to make self.textfield the firstResponder
     //setting to false does not make the self.textfield attempt to resign first responder. Call resignFirstResponder directly on view
@@ -55,6 +57,8 @@ final public class InputViewLayout: FormBaseTextInputViewLayout {
 public class FormInputViewModel<T>: FormInputViewModelProtocol {
     
     //MARK: - FormInputViewModelProtocol
+    
+    public var identifier: String
     
     //next input in form
     public var nextInputsViewModel: FormInputViewModelProtocol? {
@@ -271,8 +275,9 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
     // Init
     //
     // - Parameter value: T
-    public init(value: T?, inputViewLayout: InputViewLayout = InputViewLayout()) {
+    public init(identifier: String, value: T?, inputViewLayout: InputViewLayout = InputViewLayout()) {
     
+        self.identifier = identifier
         self.value = value
         valueObservable = Observable<T?>(value)
         

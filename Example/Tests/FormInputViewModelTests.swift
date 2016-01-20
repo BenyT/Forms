@@ -20,7 +20,7 @@ class FormInputViewModelTests: XCTestCase {
     }
     
     func test_init() {
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         XCTAssertEqual(vm.value, "value", "value set")
         XCTAssertEqual(vm.valid, true, "valid default value is true")
         XCTAssertEqual(vm.errorText, nil, "errorText default value is nil")
@@ -35,7 +35,7 @@ class FormInputViewModelTests: XCTestCase {
     
     func test_displayValueMap() {
         
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         vm.displayValueMap = { (value) -> String in
             return "displayValue for \(value)"
         }
@@ -43,7 +43,7 @@ class FormInputViewModelTests: XCTestCase {
         XCTAssertEqual(vm.displayValue, "displayValue for value2")
         
         //out of order
-        let vm2 = FormInputViewModel(value: "value")
+        let vm2 = FormInputViewModel(identifier: "test", value: "value")
         vm2.value = "value2"
         vm2.displayValueMap = { (value) -> String in
             return "displayValue for \(value)"
@@ -52,13 +52,13 @@ class FormInputViewModelTests: XCTestCase {
     }
     
     func test_displayValue() {
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         XCTAssertEqual(vm.displayValue, "value", "displayValue derived from value if string")
     }
     
     func test_validation() {
         
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         XCTAssertEqual(vm.valid, true, "vm is validate by default")
         vm.validationRules = [
             FormInputValidationRule(failureText: "failed") { (value) -> Bool in
@@ -80,7 +80,7 @@ class FormInputViewModelTests: XCTestCase {
     
     func test_valid() {
         
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         
         XCTAssertEqual(vm.valid, true, "valid default value is true")
         
@@ -107,13 +107,13 @@ class FormInputViewModelTests: XCTestCase {
     
     func test_inputValueToValidate() {
         
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         XCTAssertEqual(vm.inputValueToValidate, "value", "inputValueToValidate is equal to value value")
     }
     
     func test_displayValidationErrorsOnValueChange() {
         
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         vm.validationRules = [
             FormInputValidationRule(failureText: "failed") { (value) -> Bool in
                 false
@@ -136,7 +136,7 @@ class FormInputViewModelTests: XCTestCase {
     
     func test_validateUsingDisplayValidationErrorsOnValueChangeValue() {
         
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         vm.validationRules = [
             FormInputValidationRule(failureText: "failed") { (value) -> Bool in
                 false

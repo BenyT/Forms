@@ -28,12 +28,18 @@
 import UIKit
 
 //@IBDesignable
-public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     override class public func requiresConstraintBasedLayout() -> Bool {
         return true
     }
     
+    //MARK: - FormInputView
+    
+    public var identifier: String
+//    
+//    public var theme: FormInputViewTheme = DefaultFormInputViewTheme()
+//    
     //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<T>? {
@@ -88,26 +94,29 @@ public class FormSelectInputView<T>: UIView, FormInputView, FormInputViewModelVi
     
     //MARK: - Init
     
-    public init(withViewModel viewModel: FormSelectInputViewModel<T>) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+    public convenience init(withViewModel viewModel: FormSelectInputViewModel<T>) {
+        self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        identifier = viewModel.identifier
         self.viewModel = viewModel
         commonInit()
     }
     
     override public init(frame: CGRect) {
+        self.identifier = NSUUID().UUIDString
         super.init(frame: frame)
         commonInit()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
+        self.identifier = NSUUID().UUIDString
         super.init(coder: aDecoder)
         commonInit()
     }
     
-    override public func prepareForInterfaceBuilder() {
-        commonInit()
-        addSubviewConstraints()
-    }
+//    override public func prepareForInterfaceBuilder() {
+//        commonInit()
+//        addSubviewConstraints()
+//    }
     
     public func commonInit() {
         bindViewModel()

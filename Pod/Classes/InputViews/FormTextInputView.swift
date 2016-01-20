@@ -27,7 +27,7 @@
 import UIKit
 
 //@IBDesignable
-public class FormTextInputView: UIView, FormInputView {
+public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate {
     
     override class public func requiresConstraintBasedLayout() -> Bool {
         return true
@@ -35,11 +35,20 @@ public class FormTextInputView: UIView, FormInputView {
     
     //MARK: - FormInputViewModelView Properties
     
-    public var viewModel: FormInputViewModel<String>? {
+    public var viewModel: FormInputViewModel<T>? {
         didSet {
             bindViewModel()
         }
     }
+    
+    //MARK: - FormInputView
+    
+    public var identifier: String
+    
+//    
+//    public var theme: FormInputViewTheme = DefaultFormInputViewTheme()
+//    
+    
     
     //MARK: - Layout Configuration
     
@@ -51,8 +60,8 @@ public class FormTextInputView: UIView, FormInputView {
     
     //MARK: - Subviews
     
-    private lazy var formBaseTextInputView: FormBaseTextInputView<String> = { [unowned self] in
-        let ui = FormBaseTextInputView<String>()
+    private lazy var formBaseTextInputView: FormBaseTextInputView<T> = { [unowned self] in
+        let ui = FormBaseTextInputView<T>()
         ui.textField.delegate = self
         self.addSubview(ui)
         return ui
@@ -75,27 +84,30 @@ public class FormTextInputView: UIView, FormInputView {
 
     //MARK: - Init
     
-    convenience public init(withViewModel viewModel: FormInputViewModel<String>) {
+    public convenience init(withViewModel viewModel: FormInputViewModel<T>) {
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        identifier = viewModel.identifier
         self.viewModel = viewModel
         self.formBaseTextInputView.inputViewLayout = viewModel.inputViewLayout
         commonInit()
     }
     
     override public init(frame: CGRect) {
+        self.identifier = NSUUID().UUIDString
         super.init(frame: frame)
         commonInit()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
+        self.identifier = NSUUID().UUIDString
         super.init(coder: aDecoder)
         commonInit()
     }
     
-    override public func prepareForInterfaceBuilder() {
-        commonInit()
-        addSubviewConstraints()
-    }
+//    override public func prepareForInterfaceBuilder() {
+//        commonInit()
+//        addSubviewConstraints()
+//    }
 
     public func commonInit() {
         bindViewModel()
@@ -145,27 +157,17 @@ public class FormTextInputView: UIView, FormInputView {
     override public func isFirstResponder() -> Bool {
         return formBaseTextInputView.textField.isFirstResponder()
     }
-}
 
-//MARK: - FormInputViewModelView
+    //MARK: - FormInputViewModelView
 
-extension FormTextInputView: FormInputViewModelView {
-    
     //bind to viewModel
     public func bindViewModel() {
-        
-        guard let viewModel = self.viewModel else {
-            return
-        }
-        
+        guard let viewModel = self.viewModel else { return }
         formBaseTextInputView.bindViewModel(viewModel)
     }
-}
 
-//MARK: - UITextFieldDelegate
+    //MARK: - UITextFieldDelegate
 
-extension FormTextInputView: UITextFieldDelegate {
-    
     public func textFieldDidBeginEditing(textField: UITextField) {
         viewModel?.focused = true
     }
@@ -189,14 +191,21 @@ extension FormTextInputView: UITextFieldDelegate {
     }
     
     public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        viewModel?.value = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        
+        //TODO: review this and how this can work with displayValueMap so that input can better support any type of data based ViewModel
+        
+        guard let currentText = textField.text else { return true }
+        let newText = (currentText as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        guard let newValue = newText as? T else { return true }
+        viewModel?.value = newValue
         return false
     }
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {
-        viewModel?.value = ""
+        viewModel?.value = nil
         return true
     }
 }
+
 
 

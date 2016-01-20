@@ -12,7 +12,7 @@ import XCTest
 class FormTextInputViewTests: XCTestCase {
     
     lazy var viewModel: FormInputViewModel<String> = {
-        let vm = FormInputViewModel(value: "value")
+        let vm = FormInputViewModel(identifier: "test", value: "value")
         vm.placeholder = "placeholder"
         vm.caption = "caption"
         return vm
