@@ -147,8 +147,8 @@ public class FormSelectDateInputView: UIView, KeyboardFormIputView {
         
         //layout subviews
         UIView.createConstraints(visualFormatting: [
-            "H:|-(0)-[ui]-(0)-|",
-            "V:|-(0)-[ui]-(0)-|",
+            "H:|-(\(inputViewLayout.insets.left))-[ui]-(\(inputViewLayout.insets.right))-|",
+            "V:|-(\(inputViewLayout.insets.top))-[ui]-(\(inputViewLayout.insets.bottom))-|",
             ],
             views: [
                 "ui": formBaseTextInputView,

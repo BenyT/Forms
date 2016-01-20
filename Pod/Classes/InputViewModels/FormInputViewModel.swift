@@ -44,6 +44,8 @@ public protocol FormInputViewModelProtocol {
 
 final public class InputViewLayout: FormBaseTextInputViewLayout {
     
+    public var insets: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+    
     public var inputLayoutAxis = UILayoutConstraintAxis.Vertical
     
     public var subviewSpacing = 0.0
@@ -246,7 +248,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
             }
         }
     }
-    
+     
     public var validationRules = [FormInputValidationRule<T>]() {
         didSet {
             let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))

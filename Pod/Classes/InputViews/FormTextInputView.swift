@@ -45,11 +45,6 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     
     public var identifier: String
     
-//    
-//    public var theme: FormInputViewTheme = DefaultFormInputViewTheme()
-//    
-    
-    
     //MARK: - Layout Configuration
     
     public var inputViewLayout: InputViewLayout = InputViewLayout() {
@@ -138,8 +133,8 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
         
         //layout subviews
         UIView.createConstraints(visualFormatting: [
-            "H:|-(0)-[ui]-(0)-|",
-            "V:|-(0)-[ui]-(0)-|",
+            "H:|-(\(inputViewLayout.insets.left))-[ui]-(\(inputViewLayout.insets.right))-|",
+            "V:|-(\(inputViewLayout.insets.top))-[ui]-(\(inputViewLayout.insets.bottom))-|",
             ],
             views: [
                 "ui": formBaseTextInputView,
