@@ -29,11 +29,6 @@ import Foundation
 
 //MARK: - FormInputValidatable
 
-public enum FormInputValidatableProperty: String {
-    case Valid
-    case ErrorText
-}
-
 public protocol FormInputValidatable: class {
     
     typealias InputDataType

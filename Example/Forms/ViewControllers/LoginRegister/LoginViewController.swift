@@ -53,7 +53,30 @@ class LoginViewController: UIViewController, FormViewController {
         }
     }
     
+    
+//    func getInput<T,U>(withIdentifier identifier: String) -> (vm: T, v: U)? {
+//        
+//        guard
+//            let viewModel = formViewModel[identifier] as? T,
+//            let view =  inputsViewsByIdentifier[identifier] as? U
+//        else {
+//            return nil
+//        }
+//        
+//        return (viewModel, view)
+//    }
+    
     func bindFormViewModel() {
+        
+//        if let input: (vm: FormInputViewModel<String>, v: KeyboardFormIputView) = getInput(withIdentifier: "username") {
+//            input.vm.focusedObservable.observe {
+//                if $0 == true {
+//                    input.v.themeViewFocused()
+//                } else {
+//                    input.v.themeView()
+//                }
+//            }
+//        }
         
         guard let registerViewModel = formViewModel as? LoginFormViewModel else { return }
         let inputIdentifiers = registerViewModel.inputs.map { $0.identifier }

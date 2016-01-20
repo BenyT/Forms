@@ -16,6 +16,7 @@
 		0275AF5B1C138E3A002F07D6 /* Form+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0275AF5A1C138E3A002F07D6 /* Form+Theme.swift */; };
 		02C2CA5E1C307523002770FD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2CA5D1C307523002770FD /* LoginViewController.swift */; };
 		02C2CA601C307533002770FD /* LoginFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C2CA5F1C307533002770FD /* LoginFormViewModel.swift */; };
+		02C503D11C502EC10017776E /* FormInputValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C503D01C502EC10017776E /* FormInputValidationTests.swift */; };
 		02F89CA81C14EBDA0036797B /* FormTextInputViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F89CA71C14EBDA0036797B /* FormTextInputViewTests.swift */; };
 		341C17884B67886D3F9ACD2E /* Pods_Forms_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015AEC4F504547E2AE7FFCDD /* Pods_Forms_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -47,6 +48,7 @@
 		0275AF5A1C138E3A002F07D6 /* Form+Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Form+Theme.swift"; sourceTree = "<group>"; };
 		02C2CA5D1C307523002770FD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		02C2CA5F1C307533002770FD /* LoginFormViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFormViewModel.swift; sourceTree = "<group>"; };
+		02C503D01C502EC10017776E /* FormInputValidationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormInputValidationTests.swift; sourceTree = "<group>"; };
 		02F89CA71C14EBDA0036797B /* FormTextInputViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormTextInputViewTests.swift; sourceTree = "<group>"; };
 		33196DA8687C547EF19142DF /* Pods-Forms_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Forms_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Forms_Example/Pods-Forms_Example.release.xcconfig"; sourceTree = "<group>"; };
 		349EB7587DC75A593E305958 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				02745F5F1C161B2C00436E11 /* FormSelectDateViewTests.swift */,
 				02745F611C161D5900436E11 /* FormCheckboxInputViewTests.swift */,
+				02C503D01C502EC10017776E /* FormInputValidationTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 			files = (
 				02745F601C161B2C00436E11 /* FormSelectDateViewTests.swift in Sources */,
 				02745F5C1C160B2E00436E11 /* FormInputViewModelTests.swift in Sources */,
+				02C503D11C502EC10017776E /* FormInputValidationTests.swift in Sources */,
 				02745F621C161D5900436E11 /* FormCheckboxInputViewTests.swift in Sources */,
 				02F89CA81C14EBDA0036797B /* FormTextInputViewTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
