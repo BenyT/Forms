@@ -37,9 +37,7 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     //MARK: - FormInputView
     
     public var identifier: String
-//    
-//    public var theme: FormInputViewTheme = DefaultFormInputViewTheme()
-//    
+
     //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<T>? {

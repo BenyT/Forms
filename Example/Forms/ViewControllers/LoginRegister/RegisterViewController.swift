@@ -74,7 +74,7 @@ final class RegisterViewController: UIViewController, FormViewController {
             //Text input
             if
                 let viewModel = formViewModel[$0] as? FormInputViewModel<String>,
-                let view =  inputsViewsByIdentifier[viewModel.identifier] as? KeyboardFormIputView
+                let view =  inputsViewsByIdentifier[$0] as? KeyboardFormIputView
             {
                 viewModel.focusedObservable.observe {
                     

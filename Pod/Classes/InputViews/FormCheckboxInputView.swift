@@ -42,8 +42,6 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
     
     public var identifier: String
     
-//    public var theme: FormInputViewTheme = DefaultFormInputViewTheme()
-//    
     //MARK: - FormInputViewModelView
     
     public var viewModel: FormInputViewModel<Bool>? {
@@ -220,14 +218,5 @@ extension FormCheckboxInputView: FormInputViewModelView {
             self.checkBoxCaptionStackView.spacing = CGFloat($0.subviewSpacing)
         }
         
-        //theme
-        
-//        viewModel.errorTextObservable.observe {
-//            if $0 == true {
-//                self.theme.themeViewError()
-//            } else {
-//                self.theme.themeView()
-//            }
-//        }
     }
 }
