@@ -61,8 +61,28 @@ public extension FormViewModel {
             //Not supported as of Swift 2.1
             //if let viewModel = $0 as? FormInputValidatable { } is not supported
             
-            //select input
+            //select textinput
             if let viewModel = $0 as? FormSelectInputViewModel<String> {
+                return viewModel.validate()
+            }
+            
+            //select bool input
+            if let viewModel = $0 as? FormSelectInputViewModel<Bool> {
+                return viewModel.validate()
+            }
+            
+            //select date
+            if let viewModel = $0 as? FormSelectInputViewModel<NSDate> {
+                return viewModel.validate()
+            }
+            
+            //select any
+            if let viewModel = $0 as? FormSelectInputViewModel<Any> {
+                return viewModel.validate()
+            }
+            
+            //date inputs
+            if let viewModel = $0 as? FormInputViewModel<NSDate> {
                 return viewModel.validate()
             }
             
@@ -70,9 +90,14 @@ public extension FormViewModel {
             if let viewModel = $0 as? FormInputViewModel<String> {
                 return viewModel.validate()
             }
+
+            //double inputs
+            if let viewModel = $0 as? FormInputViewModel<Double> {
+                return viewModel.validate()
+            }
             
-            //select date inputs
-            if let viewModel = $0 as? FormInputViewModel<NSDate> {
+            //int inputs
+            if let viewModel = $0 as? FormInputViewModel<Int> {
                 return viewModel.validate()
             }
             

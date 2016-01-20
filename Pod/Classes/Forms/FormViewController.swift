@@ -49,8 +49,38 @@ public class FormFactory {
             return selectInputView
         }
         
+        //select input with bool
+        if let viewModel = inputViewModel as? FormSelectInputViewModel<Bool> {
+            let selectInputView = FormSelectInputView(withViewModel: viewModel)
+            return selectInputView
+        }
+        
+        //select input with date
+        if let viewModel = inputViewModel as? FormSelectInputViewModel<NSDate> {
+            let selectInputView = FormSelectInputView(withViewModel: viewModel)
+            return selectInputView
+        }
+        
+        //select any
+        if let viewModel = inputViewModel as? FormSelectInputViewModel<Any> {
+            let selectInputView = FormSelectInputView(withViewModel: viewModel)
+            return selectInputView
+        }
+        
         //text inputs
         if let viewModel = inputViewModel as? FormInputViewModel<String> {
+            let textInputView = FormTextInputView(withViewModel: viewModel)
+            return textInputView
+        }
+        
+        //double inputs
+        if let viewModel = inputViewModel as? FormInputViewModel<Double> {
+            let textInputView = FormTextInputView(withViewModel: viewModel)
+            return textInputView
+        }
+        
+        //int inputs
+        if let viewModel = inputViewModel as? FormInputViewModel<Int> {
             let textInputView = FormTextInputView(withViewModel: viewModel)
             return textInputView
         }
