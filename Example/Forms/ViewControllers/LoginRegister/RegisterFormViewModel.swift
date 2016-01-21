@@ -45,7 +45,7 @@ final class RegistrationFormViewModel: FormViewModel {
                 return inputValue.characters.count > 7
             }
         ]
-        
+                
         return vm
     }()
     

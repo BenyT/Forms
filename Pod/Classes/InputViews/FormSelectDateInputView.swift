@@ -98,6 +98,8 @@ public class FormSelectDateInputView: UIView, KeyboardFormIputView {
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         identifier = viewModel.identifier
         self.viewModel = viewModel
+        inputViewLayout = viewModel.inputViewLayout
+        formBaseTextInputView.inputViewLayout = viewModel.inputViewLayout
         commonInit()
     }
     

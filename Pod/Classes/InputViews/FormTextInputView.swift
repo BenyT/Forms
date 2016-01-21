@@ -83,7 +83,8 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
         self.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         identifier = viewModel.identifier
         self.viewModel = viewModel
-        self.formBaseTextInputView.inputViewLayout = viewModel.inputViewLayout
+        inputViewLayout = viewModel.inputViewLayout
+        formBaseTextInputView.inputViewLayout = viewModel.inputViewLayout
         commonInit()
     }
     
