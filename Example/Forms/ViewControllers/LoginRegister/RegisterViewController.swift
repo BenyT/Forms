@@ -9,11 +9,11 @@
 import UIKit
 import Forms
 
-final class RegisterViewController: UIViewController, FormViewController {
+final class RegisterViewController: UIViewController {
 
     //MARK: - ViewModel
     
-    lazy var formViewModel: FormViewModel = {
+    lazy var formViewModel: RegistrationFormViewModel = {
         return RegistrationFormViewModel()
     }()
     
@@ -65,15 +65,11 @@ final class RegisterViewController: UIViewController, FormViewController {
     }
     
     func bindFormViewModel() {
-        
-        guard let registerViewModel = formViewModel as? RegistrationFormViewModel else { return }
-        let inputIdentifiers = registerViewModel.inputs.map { $0.identifier }
-        
-        inputIdentifiers.forEach {
+
+        formViewModel.inputs.map { $0.identifier }.forEach {
             
-            //Text input
             if
-                let viewModel = formViewModel[$0] as? FormInputViewModel<String>,
+                let viewModel = self.formViewModel[$0],
                 let view =  inputsViewsByIdentifier[$0] as? KeyboardFormIputView
             {
                 viewModel.focusedObservable.observe {
@@ -84,44 +80,13 @@ final class RegisterViewController: UIViewController, FormViewController {
                         view.themeView()
                     }
                 }
-            }
-            
-            //Text select
-            if
-                let viewModel = formViewModel[$0] as? FormSelectInputViewModel<String>,
-                let view =  inputsViewsByIdentifier[$0] as? KeyboardFormIputView
-            {
-                viewModel.focusedObservable.observe {
-                    
-                    if $0 == true {
-                        view.themeViewFocused()
-                    } else {
-                        view.themeView()
-                    }
+                
+                //Checkbox
+                //Date select
+                if let view =  inputsViewsByIdentifier[$0] as? ButtonFormIputView {
+                    view.themeView()
                 }
             }
-            
-            //Date select
-            if
-                let viewModel = formViewModel[$0] as? FormSelectInputViewModel<NSDate>,
-                let view =  inputsViewsByIdentifier[$0] as? KeyboardFormIputView
-            {
-                viewModel.focusedObservable.observe {
-                    
-                    if $0 == true {
-                        view.themeViewFocused()
-                    } else {
-                        view.themeView()
-                    }
-                }
-            }
-            
-            //Checkbox
-            //Date select
-            if let view =  inputsViewsByIdentifier[$0] as? ButtonFormIputView {
-                view.themeView()
-            }
-            
         }
     }
     

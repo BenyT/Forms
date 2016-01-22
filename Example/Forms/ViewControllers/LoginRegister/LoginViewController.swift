@@ -9,11 +9,11 @@
 import UIKit
 import Forms
 
-class LoginViewController: UIViewController, FormViewController {
+class LoginViewController: UIViewController {
 
     //MARK: - ViewModel
     
-    lazy var formViewModel: FormViewModel = {
+    lazy var formViewModel: LoginFormViewModel = {
         return LoginFormViewModel()
     }()
     
@@ -53,39 +53,12 @@ class LoginViewController: UIViewController, FormViewController {
         }
     }
     
-    
-//    func getInput<T,U>(withIdentifier identifier: String) -> (vm: T, v: U)? {
-//        
-//        guard
-//            let viewModel = formViewModel[identifier] as? T,
-//            let view =  inputsViewsByIdentifier[identifier] as? U
-//        else {
-//            return nil
-//        }
-//        
-//        return (viewModel, view)
-//    }
-    
     func bindFormViewModel() {
         
-//        if let input: (vm: FormInputViewModel<String>, v: KeyboardFormIputView) = getInput(withIdentifier: "username") {
-//            input.vm.focusedObservable.observe {
-//                if $0 == true {
-//                    input.v.themeViewFocused()
-//                } else {
-//                    input.v.themeView()
-//                }
-//            }
-//        }
-        
-        guard let registerViewModel = formViewModel as? LoginFormViewModel else { return }
-        let inputIdentifiers = registerViewModel.inputs.map { $0.identifier }
-        
-        inputIdentifiers.forEach {
+        formViewModel.inputs.map { $0.identifier }.forEach {
             
-            //text inputs
             if
-                let viewModel = formViewModel[$0] as? FormInputViewModel<String>,
+                let viewModel = self.formViewModel[$0],
                 let view =  inputsViewsByIdentifier[$0] as? KeyboardFormIputView
             {
                 viewModel.focusedObservable.observe {
@@ -96,8 +69,13 @@ class LoginViewController: UIViewController, FormViewController {
                         view.themeView()
                     }
                 }
+                
+                //Checkbox
+                //Date select
+                if let view =  inputsViewsByIdentifier[$0] as? ButtonFormIputView {
+                    view.themeView()
+                }
             }
-            
         }
     }
 

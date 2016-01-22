@@ -33,12 +33,12 @@ public protocol FormViewModel {
     //NOTE: using FormInputViewModelProtocol type until Swift supports covariance for generics
     //Will require casting to all necessary specialized FormInputViewModel types
     //Not supported as of Swift 2.1
-    var inputs: [FormInputViewModelProtocol]  { get }
+    var inputs: [FormInputViewModelObservable]  { get }
 }
 
 public extension FormViewModel {
 
-    subscript(identifier: String) -> FormInputViewModelProtocol? {
+    subscript(identifier: String) -> FormInputViewModelObservable? {
         return inputs.filter {
             $0.identifier == identifier
             }.first
@@ -51,7 +51,7 @@ public class FormViewModelValidator {
     //
     // - Parameter inputs: [FormInputViewModelProtocol]
     // - Returns Bool
-    public static func validate(inputs inputs: [FormInputViewModelProtocol]) -> Bool {
+    public static func validate(inputs inputs: [FormInputViewModelObservable]) -> Bool {
         
         let invalidInputs = inputs.filter {
             

@@ -28,18 +28,43 @@
 import UIKit
 import Bond
 
-public protocol FormInputViewModelProtocol {
+public protocol FormInputViewModelObservable {
     
     var identifier: String { get }
     
-    //TODO: revisite with more time. Approach feels unbalanced
-    //focused if set to true didSet observable (via focusedObservable) will attempt to make self.textfield the firstResponder
-    //setting to false does not make the self.textfield attempt to resign first responder. Call resignFirstResponder directly on view
     var focused: Bool { get set }
     
     //attempts to make the view backed by this FormInputViewModelProtocol the firstResponder when the return key is tapped
     //does not affect the value of the returnKey; must be set to next manually
-    var nextInputsViewModel: FormInputViewModelProtocol? { get set }
+    var nextInputsViewModel: FormInputViewModelObservable? { get set }
+    
+    //TODO: revisite with more time. Approach feels unbalanced
+    //focused if set to true didSet observable (via focusedObservable) will attempt to make self.textfield the firstResponder
+    //setting to false does not make the self.textfield attempt to resign first responder. Call resignFirstResponder directly on view
+    //is viewModels view first responder
+    var focusedObservable: Observable<Bool> { get }
+    
+    var enabledObservable: Observable<Bool> { get }
+    
+    var displayValueObservable: Observable<String> { get }
+    
+    var captionObservable: Observable<NSAttributedString> { get }
+    
+    var placeholderObservable: Observable<NSAttributedString> { get }
+    
+    var returnKeyTypeObservable: Observable<UIReturnKeyType> { get }
+    
+    var secureTextEntryObservable: Observable<Bool> { get }
+    
+    var keyboardTypeObservable: Observable<UIKeyboardType> { get }
+    
+    var autocorrectionTypeObservable: Observable<UITextAutocorrectionType> { get }
+
+    var validObservable: Observable<Bool> { get }
+    
+    var errorTextObservable: Observable<NSAttributedString> { get }
+    
+    var inputViewLayoutObservable: Observable<InputViewLayout> { get }
 }
 
 final public class InputViewLayout: FormBaseTextInputViewLayout {
@@ -55,50 +80,13 @@ final public class InputViewLayout: FormBaseTextInputViewLayout {
     init() { }
 }
 
+//TODO: non observer values are not updated if observers are updated directy
+
 //Base class for FormInputViewModel
-public class FormInputViewModel<T>: FormInputViewModelProtocol {
-    
-    //MARK: - FormInputViewModelProtocol
-    
-    public var identifier: String
-    
-    //next input in form
-    public var nextInputsViewModel: FormInputViewModelProtocol? {
-        didSet {
-            if nextInputsViewModel != nil {
-                returnKeyType = .Next
-            }
-        }
-    }
-    
-    //is viewModels view first responder
-    public var focusedObservable =  Observable<Bool>(false)
-    
-    public var focused = false {
-        didSet {
-            if focused != oldValue {
-                focusedObservable.next(focused)
-            }
-        }
-    }
-    
-    //MARK: - State
-    
-    //is viewModel view enabled
-    //view is responsible for determining what this means
-    public var enabledObservable = Observable<Bool>(true)
-    
-    public var enabled: Bool = true {
-        didSet {
-            if enabled != oldValue {
-                enabledObservable.next(enabled)
-            }
-        }
-    }
+public class FormInputViewModel<T>: FormInputViewModelObservable {
     
     //textfield text
     public var valueObservable: Observable<T?>
-    
     public var value: T? {
         didSet {
             
@@ -120,17 +108,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
         }
     }
     
-    //textfield text
-    public var displayValueObservable = Observable<String>("")
-    
-    public var displayValue: String = "" {
-        didSet {
-            if displayValue != oldValue {
-                displayValueObservable.next(displayValue)
-            }
-        }
-    }
-    
     //map value to displya view
     public var displayValueMap: ((T) -> String)? {
         didSet {
@@ -141,9 +118,50 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
         }
     }
     
+    //MARK: - FormInputViewModelProtocol
+    
+    public var identifier: String
+    
+    public var nextInputsViewModel: FormInputViewModelObservable? {
+        didSet {
+            if nextInputsViewModel != nil {
+                returnKeyType = .Next
+            }
+        }
+    }
+    
+    public var focusedObservable = Observable<Bool>(false)
+    public var focused = false {
+        didSet {
+            if focused != oldValue {
+                focusedObservable.next(focused)
+            }
+        }
+    }
+    
+    //is viewModel view enabled
+    //view is responsible for determining what this means
+    public var enabledObservable = Observable<Bool>(true)
+    public var enabled: Bool = true {
+        didSet {
+            if enabled != oldValue {
+                enabledObservable.next(enabled)
+            }
+        }
+    }
+    
+    //textfield text
+    public var displayValueObservable = Observable<String>("")
+    public var displayValue: String = "" {
+        didSet {
+            if displayValue != oldValue {
+                displayValueObservable.next(displayValue)
+            }
+        }
+    }
+    
     //caption label text
     public var captionObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
-
     public var caption: String = "" {
         didSet {
             if caption != oldValue {
@@ -151,7 +169,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
             }
         }
     }
-    
     public var captionAttributedText: NSAttributedString? {
         didSet {
             if captionAttributedText?.string != caption {
@@ -162,7 +179,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
     
     //textfield placeholder
     public var placeholderObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
-    
     public var placeholder: String = "" {
         didSet {
             if placeholder != oldValue {
@@ -170,7 +186,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
             }
         }
     }
-    
     public var placeholderAttributedText: NSAttributedString? {
         didSet {
             if placeholderAttributedText?.string != placeholder {
@@ -181,7 +196,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
     
     //textfield return key
     public var returnKeyTypeObservable = Observable<UIReturnKeyType>(.Default )
-    
     public var returnKeyType: UIReturnKeyType = .Default {
         didSet {
             if returnKeyType != oldValue {
@@ -190,11 +204,8 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
         }
     }
     
-    //MARK: - State For Keyboard (No inputView)
-    
     //secure input
     public var secureTextEntryObservable = Observable<Bool>(false)
-    
     public var secureTextEntry: Bool = false {
         didSet {
             if secureTextEntry != oldValue {
@@ -205,7 +216,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
     
     //keyboardType
     public var keyboardTypeObservable = Observable<UIKeyboardType>(.Default)
-    
     public var keyboardType: UIKeyboardType = .Default {
         didSet {
             if keyboardType != oldValue {
@@ -216,7 +226,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
     
     //autocorrectionType
     public var autocorrectionTypeObservable = Observable<UITextAutocorrectionType>(.Default)
-    
     public var autocorrectionType: UITextAutocorrectionType = .Default {
         didSet {
             if autocorrectionType != oldValue {
@@ -225,11 +234,18 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
         }
     }
     
+    //layout of input
+    public var inputViewLayoutObservable = Observable<InputViewLayout>(InputViewLayout())
+    public var inputViewLayout: InputViewLayout {
+        didSet {
+            inputViewLayoutObservable.next(inputViewLayout)
+        }
+    }
+    
     //MARK: - FormInputValidatable Variables
     
     //whether input is valid
     public var validObservable = Observable<Bool>(true)
-    
     public var valid = true {
         didSet {
             if valid != oldValue {
@@ -240,7 +256,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
     
     //error text if not value
     public var errorTextObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
-    
     public var errorText: String? {
         didSet {
             if errorText != oldValue {
@@ -259,7 +274,6 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
     }
     
     public var inputValueToValidate: T? { return self.value }
-    
     public var displayValidationErrorsOnValueChange: Bool = false {
         didSet {
             if displayValidationErrorsOnValueChange == true {
@@ -267,11 +281,7 @@ public class FormInputViewModel<T>: FormInputViewModelProtocol {
             }
         }
     }
-    
-    //layout of input
-    public var inputViewLayoutObservable = Observable<InputViewLayout>(InputViewLayout())
-    public var inputViewLayout: InputViewLayout
-    
+ 
     //MARK: - Init
     
     // Init

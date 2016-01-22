@@ -126,7 +126,7 @@ final class RegistrationFormViewModel: FormViewModel {
 
     //MARK: - FormViewModel
     
-    lazy var inputs: [FormInputViewModelProtocol] = { [unowned self] in
+    lazy var inputs: [FormInputViewModelObservable] = { [unowned self] in
         return [
             self.userNameInputViewModel,
             self.passwordInputViewModel,
@@ -157,7 +157,7 @@ final class RegistrationFormViewModel: FormViewModel {
     
     func submitForm() {
      
-        guard FormViewModelValidator.validate(inputs) == true else {
+        guard FormViewModelValidator.validate(inputs: inputs) == true else {
             return
         }
         
