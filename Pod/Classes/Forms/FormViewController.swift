@@ -28,20 +28,9 @@
 
 import UIKit
 
-public protocol FormViewController{
-    
-//    var inputsByIdentifier: [String: FormInputView] { get set }
-    
-    //FormViewModel for VC
-    var formViewModel: FormViewModel { get  }
-    
-    //Creates view for each viewModel and add to inputsStackView
-    func createForm()
-}
-
 public class FormFactory {
 
-    public class func createFormInputView(withInputViewModel inputViewModel: FormInputViewModelProtocol) -> FormInputView? {
+    public class func createFormInputView(withInputViewModel inputViewModel: FormInputViewModelObservable) -> FormInputView? {
 
         //select input with text
         if let viewModel = inputViewModel as? FormSelectInputViewModel<String> {
