@@ -129,7 +129,7 @@ final class RegisterViewController: UIViewController, FormViewController {
     
     @IBAction private func submitButtonTapped(sender: AnyObject?) {
         view.endEditing(true)
-        formViewModel.submitForm()
+        //formViewModel.submitForm()
     }
 }
 

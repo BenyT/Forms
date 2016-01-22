@@ -26,34 +26,32 @@
 //  THE SOFTWARE.
 //
 
+
 public protocol FormViewModel {
-    
+
     //Ordered FormInputViewModel objects
     //NOTE: using FormInputViewModelProtocol type until Swift supports covariance for generics
     //Will require casting to all necessary specialized FormInputViewModel types
     //Not supported as of Swift 2.1
-    var inputs: [FormInputViewModelProtocol] { get }
-    
-    //Validate inputs
-    //
-    // - Returns Bool if valid
-    func validate() -> Bool
-    
-    //Submit form using Application specific logic
-    //Validate in the process if desired
-    func submitForm()
-}
-
-func ==(lhs: FormViewModel, rhs: FormViewModel) -> Bool {
-    return lhs == rhs
+    var inputs: [FormInputViewModelProtocol]  { get }
 }
 
 public extension FormViewModel {
+
+    subscript(identifier: String) -> FormInputViewModelProtocol? {
+        return inputs.filter {
+            $0.identifier == identifier
+            }.first
+    }
+}
+
+public class FormViewModelValidator {
     
-    //TODO: consider inheritance or class to allow validate to be extended
-    
-    // If your form has custom input view models (FormInputViewModel<T>) you will most likely need to override this method
-    public func validate() -> Bool {
+    //Validates self.iputs or inputs provided as inputs parameter
+    //
+    // - Parameter inputs: [FormInputViewModelProtocol]
+    // - Returns Bool
+    public static func validate(inputs inputs: [FormInputViewModelProtocol]) -> Bool {
         
         let invalidInputs = inputs.filter {
             
@@ -110,11 +108,5 @@ public extension FormViewModel {
         }
         
         return invalidInputs.count == 0
-    }
-    
-    subscript(identifier: String) -> FormInputViewModelProtocol? {
-        return inputs.filter {
-            $0.identifier == identifier
-        }.first
     }
 }

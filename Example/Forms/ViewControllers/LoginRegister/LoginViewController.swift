@@ -105,7 +105,7 @@ class LoginViewController: UIViewController, FormViewController {
     
     @IBAction private func submitButtonTapped(sender: AnyObject?) {
         view.endEditing(true)
-        formViewModel.submitForm()
+        //formViewModel.submitForm()
     }
     
     @IBAction private func unwindFromRegistration(segue: UIStoryboardSegue) {}

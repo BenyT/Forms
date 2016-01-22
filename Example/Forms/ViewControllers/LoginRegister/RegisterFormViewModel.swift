@@ -157,7 +157,7 @@ final class RegistrationFormViewModel: FormViewModel {
     
     func submitForm() {
      
-        guard validate() == true else {
+        guard FormViewModelValidator.validate(inputs) == true else {
             return
         }
         
