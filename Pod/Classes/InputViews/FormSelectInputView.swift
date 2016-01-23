@@ -27,7 +27,6 @@
 
 import UIKit
 
-//@IBDesignable
 public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     override class public func requiresConstraintBasedLayout() -> Bool {
@@ -113,11 +112,6 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
         commonInit()
     }
     
-//    override public func prepareForInterfaceBuilder() {
-//        commonInit()
-//        addSubviewConstraints()
-//    }
-    
     public func commonInit() {
         bindViewModel()
     }
@@ -139,9 +133,7 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     
     private func addSubviewConstraints() {
         
-        guard didAddSubviewConstriants == false else {
-            return
-        }
+        guard didAddSubviewConstriants == false else { return }
         
         didAddSubviewConstriants = true
         
@@ -160,12 +152,9 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     //MARK: - FormInputViewModelView
     
     public func bindViewModel() {
-        
-        guard let viewModel = self.viewModel else {
-            return
-        }
-        
+        guard let viewModel = self.viewModel else { return}
         formBaseTextInputView.bindViewModel(viewModel)
+        viewModel.hiddenObservable.observe { self.hidden = $0 }
     }
 
     //MARK: - UIResponder
@@ -201,9 +190,7 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        guard let viewModel = viewModel as? FormSelectInputViewModel else {
-            return 0
-        }
+        guard let viewModel = viewModel as? FormSelectInputViewModel else { return 0 }
         
         let placeholderOffset = (viewModel.pickerPlaceholder != nil) ? 1 : 0
         
@@ -214,9 +201,7 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     
     public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
-        guard let viewModel = viewModel as? FormSelectInputViewModel else {
-            return ""
-        }
+        guard let viewModel = viewModel as? FormSelectInputViewModel else { return "" }
         
         if row == 0 && viewModel.pickerPlaceholder != nil {
             return viewModel.pickerPlaceholder
@@ -233,9 +218,7 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
 
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        guard let viewModel = viewModel as? FormSelectInputViewModel else {
-            return
-        }
+        guard let viewModel = viewModel as? FormSelectInputViewModel else { return }
         
         if row == 0 && viewModel.pickerPlaceholder != nil {
             viewModel.value = nil

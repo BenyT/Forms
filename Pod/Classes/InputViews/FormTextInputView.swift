@@ -26,7 +26,6 @@
 //
 import UIKit
 
-//@IBDesignable
 public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate {
     
     override class public func requiresConstraintBasedLayout() -> Bool {
@@ -99,11 +98,6 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
         super.init(coder: aDecoder)
         commonInit()
     }
-    
-//    override public func prepareForInterfaceBuilder() {
-//        commonInit()
-//        addSubviewConstraints()
-//    }
 
     public func commonInit() {
         bindViewModel()
@@ -126,9 +120,7 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     
     private func addSubviewConstraints() {
         
-        guard didAddSubviewConstriants == false else {
-            return
-        }
+        guard didAddSubviewConstriants == false else { return }
         
         didAddSubviewConstriants = true
         
@@ -160,6 +152,7 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     public func bindViewModel() {
         guard let viewModel = self.viewModel else { return }
         formBaseTextInputView.bindViewModel(viewModel)
+        viewModel.hiddenObservable.observe { self.hidden = $0 }
     }
 
     //MARK: - UITextFieldDelegate
@@ -187,9 +180,7 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     }
     
     public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        
         //TODO: review this and how this can work with displayValueMap so that input can better support any type of data based ViewModel
-        
         guard let currentText = textField.text else { return true }
         let newText = (currentText as NSString).stringByReplacingCharactersInRange(range, withString: string)
         guard let newValue = newText as? T else { return true }

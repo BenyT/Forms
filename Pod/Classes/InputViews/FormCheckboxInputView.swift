@@ -142,9 +142,7 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
     
     private func addSubviewConstraints() {
         
-        guard didAddSubviewConstriants == false else {
-            return
-        }
+        guard didAddSubviewConstriants == false else { return }
         
         didAddSubviewConstriants = true
         
@@ -167,9 +165,7 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
     
     private func addSubviews() {
         
-        guard didAddSubviews == false else {
-            return
-        }
+        guard didAddSubviews == false else { return }
         
         didAddSubviews = true
         
@@ -185,28 +181,19 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
     //MARK: - Actions
     
     func buttonWastTapped(sender: AnyObject) {
-        
-        guard let viewModel = self.viewModel else {
-            return
-        }
-        
+        guard let viewModel = self.viewModel else { return }
         viewModel.value = !viewModel.value!
     }
-}
-
-//MARK: - FormInputViewModelView
-
-extension FormCheckboxInputView: FormInputViewModelView {
     
-    //bind to viewModel
+    //MARK: - FormInputViewModelView
+    
     public func bindViewModel() {
         
-        guard let viewModel = self.viewModel else {
-            return
-        }
+        guard let viewModel = self.viewModel else { return }
         
         viewModel.valueObservable.observe { self.button.selected = $0 ?? false }
         viewModel.captionObservable.observe { self.captionLabel.attributedText = $0 }
+        viewModel.hiddenObservable.observe { self.hidden = $0 }
         
         viewModel.errorTextObservable.observe {
             self.errorLabel.hidden = $0.string.isEmpty
@@ -217,6 +204,7 @@ extension FormCheckboxInputView: FormInputViewModelView {
             self.stackView.spacing = CGFloat($0.subviewSpacing)
             self.checkBoxCaptionStackView.spacing = CGFloat($0.subviewSpacing)
         }
-        
     }
 }
+
+

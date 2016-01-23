@@ -30,7 +30,6 @@ private enum InputSelector: Selector {
     case DatePickerValueChanged = "datePickerValueChanged:"
 }
 
-//@IBDesignable
 public class FormSelectDateInputView: UIView, KeyboardFormIputView {
     
     override class public func requiresConstraintBasedLayout() -> Bool {
@@ -115,11 +114,6 @@ public class FormSelectDateInputView: UIView, KeyboardFormIputView {
         commonInit()
     }
     
-//    override public func prepareForInterfaceBuilder() {
-//        commonInit()
-//        addSubviewConstraints()
-//    }
-    
     public func commonInit() {
         bindViewModel()
     }
@@ -141,9 +135,7 @@ public class FormSelectDateInputView: UIView, KeyboardFormIputView {
     
     private func addSubviewConstraints() {
         
-        guard didAddSubviewConstriants == false else {
-            return
-        }
+        guard didAddSubviewConstriants == false else { return }
         
         didAddSubviewConstriants = true
         
@@ -184,11 +176,11 @@ extension FormSelectDateInputView: FormInputViewModelView {
     //bind to viewModel
     public func bindViewModel() {
         
-        guard let viewModel = self.viewModel else {
-            return
-        }
+        guard let viewModel = self.viewModel else { return }
         
         formBaseTextInputView.bindViewModel(viewModel)
+        
+        viewModel.hiddenObservable.observe { self.hidden = $0 }
         
         viewModel.valueObservable.observe {
             if let value = $0 {

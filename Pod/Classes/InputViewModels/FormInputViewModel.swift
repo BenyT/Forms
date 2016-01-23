@@ -28,6 +28,8 @@
 import UIKit
 import Bond
 
+//MARK: - FormInputViewModelObservable
+
 public protocol FormInputViewModelObservable {
     
     var identifier: String { get }
@@ -38,49 +40,36 @@ public protocol FormInputViewModelObservable {
     //does not affect the value of the returnKey; must be set to next manually
     var nextInputsViewModel: FormInputViewModelObservable? { get set }
     
-    //TODO: revisite with more time. Approach feels unbalanced
-    //focused if set to true didSet observable (via focusedObservable) will attempt to make self.textfield the firstResponder
-    //setting to false does not make the self.textfield attempt to resign first responder. Call resignFirstResponder directly on view
-    //is viewModels view first responder
     var focusedObservable: Observable<Bool> { get }
-    
+    var hiddenObservable: Observable<Bool> { get }
     var enabledObservable: Observable<Bool> { get }
     
     var displayValueObservable: Observable<String> { get }
-    
     var captionObservable: Observable<NSAttributedString> { get }
-    
     var placeholderObservable: Observable<NSAttributedString> { get }
     
     var returnKeyTypeObservable: Observable<UIReturnKeyType> { get }
-    
     var secureTextEntryObservable: Observable<Bool> { get }
-    
     var keyboardTypeObservable: Observable<UIKeyboardType> { get }
-    
     var autocorrectionTypeObservable: Observable<UITextAutocorrectionType> { get }
 
     var validObservable: Observable<Bool> { get }
-    
     var errorTextObservable: Observable<NSAttributedString> { get }
     
     var inputViewLayoutObservable: Observable<InputViewLayout> { get }
 }
 
+//MARK: - InputViewLayout
+
 final public class InputViewLayout: FormBaseTextInputViewLayout {
     
     public var insets: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
-    
     public var inputLayoutAxis = UILayoutConstraintAxis.Vertical
-    
     public var subviewSpacing = 0.0
-    
     public var subviewOrder = [InputSubviews.TextField, InputSubviews.ErrorLabel, InputSubviews.CaptionLabel]
     
     init() { }
 }
-
-//TODO: non observer values are not updated if observers are updated directy
 
 //Base class for FormInputViewModel
 public class FormInputViewModel<T>: FormInputViewModelObservable {
@@ -93,7 +82,6 @@ public class FormInputViewModel<T>: FormInputViewModelObservable {
             //only update observable if value is not nil
             if let value = value {
                 valueObservable.next(value)
-                
                 valid = validateUsingDisplayValidationErrorsOnValueChangeValue()
                 
                 if let displayValueMap = displayValueMap {
@@ -111,8 +99,7 @@ public class FormInputViewModel<T>: FormInputViewModelObservable {
     //map value to displya view
     public var displayValueMap: ((T) -> String)? {
         didSet {
-            
-            //set value to map display to value through value didSet observer
+            //set value to mapped display value through value didSet observer
             let value = self.value
             self.value = value
         }
@@ -135,6 +122,15 @@ public class FormInputViewModel<T>: FormInputViewModelObservable {
         didSet {
             if focused != oldValue {
                 focusedObservable.next(focused)
+            }
+        }
+    }
+    
+    public var hiddenObservable = Observable<Bool>(false)
+    public var hidden = false {
+        didSet {
+            if hidden != oldValue {
+                hiddenObservable.next(hidden)
             }
         }
     }
@@ -234,14 +230,6 @@ public class FormInputViewModel<T>: FormInputViewModelObservable {
         }
     }
     
-    //layout of input
-    public var inputViewLayoutObservable = Observable<InputViewLayout>(InputViewLayout())
-    public var inputViewLayout: InputViewLayout {
-        didSet {
-            inputViewLayoutObservable.next(inputViewLayout)
-        }
-    }
-    
     //MARK: - FormInputValidatable Variables
     
     //whether input is valid
@@ -281,7 +269,17 @@ public class FormInputViewModel<T>: FormInputViewModelObservable {
             }
         }
     }
- 
+    
+    //MARK: - Layout
+    
+    //layout of input
+    public var inputViewLayoutObservable = Observable<InputViewLayout>(InputViewLayout())
+    public var inputViewLayout: InputViewLayout {
+        didSet {
+            inputViewLayoutObservable.next(inputViewLayout)
+        }
+    }
+    
     //MARK: - Init
     
     // Init

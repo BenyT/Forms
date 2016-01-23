@@ -156,9 +156,7 @@ final class FormBaseTextInputView<T>: UIView {
     
     private func addSubviewConstraints() {
         
-        guard didAddSubviewConstriants == false else {
-            return
-        }
+        guard didAddSubviewConstriants == false else { return }
         
         didAddSubviewConstriants = true
         
@@ -183,9 +181,7 @@ final class FormBaseTextInputView<T>: UIView {
     
     private func addSubviews() {
         
-        guard didAddSubviews == false else {
-            return
-        }
+        guard didAddSubviews == false else { return }
         
         didAddSubviews = true
         
@@ -250,28 +246,5 @@ final class FormBaseTextInputView<T>: UIView {
             
             self.addSubviews()
         }
-        
-        //theme
-        
-//        viewModel.errorTextObservable.observe {
-//            if $0 == true {
-//                
-//                if viewModel.focused {
-//                    theme.themeViewErrorFocused()
-//                } else {
-//                    theme.themeViewError()
-//                }
-//            }
-//        }
-//        
-//        viewModel.focusedObservable.filter { _ in
-//            viewModel.errorText.value == nil
-//        }.observe {
-//            if $0 == true {
-//                theme.themeViewFocused()
-//            } else {
-//                theme.themeView()
-//            }
-//        }
     }
 }
