@@ -25,10 +25,16 @@
 //  THE SOFTWARE.
 //
 import UIKit
+import Bond
 
 public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
 
-    public var options: [T]
+    public var optionsObservable: Observable<[T]>
+    public var options: [T] {
+        didSet {
+            optionsObservable.next(options)
+        }
+    }
     
     public var pickerPlaceholder: String?
     
@@ -39,6 +45,7 @@ public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
     // - Parameter value: T
     public init(identifier: String, options: [T], value: T?) {
         self.options = options
+        self.optionsObservable = Observable(options)
         super.init(identifier: identifier, value: value)
     }
     
