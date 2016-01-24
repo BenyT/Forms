@@ -26,25 +26,6 @@
 //  THE SOFTWARE.
 //
 
-
-public protocol FormViewModel {
-
-    //Ordered FormInputViewModel objects
-    //NOTE: using FormInputViewModelProtocol type until Swift supports covariance for generics
-    //Will require casting to all necessary specialized FormInputViewModel types
-    //Not supported as of Swift 2.1
-    var inputs: [FormInputViewModelObservable]  { get }
-}
-
-public extension FormViewModel {
-
-    subscript(identifier: String) -> FormInputViewModelObservable? {
-        return inputs.filter {
-            $0.identifier == identifier
-            }.first
-    }
-}
-
 public class FormViewModelValidator {
     
     //Validates self.iputs or inputs provided as inputs parameter

@@ -10,7 +10,7 @@ import Foundation
 
 import Forms
 
-final class LoginFormViewModel: FormViewModel {
+final class LoginFormViewModel {
     
     //MARK: - Input View Models
     

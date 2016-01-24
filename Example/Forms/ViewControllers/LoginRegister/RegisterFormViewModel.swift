@@ -9,7 +9,7 @@
 import Foundation
 import Forms
 
-final class RegistrationFormViewModel: FormViewModel {
+final class RegistrationFormViewModel {
     
     //MARK: - Input View Models - Username and password
     

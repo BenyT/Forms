@@ -55,12 +55,10 @@ class LoginViewController: UIViewController {
     
     func bindFormViewModel() {
         
-        formViewModel.inputs.map { $0.identifier }.forEach {
+        formViewModel.inputs.map { $0 }.forEach { viewModel in
             
-            if
-                let viewModel = self.formViewModel[$0],
-                let view =  inputsViewsByIdentifier[$0] as? KeyboardFormIputView
-            {
+            if let view =  inputsViewsByIdentifier[viewModel.identifier] as? KeyboardFormIputView {
+                
                 viewModel.focusedObservable.observe {
                     
                     if $0 == true {
@@ -72,7 +70,7 @@ class LoginViewController: UIViewController {
                 
                 //Checkbox
                 //Date select
-                if let view =  inputsViewsByIdentifier[$0] as? ButtonFormIputView {
+                if let view =  inputsViewsByIdentifier[viewModel.identifier] as? ButtonFormIputView {
                     view.themeView()
                 }
             }
