@@ -65,6 +65,8 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
         return formBaseTextInputView.textField
     }
     
+    public var textFieldReturnKeyTapped: ((UITextField) -> Void)?
+    
     public var captionLabel: UILabel {
         return formBaseTextInputView.captionLabel
     }
@@ -75,7 +77,7 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     
     //manually added layout constraints
     private var layoutConstraints = [NSLayoutConstraint]()
-
+    
     //MARK: - Init
     
     public convenience init(withViewModel viewModel: FormInputViewModel<T>) {
@@ -175,6 +177,9 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
             viewModel?.focused = false
             nextInput.focused = true
         }
+        
+        //Consider using an EventProducer
+        textFieldReturnKeyTapped?(textField)
         
         return true
     }
