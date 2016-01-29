@@ -208,3 +208,10 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
 }
 
 
+//MARK: - Equatable
+
+func ==(lhs: FormCheckboxInputView, rhs: FormCheckboxInputView) -> Bool {
+    return lhs.identifier == rhs.identifier
+}
+
+

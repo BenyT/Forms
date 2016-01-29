@@ -42,10 +42,6 @@ public protocol FormInputView: class {
     func becomeFirstResponder() -> Bool
 }
 
-func ==(lhs: FormInputView, rhs: FormInputView) -> Bool {
-    return lhs == rhs
-}
-
 public protocol KeyboardFormIputView: FormInputView {
     var textField: UITextField { get }
 }

@@ -199,5 +199,10 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     }
 }
 
+//MARK: - Equatable
+
+func ==<T>(lhs: FormTextInputView<T>, rhs: FormTextInputView<T>) -> Bool {
+    return lhs.identifier == rhs.identifier
+}
 
 

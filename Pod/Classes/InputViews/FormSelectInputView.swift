@@ -230,3 +230,9 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
         viewModel.value = viewModel.options[row - placeholderOffset]
     }
 }
+
+//MARK: - Equatable
+
+func ==<T>(lhs: FormSelectInputView<T>, rhs: FormSelectInputView<T>) -> Bool {
+    return lhs.identifier == rhs.identifier
+}

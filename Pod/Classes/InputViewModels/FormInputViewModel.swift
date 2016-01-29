@@ -72,7 +72,7 @@ final public class InputViewLayout: FormBaseTextInputViewLayout {
 }
 
 //Base class for FormInputViewModel
-public class FormInputViewModel<T>: FormInputViewModelObservable {
+public class FormInputViewModel<T>: FormInputViewModelObservable, Equatable {
     
     //textfield text
     public var valueObservable: Observable<T?>
@@ -302,6 +302,12 @@ public class FormInputViewModel<T>: FormInputViewModelObservable {
     public func validateUsingDisplayValidationErrorsOnValueChangeValue() -> Bool {
         return validate(updateErrorText: displayValidationErrorsOnValueChange)
     }
+}
+
+//MARK: - Equatable
+
+public func ==<T>(lhs: FormInputViewModel<T>, rhs: FormInputViewModel<T>) -> Bool {
+    return lhs.identifier == rhs.identifier
 }
 
 //MARK: - FormInputValidatable

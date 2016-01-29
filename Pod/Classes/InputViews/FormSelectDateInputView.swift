@@ -208,3 +208,9 @@ extension FormSelectDateInputView: UITextFieldDelegate {
     }
 }
 
+//MARK: - Equatable
+
+func ==(lhs: FormSelectDateInputView, rhs: FormSelectDateInputView) -> Bool {
+    return lhs.identifier == rhs.identifier
+}
+
