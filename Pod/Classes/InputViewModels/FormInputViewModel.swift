@@ -91,6 +91,7 @@ public class FormInputViewModel<T>: FormInputViewModelObservable {
                 }
                 
             } else {
+                valid = validateUsingDisplayValidationErrorsOnValueChangeValue()
                 displayValue = ""
             }
         }
