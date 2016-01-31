@@ -59,7 +59,7 @@ final class LoginFormViewModel {
     
     func submitForm() {
         
-        guard FormViewModelValidator.validate(inputs: inputs) == true else {
+        guard FormViewModelValidator.validate(inputs: inputs).count == 0 else {
             return
         }
         

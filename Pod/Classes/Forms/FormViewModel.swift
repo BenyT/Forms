@@ -31,8 +31,8 @@ public class FormViewModelValidator {
     //Validates self.iputs or inputs provided as inputs parameter
     //
     // - Parameter inputs: [FormInputViewModelProtocol]
-    // - Returns Bool
-    public static func validate(inputs inputs: [FormInputViewModelObservable]) -> Bool {
+    // - Returns [FormInputViewModelObservable] which are invalid
+    public static func validate(inputs inputs: [FormInputViewModelObservable]) -> [FormInputViewModelObservable] {
         
         let invalidInputs = inputs.filter {
             
@@ -42,52 +42,52 @@ public class FormViewModelValidator {
             
             //select textinput
             if let viewModel = $0 as? FormSelectInputViewModel<String> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             //select bool input
             if let viewModel = $0 as? FormSelectInputViewModel<Bool> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             //select date
             if let viewModel = $0 as? FormSelectInputViewModel<NSDate> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             //select any
             if let viewModel = $0 as? FormSelectInputViewModel<Any> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             //date inputs
             if let viewModel = $0 as? FormInputViewModel<NSDate> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             //text inputs
             if let viewModel = $0 as? FormInputViewModel<String> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
 
             //double inputs
             if let viewModel = $0 as? FormInputViewModel<Double> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             //int inputs
             if let viewModel = $0 as? FormInputViewModel<Int> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             //checkbox inputs
             if let viewModel = $0 as? FormInputViewModel<Bool> {
-                return viewModel.validate()
+                return !viewModel.validate()
             }
             
             return true
         }
         
-        return invalidInputs.count == 0
+        return invalidInputs
     }
 }
