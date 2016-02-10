@@ -124,6 +124,7 @@ final class FormBaseTextInputView<T>: UIView {
     
     lazy  var errorLabel: UILabel = { [unowned self] in
         let errorLabel = UILabel()
+        errorLabel.numberOfLines = 0
         errorLabel.lineBreakMode = .ByWordWrapping
         return errorLabel
     }()
