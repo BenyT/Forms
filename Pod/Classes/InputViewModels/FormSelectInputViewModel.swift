@@ -25,7 +25,6 @@
 //  THE SOFTWARE.
 //
 import UIKit
-import Bond
 
 public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
 

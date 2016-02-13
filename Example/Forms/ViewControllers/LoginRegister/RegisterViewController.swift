@@ -29,6 +29,10 @@ final class RegisterViewController: UIViewController {
     
     //MARK: - ViewController Lifecycle
 
+    deinit {
+        print("test")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

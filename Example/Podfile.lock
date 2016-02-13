@@ -1,7 +1,5 @@
 PODS:
-  - Bond (4.3.0)
-  - Forms (0.1.0):
-    - Bond (~> 4.0)
+  - Forms (0.2.0)
 
 DEPENDENCIES:
   - Forms (from `../`)
@@ -11,7 +9,6 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Bond: ebe2364b18130690083cbceff036420b21494ae4
-  Forms: 2c427134c59e323c48a813f6e8ff3905e91b90b9
+  Forms: 3b2103146028d94b1dde1fb99d6e657ac32d15eb
 
 COCOAPODS: 0.39.0

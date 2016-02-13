@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Forms
+import Forms
 
 class FormCheckboxInputViewTests: XCTestCase {
     

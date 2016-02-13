@@ -1,6 +1,6 @@
 {
   "name": "Forms",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "summary": "Form UI Classes.",
   "description": "Form Elements, Form UI",
   "homepage": "https://github.com/mark-randall/Forms",
@@ -10,17 +10,12 @@
   },
   "source": {
     "git": "https://github.com/mark-randall/Forms.git",
-    "tag": "0.1.0"
+    "tag": "0.2.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.0"
   },
   "requires_arc": true,
   "source_files": "Pod/Classes/**/*.swift",
-  "dependencies": {
-    "Bond": [
-      "~> 4.0"
-    ]
-  },
   "module_name": "Forms"
 }
