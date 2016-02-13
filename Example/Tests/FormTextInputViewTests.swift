@@ -64,7 +64,7 @@ class FormTextInputViewTests: XCTestCase {
         let vm = viewModel
         
         let view = FormTextInputView(withViewModel: vm)
-        XCTAssertEqual(view.errorLabel.text, "", "error was set on view")
+        XCTAssertEqual(view.errorLabel.text, nil, "error was set on view")
         
         vm.errorText = "error2"
         XCTAssertEqual(view.errorLabel.text, "error2", "error was updated on view")

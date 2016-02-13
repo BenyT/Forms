@@ -196,7 +196,7 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
         viewModel.hiddenObservable.observe { self.hidden = $0 }
         
         viewModel.errorTextObservable.observe {
-            self.errorLabel.hidden = $0.string.isEmpty
+            self.errorLabel.hidden = ($0?.string.isEmpty) ?? true
             self.errorLabel.attributedText = $0
         }
         

@@ -208,7 +208,7 @@ final class FormBaseTextInputView<T>: UIView {
         }
         
         viewModel.errorTextObservable.observe {
-            self.errorLabel.hidden = $0.string.isEmpty
+            self.errorLabel.hidden = ($0?.string.isEmpty) ?? true
             self.errorLabel.attributedText = $0
         }
         

@@ -51,9 +51,10 @@ public protocol FormInputViewModelObservable {
     var secureTextEntryObservable: Observable<Bool> { get }
     var keyboardTypeObservable: Observable<UIKeyboardType> { get }
     var autocorrectionTypeObservable: Observable<UITextAutocorrectionType> { get }
-
+    var autocaptializationTypeObservable: Observable<UITextAutocapitalizationType> { get }
+    
     var validObservable: Observable<Bool> { get }
-    var errorTextObservable: Observable<NSAttributedString> { get }
+    var errorTextObservable: Observable<NSAttributedString?> { get }
     
     var inputViewLayoutObservable: Observable<InputViewLayout> { get }
 }
@@ -74,13 +75,14 @@ final public class InputViewLayout: FormBaseTextInputViewLayout {
 public class FormInputViewModel<T>: FormInputViewModelObservable, Equatable {
     
     //textfield text
-    public var valueObservable: Observable<T?>
+    private let valueSubject = Subject<T?>()
+    public var valueObservable: Observable<T?> { return valueSubject.asObservable() }
     public var value: T? {
-        didSet {
+        set {
             
             //only update observable if value is not nil
-            if let value = value {
-                valueObservable.next(value)
+            if let value = newValue {
+                valueSubject.next(value)
                 valid = validateUsingDisplayValidationErrorsOnValueChangeValue()
                 
                 if let displayValueMap = displayValueMap {
@@ -94,6 +96,7 @@ public class FormInputViewModel<T>: FormInputViewModelObservable, Equatable {
                 displayValue = ""
             }
         }
+        get { return valueSubject.next ?? nil }
     }
     
     //map value to displya view
@@ -117,137 +120,135 @@ public class FormInputViewModel<T>: FormInputViewModelObservable, Equatable {
         }
     }
     
-    public var focusedObservable = Observable<Bool>(false)
-    public var focused = false {
-        didSet {
-            if focused != oldValue {
-                focusedObservable.next(focused)
-            }
-        }
+    //focused
+    private let focusedSubject = Subject<Bool>(false)
+    public var focusedObservable: Observable<Bool> { return focusedSubject.asObservable() }
+    public var focused: Bool {
+        get { return focusedSubject.next! }
+        set { focusedSubject.next(newValue) }
     }
     
-    public var hiddenObservable = Observable<Bool>(false)
-    public var hidden = false {
-        didSet {
-            if hidden != oldValue {
-                hiddenObservable.next(hidden)
-            }
-        }
+    //hidden
+    private let hiddenSubject = Subject<Bool>(false)
+    public var hiddenObservable: Observable<Bool> { return hiddenSubject.asObservable() }
+    public var hidden: Bool {
+        get { return hiddenSubject.next! }
+        set { hiddenSubject.next(newValue) }
     }
     
     //is viewModel view enabled
     //view is responsible for determining what this means
-    public var enabledObservable = Observable<Bool>(true)
-    public var enabled: Bool = true {
-        didSet {
-            if enabled != oldValue {
-                enabledObservable.next(enabled)
-            }
-        }
+    private let enabledSubject = Subject<Bool>(true)
+    public var enabledObservable: Observable<Bool> { return enabledSubject.asObservable() }
+    public var enabled: Bool {
+        get { return enabledSubject.next! }
+        set { enabledSubject.next(newValue) }
     }
     
     //textfield text
-    public var displayValueObservable = Observable<String>("")
-    public var displayValue: String = "" {
-        didSet {
-            if displayValue != oldValue {
-                displayValueObservable.next(displayValue)
-            }
-        }
+    private let displayValueSubject = Subject<String>("")
+    public var displayValueObservable: Observable<String> { return displayValueSubject.asObservable() }
+    public var displayValue: String {
+        get { return displayValueSubject.next! }
+        set { displayValueSubject.next(newValue) }
     }
     
     //caption label text
-    public var captionObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
-    public var caption: String = "" {
-        didSet {
-            if caption != oldValue {
-                captionObservable.next(NSAttributedString(string: caption))
-            }
-        }
-    }
+    private let captionSubject = Subject<NSAttributedString>(NSAttributedString(string: ""))
+    public var captionObservable: Observable<NSAttributedString> { return captionSubject.asObservable() }
     public var captionAttributedText: NSAttributedString? {
-        didSet {
-            if captionAttributedText?.string != caption {
-                captionObservable.next(captionAttributedText!)
-            }
-        }
+        get { return captionSubject.next! }
+        set { captionSubject.next(newValue) }
+    }
+    public var caption: String {
+        get { return captionSubject.next!.string }
+        set { captionSubject.next(NSAttributedString(string: newValue)) }
     }
     
     //textfield placeholder
-    public var placeholderObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
-    public var placeholder: String = "" {
-        didSet {
-            if placeholder != oldValue {
-                placeholderObservable.next(NSAttributedString(string: placeholder))
-            }
-        }
-    }
+    private let placeholderSubject = Subject<NSAttributedString>(NSAttributedString(string: ""))
+    public var placeholderObservable: Observable<NSAttributedString> { return placeholderSubject.asObservable() }
     public var placeholderAttributedText: NSAttributedString? {
-        didSet {
-            if placeholderAttributedText?.string != placeholder {
-                placeholderObservable.next(placeholderAttributedText!)
-            }
-        }
+        get { return placeholderSubject.next }
+        set { placeholderSubject.next(newValue) }
+    }
+    public var placeholder: String {
+        get { return placeholderSubject.next!.string }
+        set { placeholderSubject.next(NSAttributedString(string: newValue)) }
     }
     
     //textfield return key
-    public var returnKeyTypeObservable = Observable<UIReturnKeyType>(.Default )
-    public var returnKeyType: UIReturnKeyType = .Default {
-        didSet {
-            if returnKeyType != oldValue {
-                returnKeyTypeObservable.next(returnKeyType)
-            }
-        }
+    private let returnKeySubject = Subject<UIReturnKeyType>(.Default )
+    public var returnKeyTypeObservable: Observable<UIReturnKeyType> { return returnKeySubject.asObservable() }
+    public var returnKeyType: UIReturnKeyType {
+        get { return returnKeySubject.next! }
+        set { returnKeySubject.next(newValue) }
     }
     
     //secure input
-    public var secureTextEntryObservable = Observable<Bool>(false)
-    public var secureTextEntry: Bool = false {
-        didSet {
-            if secureTextEntry != oldValue {
-                secureTextEntryObservable.next(secureTextEntry)
-            }
-        }
+    private let secureTextEntrySubject = Subject<Bool>(false)
+    public var secureTextEntryObservable: Observable<Bool> { return secureTextEntrySubject.asObservable() }
+    public var secureTextEntry: Bool {
+        get { return secureTextEntrySubject.next! }
+        set { secureTextEntrySubject.next(newValue) }
     }
     
     //keyboardType
-    public var keyboardTypeObservable = Observable<UIKeyboardType>(.Default)
-    public var keyboardType: UIKeyboardType = .Default {
-        didSet {
-            if keyboardType != oldValue {
-                keyboardTypeObservable.next(keyboardType)
-            }
-        }
+    private let keyboardTypeSubject = Subject<UIKeyboardType>(.Default)
+    public var keyboardTypeObservable: Observable<UIKeyboardType> { return keyboardTypeSubject.asObservable() }
+    public var keyboardType: UIKeyboardType {
+        get { return keyboardTypeSubject.next! }
+        set { keyboardTypeSubject.next(newValue) }
     }
     
     //autocorrectionType
-    public var autocorrectionTypeObservable = Observable<UITextAutocorrectionType>(.Default)
-    public var autocorrectionType: UITextAutocorrectionType = .Default {
-        didSet {
-            if autocorrectionType != oldValue {
-                autocorrectionTypeObservable.next(autocorrectionType)
-            }
-        }
+    private let autocorrectionTypeSubject = Subject<UITextAutocorrectionType>(.Default)
+    public var autocorrectionTypeObservable: Observable<UITextAutocorrectionType> { return autocorrectionTypeSubject.asObservable() }
+    public var autocorrectionType: UITextAutocorrectionType {
+        get { return autocorrectionTypeSubject.next! }
+        set { autocorrectionTypeSubject.next(newValue) }
+    }
+    
+    //autocaptializationType
+    private let autocaptializationTypeSubject = Subject<UITextAutocapitalizationType>(.Sentences)
+    public var autocaptializationTypeObservable: Observable<UITextAutocapitalizationType> { return autocaptializationTypeSubject.asObservable() }
+    public var autocaptializationType: UITextAutocapitalizationType {
+        get { return autocaptializationTypeSubject.next! }
+        set { autocaptializationTypeSubject.next(newValue) }
     }
     
     //MARK: - FormInputValidatable Variables
     
     //whether input is valid
-    public var validObservable = Observable<Bool>(true)
-    public var valid = true {
-        didSet {
-            if valid != oldValue {
-                validObservable.next(valid)
-            }
-        }
+    private let validSubject = Subject<Bool>(true)
+    public var validObservable: Observable<Bool> { return validSubject.asObservable() }
+    public var valid: Bool {
+        get { return validSubject.next! }
+        set { validSubject.next(newValue) }
     }
     
     //error text if not value
-    public var errorTextObservable = Observable<NSAttributedString>(NSAttributedString(string: ""))
+    private let errorTextSubject = Subject<NSAttributedString?>()
+    public var errorTextObservable: Observable<NSAttributedString?> { return errorTextSubject.asObservable() }
+    public var errorAttributedText: NSAttributedString? {
+        get {
+            guard let value = errorTextSubject.next else { return nil }
+            return value
+        }
+        set {
+            if let value = newValue {
+                errorTextSubject.next(value)
+            }
+        }
+    }
     public var errorText: String? {
-        didSet {
-            if errorText != oldValue {
-                errorTextObservable.next(NSAttributedString(string: errorText ?? ""))
+        get {
+            guard let value = errorTextSubject.next else { return nil }
+            return value!.string
+        }
+        set {
+            if let value = newValue {
+                errorTextSubject.next(NSAttributedString(string: value))
             }
         }
     }
@@ -273,11 +274,11 @@ public class FormInputViewModel<T>: FormInputViewModelObservable, Equatable {
     //MARK: - Layout
     
     //layout of input
-    public var inputViewLayoutObservable = Observable<InputViewLayout>(InputViewLayout())
+    private let inputViewLayoutSubject = Subject<InputViewLayout>(InputViewLayout())
+    public var inputViewLayoutObservable: Observable<InputViewLayout> { return inputViewLayoutSubject.asObservable() }
     public var inputViewLayout: InputViewLayout {
-        didSet {
-            inputViewLayoutObservable.next(inputViewLayout)
-        }
+        get { return inputViewLayoutSubject.next! }
+        set { inputViewLayoutSubject.next(newValue) }
     }
     
     //MARK: - Init
@@ -285,17 +286,11 @@ public class FormInputViewModel<T>: FormInputViewModelObservable, Equatable {
     // Init
     //
     // - Parameter value: T
-    public init(identifier: String, value: T?, inputViewLayout: InputViewLayout = InputViewLayout()) {
-    
+    public init(identifier: String, value: T? = nil, inputViewLayout: InputViewLayout = InputViewLayout()) {
         self.identifier = identifier
-        self.value = value
-        valueObservable = Observable<T?>(value)
-        
-        displayValue = self.value as? String ?? ""
-        displayValueObservable.next(displayValue)
-        
-        self.inputViewLayout = inputViewLayout
-        inputViewLayoutObservable = Observable(self.inputViewLayout)
+        valueSubject.next(value)
+        displayValueSubject.next(self.value as? String ?? "")
+        inputViewLayoutSubject.next(inputViewLayout)
     }
     
     public func validateUsingDisplayValidationErrorsOnValueChangeValue() -> Bool {

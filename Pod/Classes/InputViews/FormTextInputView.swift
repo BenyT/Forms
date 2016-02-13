@@ -89,14 +89,21 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
         commonInit()
     }
     
+    public convenience init(withValue value: T, identifier: String = NSUUID().UUIDString) {
+        let viewModel =  FormInputViewModel(identifier: identifier, value: value)
+        self.init(withViewModel: viewModel)
+    }
+    
     override public init(frame: CGRect) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel =  FormInputViewModel<T>(identifier: identifier)
         super.init(frame: frame)
         commonInit()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel =  FormInputViewModel<T>(identifier: identifier)
         super.init(coder: aDecoder)
         commonInit()
     }

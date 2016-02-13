@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class Observable<ValueType: Any> {
+public class Observable<ValueType: Any> {
     
     private var _value: ValueType?
     
@@ -28,7 +28,7 @@ public final class Observable<ValueType: Any> {
         return value
     }
     
-    private var observers = [Observer<ValueType>]()
+    private var observers = [Subscriber<ValueType>]()
     
     /// init with value
     ///
@@ -37,16 +37,12 @@ public final class Observable<ValueType: Any> {
         self.value = value
     }
     
-    public func next(value: ValueType?) {
-        self.value = value
-    }
-
     /// observer new value changes
     ///
     /// - Parameter observer: AnyObject
     /// - Parameter next: ValueType? -> Void
     public func observeNew(next: ValueType -> Void) {
-        observers.append( Observer(next: next) )
+        observers.append( Subscriber(next: next) )
     }
     
     /// observer new value changes
@@ -62,7 +58,22 @@ public final class Observable<ValueType: Any> {
     }
 }
 
-public struct Observer<ValueType> {
+public final class Subject<ValueType: Any>: Observable<ValueType> {
+    
+    override init(_ value: ValueType? = nil) {
+        super.init(value)
+    }
+    
+    func asObservable() -> Observable<ValueType> {
+        return self as Observable<ValueType>
+    }
+    
+    public func next(value: ValueType?) {
+        self.value = value
+    }
+}
+
+public struct Subscriber<ValueType> {
     
     //public weak var observer: AnyObject?
     private var next: ValueType -> Void

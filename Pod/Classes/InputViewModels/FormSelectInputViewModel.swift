@@ -28,11 +28,11 @@ import UIKit
 
 public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
 
-    public var optionsObservable: Observable<[T]>
+    private let optionsSubject = Subject<[T]>([])
+    public var optionsObservable: Observable<[T]> { return optionsSubject.asObservable() }
     public var options: [T] {
-        didSet {
-            optionsObservable.next(options)
-        }
+        get { return optionsSubject.next! }
+        set { optionsSubject.next(options) }
     }
     
     public var pickerPlaceholder: String?
@@ -43,8 +43,7 @@ public class FormSelectInputViewModel<T>: FormInputViewModel<T> {
     //
     // - Parameter value: T
     public init(identifier: String, options: [T], value: T?) {
-        self.options = options
-        self.optionsObservable = Observable(options)
+        optionsSubject.next(options)
         super.init(identifier: identifier, value: value)
     }
     
