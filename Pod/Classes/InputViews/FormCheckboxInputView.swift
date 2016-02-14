@@ -32,7 +32,7 @@ private enum InputSelector: Selector {
 }
 
 //@IBDesignable
-public class FormCheckboxInputView: UIView, ButtonFormIputView {
+public class FormCheckboxInputView: UIView, ButtonFormIputView, FormInputViewModelView, FormInputViewModelObservable {
     
     override public class func requiresConstraintBasedLayout() -> Bool {
         return true
@@ -44,10 +44,15 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
     
     //MARK: - FormInputViewModelView
     
-    public var viewModel: FormInputViewModel<Bool>? {
+    public var viewModel: FormInputViewModel<Bool> {
         didSet {
             bindViewModel()
         }
+    }
+    
+    override public var focused: Bool {
+        set { viewModel.focused = newValue }
+        get { return viewModel.focused }
     }
     
     //MARK: - Layout Configuration
@@ -104,12 +109,14 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
     
     override public init(frame: CGRect) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel =  FormInputViewModel<Bool>(identifier: identifier)
         super.init(frame: frame)
         commonInit()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel =  FormInputViewModel<Bool>(identifier: identifier)
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -181,15 +188,12 @@ public class FormCheckboxInputView: UIView, ButtonFormIputView {
     //MARK: - Actions
     
     func buttonWastTapped(sender: AnyObject) {
-        guard let viewModel = self.viewModel else { return }
         viewModel.value = !viewModel.value!
     }
     
     //MARK: - FormInputViewModelView
     
     public func bindViewModel() {
-        
-        guard let viewModel = self.viewModel else { return }
         
         viewModel.valueObservable.observe { self.button.selected = $0 ?? false }
         viewModel.captionObservable.observe { self.captionLabel.attributedText = $0 }

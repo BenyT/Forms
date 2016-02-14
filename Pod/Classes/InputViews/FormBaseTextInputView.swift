@@ -73,9 +73,40 @@ public protocol FormInputViewModelView: class {
     
     typealias DataType
     
-    var viewModel: FormInputViewModel<DataType>? { get }
+    var viewModel: FormInputViewModel<DataType> { get }
     
     func bindViewModel()
+}
+
+public extension FormInputViewModelView where Self: FormInputViewModelObservable {
+    
+    public var identifier: String { return viewModel.identifier }
+    
+    //Not satisfying protocol
+//    public var focused: Bool {
+//        set { viewModel.focused = newValue }
+//        get { return viewModel.focused }
+//    }
+    
+    public var nextInputsViewModel: FormInputViewModelObservable? {
+        set { viewModel.nextInputsViewModel = newValue }
+        get { return viewModel.nextInputsViewModel }
+    }
+    
+    public var focusedObservable: Observable<Bool> { return viewModel.focusedObservable }
+    public var hiddenObservable: Observable<Bool> { return viewModel.hiddenObservable }
+    public var enabledObservable: Observable<Bool> { return viewModel.enabledObservable }
+    public var displayValueObservable: Observable<String> { return viewModel.displayValueObservable }
+    public var captionObservable: Observable<NSAttributedString> { return viewModel.captionObservable }
+    public var placeholderObservable: Observable<NSAttributedString> { return viewModel.placeholderObservable }
+    public var returnKeyTypeObservable: Observable<UIReturnKeyType> { return viewModel.returnKeyTypeObservable }
+    public var secureTextEntryObservable: Observable<Bool> { return viewModel.secureTextEntryObservable }
+    public var keyboardTypeObservable: Observable<UIKeyboardType> { return viewModel.keyboardTypeObservable }
+    public var autocorrectionTypeObservable: Observable<UITextAutocorrectionType> { return viewModel.autocorrectionTypeObservable }
+    public var autocaptializationTypeObservable: Observable<UITextAutocapitalizationType> { return viewModel.autocaptializationTypeObservable }
+    public var validObservable: Observable<Bool> { return viewModel.validObservable }
+    public var errorTextObservable: Observable<NSAttributedString?> { return viewModel.errorTextObservable }
+    public var inputViewLayoutObservable: Observable<InputViewLayout> { return viewModel.inputViewLayoutObservable }
 }
 
 //Base UIView for any FormInputs which require a basic textfield, capture label, error label heirarchy

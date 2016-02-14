@@ -26,7 +26,7 @@
 //
 import UIKit
 
-public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate {
+public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate, FormInputViewModelObservable {
     
     override class public func requiresConstraintBasedLayout() -> Bool {
         return true
@@ -34,11 +34,17 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     
     //MARK: - FormInputViewModelView Properties
     
-    public var viewModel: FormInputViewModel<T>? {
+    public var viewModel: FormInputViewModel<T> {
         didSet {
             bindViewModel()
         }
     }
+    
+    override public var focused: Bool {
+        set { viewModel.focused = newValue }
+        get { return viewModel.focused }
+    }
+    
     
     //MARK: - FormInputView
     
@@ -159,7 +165,6 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
 
     //bind to viewModel
     public func bindViewModel() {
-        guard let viewModel = self.viewModel else { return }
         formBaseTextInputView.bindViewModel(viewModel)
         viewModel.hiddenObservable.observe { self.hidden = $0 }
     }
@@ -167,11 +172,11 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     //MARK: - UITextFieldDelegate
 
     public func textFieldDidBeginEditing(textField: UITextField) {
-        viewModel?.focused = true
+        viewModel.focused = true
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
-        viewModel?.focused = false
+        viewModel.focused = false
     }
     
     public func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
@@ -180,8 +185,8 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        if var nextInput = viewModel?.nextInputsViewModel {
-            viewModel?.focused = false
+        if var nextInput = viewModel.nextInputsViewModel {
+            viewModel.focused = false
             nextInput.focused = true
         }
         
@@ -196,12 +201,12 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
         guard let currentText = textField.text else { return true }
         let newText = (currentText as NSString).stringByReplacingCharactersInRange(range, withString: string)
         guard let newValue = newText as? T else { return true }
-        viewModel?.value = newValue
+        viewModel.value = newValue
         return false
     }
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {
-        viewModel?.value = nil
+        viewModel.value = nil
         return true
     }
 }
@@ -211,5 +216,4 @@ public class FormTextInputView<T>: UIView, KeyboardFormIputView, FormInputViewMo
 func ==<T>(lhs: FormTextInputView<T>, rhs: FormTextInputView<T>) -> Bool {
     return lhs.identifier == rhs.identifier
 }
-
 

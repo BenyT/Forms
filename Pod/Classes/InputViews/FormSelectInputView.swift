@@ -27,7 +27,7 @@
 
 import UIKit
 
-public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputViewModelView, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, FormInputViewModelObservable {
 
     override class public func requiresConstraintBasedLayout() -> Bool {
         return true
@@ -39,10 +39,15 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
 
     //MARK: - FormInputViewModelView
     
-    public var viewModel: FormInputViewModel<T>? {
+    public var viewModel: FormInputViewModel<T> {
         didSet {
             bindViewModel()
         }
+    }
+    
+    override public var focused: Bool {
+        set { viewModel.focused = newValue }
+        get { return viewModel.focused }
     }
     
     //MARK: - Layout Configuration
@@ -102,12 +107,14 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     
     override public init(frame: CGRect) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel = FormInputViewModel(identifier: self.identifier)
         super.init(frame: frame)
         commonInit()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel = FormInputViewModel(identifier: self.identifier)
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -152,7 +159,6 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     //MARK: - FormInputViewModelView
     
     public func bindViewModel() {
-        guard let viewModel = self.viewModel else { return}
         formBaseTextInputView.bindViewModel(viewModel)
         viewModel.hiddenObservable.observe { self.hidden = $0 }
     }
@@ -170,15 +176,15 @@ public class FormSelectInputView<T>: UIView, KeyboardFormIputView, FormInputView
     //MARK: - UITextFieldDelegate
     
     public func textFieldDidBeginEditing(textField: UITextField) {
-        viewModel?.focused = true
+        viewModel.focused = true
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
-        viewModel?.focused = false
+        viewModel.focused = false
     }
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {
-        viewModel?.value = nil
+        viewModel.value = nil
         return true
     }
     

@@ -30,7 +30,7 @@ private enum InputSelector: Selector {
     case DatePickerValueChanged = "datePickerValueChanged:"
 }
 
-public class FormSelectDateInputView: UIView, KeyboardFormIputView {
+public class FormSelectDateInputView: UIView, KeyboardFormIputView, FormInputViewModelObservable {
     
     override class public func requiresConstraintBasedLayout() -> Bool {
         return true
@@ -42,10 +42,15 @@ public class FormSelectDateInputView: UIView, KeyboardFormIputView {
 
     //MARK: - FormInputViewModelView
     
-    public var viewModel: FormInputViewModel<NSDate>? {
+    public var viewModel: FormInputViewModel<NSDate> {
         didSet {
             bindViewModel()
         }
+    }
+    
+    override public var focused: Bool {
+        set { viewModel.focused = newValue }
+        get { return viewModel.focused }
     }
     
     //MARK: - Layout Configuration
@@ -104,12 +109,14 @@ public class FormSelectDateInputView: UIView, KeyboardFormIputView {
     
     override public init(frame: CGRect) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel =  FormInputViewModel<NSDate>(identifier: identifier)
         super.init(frame: frame)
         commonInit()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         self.identifier = NSUUID().UUIDString
+        self.viewModel =  FormInputViewModel<NSDate>(identifier: identifier)
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -164,8 +171,8 @@ public class FormSelectDateInputView: UIView, KeyboardFormIputView {
     //MARK: - Actions
     
     public func datePickerValueChanged(sender: AnyObject?) {
-        viewModel?.value = datePicker.date
-        textField.text = viewModel?.displayValue
+        viewModel.value = datePicker.date
+        textField.text = viewModel.displayValue
     }
 }
 
@@ -175,9 +182,7 @@ extension FormSelectDateInputView: FormInputViewModelView {
     
     //bind to viewModel
     public func bindViewModel() {
-        
-        guard let viewModel = self.viewModel else { return }
-        
+                
         formBaseTextInputView.bindViewModel(viewModel)
         
         viewModel.hiddenObservable.observe { self.hidden = $0 }
@@ -195,15 +200,15 @@ extension FormSelectDateInputView: FormInputViewModelView {
 extension FormSelectDateInputView: UITextFieldDelegate {
     
     public func textFieldDidBeginEditing(textField: UITextField) {
-        viewModel?.focused = true
+        viewModel.focused = true
     }
     
     public func textFieldDidEndEditing(textField: UITextField) {
-        viewModel?.focused = false
+        viewModel.focused = false
     }
     
     public func textFieldShouldClear(textField: UITextField) -> Bool {
-        viewModel?.value = nil
+        viewModel.value = nil
         return true
     }
 }
