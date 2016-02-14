@@ -41,4 +41,9 @@ public extension String {
         }
     }
 
+    public func isPhoneNumber() -> Bool {
+        let numbersOnly = self.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).reduce("", combine: +)
+        return numbersOnly.characters.count == 10
+    }
+    
 }
