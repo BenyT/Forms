@@ -147,6 +147,12 @@ final class FormBaseTextInputView<T>: UIView {
         return stackView.intrinsicContentSize()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        captionLabel.preferredMaxLayoutWidth = bounds.width
+        errorLabel.preferredMaxLayoutWidth = bounds.width
+    }
+    
     //MARK: - Add Subviews
     
     private var didAddSubviewConstriants = false
