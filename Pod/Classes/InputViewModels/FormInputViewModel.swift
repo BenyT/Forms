@@ -231,6 +231,16 @@ public class FormInputViewModel<T>: FormInputViewModelObservable, Equatable {
         }
     }
     
+    //autocorrectionType
+    public var autocapitalizationTypeObservable = Observable<UITextAutocapitalizationType>(.Sentences)
+    public var autocapitalizationType: UITextAutocapitalizationType = .Sentences {
+        didSet {
+            if autocapitalizationType != oldValue {
+                autocapitalizationTypeObservable.next(autocapitalizationType)
+            }
+        }
+    }
+    
     //MARK: - FormInputValidatable Variables
     
     //whether input is valid
