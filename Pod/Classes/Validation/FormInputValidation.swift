@@ -95,14 +95,14 @@ public class FormInputValidationRule<T> {
     
     public var errorText: String
     
-    public var validationClosure: ((T?) -> Bool)
+    public var validationClosure: ((T) -> Bool)
     
-    public init(failureText: String, validation: ((T?) -> Bool)) {
+    public init(failureText: String, validation: ((T) -> Bool)) {
         self.errorText = failureText
         self.validationClosure = validation
     }
     
-    public func validate(inputValue inputValue: T?) -> Bool {
+    public func validate(inputValue inputValue: T) -> Bool {
         return validationClosure(inputValue)
     }
 }
